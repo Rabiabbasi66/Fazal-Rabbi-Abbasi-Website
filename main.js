@@ -177,33 +177,57 @@ function downloadCV() {
     showToast('CV download functionality would be implemented here!');
 }
 
-// Contact Form
-const contactForm = document.getElementById('contact-form');
+// =========================
+// Contact Form API
+// =========================
+
+const API_BASE_URL = "http://127.0.0.1:8000/api";
+
+const contactForm = document.getElementById("contact-form");
+
 if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
+    contactForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        
-        const submitButton = contactForm.querySelector('button[type="submit"]');
+
+        const submitButton = contactForm.querySelector("button[type='submit']");
         const originalText = submitButton.innerHTML;
-        
-        // Show loading state
+
         submitButton.disabled = true;
         submitButton.innerHTML = `
             <i data-lucide="loader" class="spin"></i>
             Sending...
         `;
         lucide.createIcons();
-        
-        // Simulate form submission
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // Show success message
-        showToast("Message sent successfully! I'll get back to you soon.");
-        
-        // Reset form
-        contactForm.reset();
-        
-        // Restore button
+
+        const formData = {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            subject: document.getElementById("subject").value,
+            message: document.getElementById("message").value,
+        };
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/contact`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                showToast("✅ Message sent successfully!");
+                contactForm.reset();
+            } else {
+                showToast(data.detail || "❌ Failed to send message.");
+            }
+        } catch (error) {
+            console.error(error);
+            showToast("❌ Cannot connect to backend.");
+        }
+
         submitButton.disabled = false;
         submitButton.innerHTML = originalText;
         lucide.createIcons();
@@ -434,3 +458,73 @@ images.forEach(img => imageObserver.observe(img));
 console.log('%c👋 Hey there, curious developer!', 'font-size: 20px; font-weight: bold; color: #3b82f6;');
 console.log('%cInterested in the code? Check out the GitHub repo!', 'font-size: 14px; color: #8b5cf6;');
 console.log('%c🚀 Built with HTML, CSS, JavaScript & Three.js', 'font-size: 12px; color: #94a3b8;');
+ 
+// =========================
+// Load Projects From Backend
+// =========================
+
+async function loadProjects() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/projects`);
+
+        if (!response.ok) {
+            throw new Error("Failed to fetch projects");
+        }
+
+        const projects = await response.json();
+
+        const projectsGrid = document.querySelector(".projects-grid");
+
+        if (!projectsGrid) return;
+
+        projectsGrid.innerHTML = "";
+
+        projects.forEach(project => {
+            projectsGrid.innerHTML += `
+                <div class="project-card ${project.featured ? "featured" : ""}">
+                    <div class="project-image">
+                        <img src="${project.image}" alt="${project.title}">
+                        <div class="project-overlay">
+                            <div class="project-actions">
+
+                                ${
+                                    project.github_url
+                                    ? `<a href="${project.github_url}" target="_blank" class="project-action">
+                                            <i data-lucide="github"></i>
+                                       </a>`
+                                    : ""
+                                }
+
+                                ${
+                                    project.demo_url
+                                    ? `<a href="${project.demo_url}" target="_blank" class="project-action project-action-primary">
+                                            <i data-lucide="external-link"></i>
+                                       </a>`
+                                    : ""
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-content">
+                        <h3>${project.title}</h3>
+
+                        <p>${project.description}</p>
+
+                        <div class="project-tags">
+                            ${project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join("")}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        lucide.createIcons();
+
+    } catch (error) {
+        console.error("Projects Error:", error);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", loadProjects);
