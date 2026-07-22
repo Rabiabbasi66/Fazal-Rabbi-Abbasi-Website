@@ -1,7 +1,9 @@
+# Create a clean version
+@'
 {
     "functions": {
         "app/main.py": {
-            "runtime": "now-python@1.0.0"
+            "runtime": "python3.9"
         }
     },
     "routes": [
@@ -11,3 +13,7 @@
         }
     ]
 }
+'@ | Out-File -FilePath backend/vercel.json -Encoding utf8
+
+# Verify it's valid
+Get-Content backend/vercel.json
