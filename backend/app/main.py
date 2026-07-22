@@ -33,6 +33,25 @@ async def lifespan(app: FastAPI):
     print("👋 Application shutdown complete")
 
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Lifespan events"""
+    # Startup
+    try:
+        await connect_to_mongo()
+        print("🚀 Application startup complete")
+    except Exception as e:
+        print(f"⚠️ Could not connect to Mongo on startup: {e}")
+    
+    yield
+    
+    # Shutdown
+    try:
+        await close_mongo_connection()
+        print("👋 Application shutdown complete")
+    except Exception as e:
+        print(f"⚠️ Error closing Mongo connection: {e}")
+
 # Create FastAPI app
 app = FastAPI(
     title=settings.APP_NAME,
