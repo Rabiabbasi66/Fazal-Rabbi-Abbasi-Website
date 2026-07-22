@@ -7,33 +7,10 @@ from datetime import datetime
 # =====================================================
 # DATABASE FUNCTIONS (Simple version)
 # =====================================================
-client = None
-db = None
-
-async def connect_to_mongo():
-    global client, db
-    try:
-        from motor.motor_asyncio import AsyncIOMotorClient
-        import os
-        mongodb_url = os.getenv("MONGODB_URL")
-        database_name = os.getenv("DATABASE_NAME")
-        
-        print(f"🔍 MONGODB_URL exists: {bool(mongodb_url)}")
-        print(f"🔍 DATABASE_NAME: {database_name}")
-        
-        if not mongodb_url:
-            print("❌ MONGODB_URL not set in environment variables!")
-            return None
-        
-        client = AsyncIOMotorClient(mongodb_url)
-        db = client[database_name]
-        # Test connection
-        await client.admin.command('ping')
-        print("✅ MongoDB Connected Successfully!")
-        return db
-    except Exception as e:
-        print(f"❌ MongoDB connection error: {e}")
-        return None
+from app.database import (
+    connect_to_mongo,
+    close_mongo_connection,
+)
 
 # =====================================================
 # PYDANTIC MODELS

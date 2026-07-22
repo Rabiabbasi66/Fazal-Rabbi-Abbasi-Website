@@ -15,45 +15,36 @@ class ContactForm(BaseModel):
 # ✅ POST is PUBLIC - anyone can send a message
 @router.post("/")
 async def send_contact(form: ContactForm):
-    """Send contact message - PUBLIC endpoint"""
+
     try:
-        print(f"📥 Received contact from: {form.name} ({form.email})")
-        
-        contacts_collection = get_collection("contacts")
-        
-        if contacts_collection is not None:
-            # Save to database
-            contact_dict = {
-                "name": form.name,
-                "email": form.email,
-                "subject": form.subject,
-                "message": form.message,
-                "status": "unread",
-                "created_at": datetime.utcnow(),
-                "updated_at": datetime.utcnow()
-            }
-            
-            result = await contacts_collection.insert_one(contact_dict)
-            
-            return {
-                "success": True,
-                "message": "Message received and saved!",
-                "id": str(result.inserted_id)
-            }
-        else:
-            return {
-                "success": True,
-                "message": "Message received!",
-                "data": form.dict()
-            }
-            
-    except Exception as e:
-        print(f"❌ Error saving contact: {e}")
+
+        contacts = get_collection("contacts")
+
+        contact = {
+            "name": form.name,
+            "email": form.email,
+            "subject": form.subject,
+            "message": form.message,
+            "status": "unread",
+            "created_at": datetime.utcnow()
+        }
+
+        result = await contacts.insert_one(contact)
+
         return {
             "success": True,
-            "message": "Message received!",
-            "data": form.dict()
+            "message": "Message sent successfully!",
+            "id": str(result.inserted_id)
         }
+
+    except Exception as e:
+
+        print("ERROR:", e)
+
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to save contact: {str(e)}"
+        )
 
 # ✅ GET is ADMIN ONLY - requires authentication
 @router.get("/")

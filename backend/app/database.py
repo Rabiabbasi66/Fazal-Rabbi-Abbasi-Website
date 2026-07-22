@@ -1,40 +1,44 @@
-from typing import Optional
 from motor.motor_asyncio import AsyncIOMotorClient
 from app.config import settings
 
-# Global client variable
-client: Optional[AsyncIOMotorClient] = None
+client = None
 db = None
 
+
 async def connect_to_mongo():
-    """Connect to MongoDB"""
     global client, db
-    try:
-        if client is None:
-            client = AsyncIOMotorClient(settings.MONGODB_URL)
-            db = client[settings.DATABASE_NAME]
-            print("✅ MongoDB Connected")
-            return db
-        return db
-    except Exception as e:
-        print(f"❌ MongoDB connection error: {e}")
-        return None
 
-async def close_mongo_connection():
-    """Close MongoDB connection"""
-    global client
-    if client is not None:
-        client.close()
-        client = None
-        print("✅ MongoDB Disconnected")
+    if client is None:
+        client = AsyncIOMotorClient(settings.MONGODB_URL)
 
-def get_database():
-    """Get database instance"""
+        # test connection
+        await client.admin.command("ping")
+
+        db = client[settings.DATABASE_NAME]
+
+        print("✅ MongoDB Connected Successfully")
+
     return db
 
-# ✅ THIS IS WHAT'S MISSING - ADD THIS FUNCTION
-def get_collection(collection_name: str):
-    """Get a MongoDB collection"""
+
+async def close_mongo_connection():
+    global client, db
+
+    if client:
+        client.close()
+
+    client = None
+    db = None
+
+    print("🔌 MongoDB Closed")
+
+
+def get_database():
+    return db
+
+
+def get_collection(name: str):
     if db is None:
-        return None
-    return db[collection_name]
+        raise Exception("MongoDB is not connected!")
+
+    return db[name]
