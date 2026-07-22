@@ -6,7 +6,7 @@ from app.database import get_collection
 from datetime import datetime
 from bson import ObjectId
 
-router = APIRouter(prefix="/api/services", tags=["Services"])
+router = APIRouter(prefix="/services", tags=["Services"])
 
 
 # =====================================================

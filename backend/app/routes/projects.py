@@ -6,8 +6,7 @@ from app.database import get_collection
 from datetime import datetime
 from bson import ObjectId
 
-router = APIRouter(prefix="/api/projects", tags=["Projects"])
-
+router = APIRouter(prefix="/projects", tags=["Projects"])
 
 # =====================================================
 # GET ALL PROJECTS (PUBLIC)

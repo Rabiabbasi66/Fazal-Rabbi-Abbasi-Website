@@ -7,7 +7,7 @@ from app.database import get_collection
 from datetime import datetime
 from bson import ObjectId
 
-router = APIRouter(prefix="/api/contact", tags=["Contact"])
+router = APIRouter(prefix="/contact", tags=["Contact"])
 
 # =====================================================
 # CREATE CONTACT (PUBLIC)

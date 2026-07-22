@@ -85,8 +85,9 @@ async def health_check():
     }
 
 # Include routers
-app.include_router(auth_router, prefix="/api/auth", tags=["Authentication"])
-app.include_router(contact_router, prefix="/api/contact", tags=["Contact"])
-app.include_router(projects_router, prefix="/api/projects", tags=["Projects"])
-app.include_router(skills_router, prefix="/api/skills", tags=["Skills"])
-app.include_router(services_router, prefix="/api/services", tags=["Services"])
+# Include routers - ✅ REMOVE the prefix here since it's already in the router files
+app.include_router(auth_router)
+app.include_router(contact_router)
+app.include_router(projects_router)
+app.include_router(skills_router)
+app.include_router(services_router)

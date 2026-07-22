@@ -6,8 +6,7 @@ from app.database import get_collection
 from datetime import datetime
 from bson import ObjectId
 
-router = APIRouter(prefix="/api/skills", tags=["Skills"])
-
+router = APIRouter(prefix="/skills", tags=["Skills"])
 # =====================================================
 # GET ALL SKILLS (PUBLIC)
 # =====================================================

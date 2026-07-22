@@ -7,7 +7,7 @@ from app.database import get_collection
 from datetime import datetime
 from bson import ObjectId
 
-router = APIRouter(prefix="/api/auth", tags=["Authentication"])
+router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
