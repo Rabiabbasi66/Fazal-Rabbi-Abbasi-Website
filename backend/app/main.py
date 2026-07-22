@@ -65,14 +65,22 @@ app = FastAPI(
 print(settings.CORS_ORIGINS)
 
 # CORS middleware
+# CORS middleware - FIXED VERSION
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
+    allow_origins=[
+        "https://fazal-rabbi-abbasi-website.vercel.app",
+        "https://fazal-rabbi-abbasi-website-dcbx.vercel.app",
+        "http://localhost:5500",
+        "http://127.0.0.1:5500",
+        "http://localhost:3000",
+        "http://127.0.0.1:8000",
+        "*",  # For testing
+    ],
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allow_headers=["*"],
 )
-
 # Serve static images
 from pathlib import Path
 

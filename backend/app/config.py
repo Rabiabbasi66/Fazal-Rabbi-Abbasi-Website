@@ -14,11 +14,12 @@ class Settings(BaseSettings):
     REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
     # CORS
-    CORS_ORIGINS: List[str] = [
+    CORS_ORIGINS = [
+        "https://fazal-rabbi-abbasi-website.vercel.app",
+        "https://fazal-rabbi-abbasi-website-dcbx.vercel.app",
         "http://localhost:3000",
-        "http://localhost:8080",
-        "http://127.0.0.1:5500",
-        "https://fazal-rabbi-abbasi-website.vercel.app"
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
     ]
 
     # Email
