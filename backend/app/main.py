@@ -84,6 +84,60 @@ async def health_check():
         "version": settings.APP_VERSION
     }
 
+# =====================================================
+# DIRECT ROUTES FOR PROJECTS AND SKILLS
+# =====================================================
+@app.get("/api/projects-direct")
+async def projects_direct():
+    """Direct projects endpoint - bypasses router imports"""
+    try:
+        from app.database import get_collection
+        collection = get_collection("projects")
+        
+        if collection is None:
+            return {"error": "Database not connected", "projects": []}
+        
+        projects = await collection.find({}).to_list(length=100)
+        
+        return [
+            {
+                "id": str(p["_id"]),
+                "title": p["title"],
+                "description": p["description"],
+                "image": p["image"],
+                "tags": p.get("tags", []),
+                "github_url": p.get("github_url"),
+                "demo_url": p.get("demo_url"),
+                "featured": p.get("featured", False)
+            }
+            for p in projects
+        ]
+    except Exception as e:
+        return {"error": str(e), "projects": []}
+
+@app.get("/api/skills-direct")
+async def skills_direct():
+    """Direct skills endpoint - bypasses router imports"""
+    try:
+        from app.database import get_collection
+        collection = get_collection("skills")
+        
+        if collection is None:
+            return {"error": "Database not connected", "skills": []}
+        
+        skills = await collection.find({}).to_list(length=100)
+        
+        return [
+            {
+                "id": str(s["_id"]),
+                "name": s["name"],
+                "level": s.get("level", 50)
+            }
+            for s in skills
+        ]
+    except Exception as e:
+        return {"error": str(e), "skills": []}
+
 # Include routers
 # Include routers - ✅ REMOVE the prefix here since it's already in the router files
 app.include_router(auth_router)
