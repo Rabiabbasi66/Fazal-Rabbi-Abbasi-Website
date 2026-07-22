@@ -1,6 +1,8 @@
-from motor.motor_asyncio import AsyncIOMotorClient
-from app.config import settings
 from typing import Optional
+
+from motor.motor_asyncio import AsyncIOMotorClient
+
+from app.config import settings
 
 
 class Database:
@@ -11,28 +13,23 @@ db = Database()
 
 
 async def connect_to_mongo():
-    """Connect to MongoDB"""
-    db.client = AsyncIOMotorClient(settings.MONGODB_URL)
-    print(f"Connected to MongoDB at {settings.MONGODB_URL}")
+    if db.client is None:
+        db.client = AsyncIOMotorClient(settings.MONGODB_URL)
+        print("✅ MongoDB Connected")
 
 
 async def close_mongo_connection():
-    """Close MongoDB connection"""
     if db.client is not None:
         db.client.close()
         db.client = None
-        print("Closed MongoDB connection")
+        print("❌ MongoDB Closed")
 
 
 def get_database():
-    """Get database instance"""
     if db.client is None:
-        raise RuntimeError("MongoDB client is not initialized. Call connect_to_mongo first.")
+        raise RuntimeError("MongoDB is not connected.")
     return db.client[settings.DATABASE_NAME]
 
 
-# Collection helpers
-def get_collection(collection_name: str):
-    """Get a specific collection"""
-    database = get_database()
-    return database[collection_name]
+def get_collection(name: str):
+    return get_database()[name]
