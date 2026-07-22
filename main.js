@@ -181,20 +181,17 @@ if (contactForm) {
         `;
         lucide.createIcons();
 
-        const formData = {
-            name: document.getElementById("name").value,
-            email: document.getElementById("email").value,
-            subject: document.getElementById("subject").value,
-            message: document.getElementById("message").value,
-        };
+        // ✅ FIX: Use FormData instead of JSON
+        const formData = new FormData();
+        formData.append('name', document.getElementById("name").value);
+        formData.append('email', document.getElementById("email").value);
+        formData.append('subject', document.getElementById("subject").value);
+        formData.append('message', document.getElementById("message").value);
 
         try {
             const response = await fetch(`${API_BASE_URL}/contact`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
+                body: formData,
             });
 
             const data = await response.json();
