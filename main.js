@@ -424,7 +424,7 @@ async function loadProjects() {
             "id": "1",
             "title": "AgriScan 3D",
             "description": "AI-powered drone crop mapping and disease detection using WebGPU, FastAPI, MongoDB and Computer Vision.",
-            "image": "agriscan3d.jpg",
+            "image": "agriscan.jpg",
             "tags": ["Python", "FastAPI", "AI", "Computer Vision", "MongoDB"],
             "github_url": "https://github.com/Rabiabbasi66/AgriScan3D",
             "demo_url": null,
