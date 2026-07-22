@@ -1,7 +1,7 @@
 {
     "functions": {
         "app/main.py": {
-            "runtime": "python3.9"
+            "runtime": "now-python@1.0.0"
         }
     },
     "routes": [
