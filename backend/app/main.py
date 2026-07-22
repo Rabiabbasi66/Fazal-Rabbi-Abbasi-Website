@@ -15,27 +15,25 @@ async def connect_to_mongo():
     try:
         from motor.motor_asyncio import AsyncIOMotorClient
         import os
-        mongodb_url = os.getenv("MONGODB_URL", "mongodb://localhost:27017")
-        database_name = os.getenv("DATABASE_NAME", "portfolio_db")
+        mongodb_url = os.getenv("MONGODB_URL")
+        database_name = os.getenv("DATABASE_NAME")
+        
+        print(f"🔍 MONGODB_URL exists: {bool(mongodb_url)}")
+        print(f"🔍 DATABASE_NAME: {database_name}")
+        
+        if not mongodb_url:
+            print("❌ MONGODB_URL not set in environment variables!")
+            return None
+        
         client = AsyncIOMotorClient(mongodb_url)
         db = client[database_name]
-        print("✅ MongoDB Connected")
+        # Test connection
+        await client.admin.command('ping')
+        print("✅ MongoDB Connected Successfully!")
         return db
     except Exception as e:
         print(f"❌ MongoDB connection error: {e}")
         return None
-
-async def close_mongo_connection():
-    global client
-    if client:
-        client.close()
-        print("✅ MongoDB Disconnected")
-
-def get_collection(collection_name):
-    global db
-    if db is None:
-        return None
-    return db[collection_name]
 
 # =====================================================
 # PYDANTIC MODELS
