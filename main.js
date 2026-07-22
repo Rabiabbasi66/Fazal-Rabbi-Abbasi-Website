@@ -512,5 +512,5 @@ async function loadProjects() {
     lucide.createIcons();
 }
 
-document.addEventListener("DOMContentLoaded", loadProjects);/ /   F o r c e   r e d e p l o y   w i t h   i m a g e s  
+document.addEventListener("DOMContentLoaded", loadProjects);/ /   F o r c e   f r o n t e n d   r e d e p l o y   0 7 / 2 3 / 2 0 2 6   0 3 : 4 3 : 2 9  
  
