@@ -1,7 +1,9 @@
+# Update root vercel.json with correct runtime
+@'
 {
     "functions": {
         "api/index.py": {
-            "runtime": "python@3.0.0"
+            "runtime": "python3.9"
         }
     },
     "routes": [
@@ -11,3 +13,4 @@
         }
     ]
 }
+'@ | Out-File -FilePath vercel.json -Encoding utf8
