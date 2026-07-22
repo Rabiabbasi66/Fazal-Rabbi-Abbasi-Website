@@ -1,6 +1,8 @@
 ﻿from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
+from pydantic import BaseModel
+from datetime import datetime
 
 # =====================================================
 # DATABASE FUNCTIONS (Simple version)
@@ -34,6 +36,15 @@ def get_collection(collection_name):
     if db is None:
         return None
     return db[collection_name]
+
+# =====================================================
+# PYDANTIC MODELS
+# =====================================================
+class ContactForm(BaseModel):
+    name: str
+    email: str
+    subject: str
+    message: str
 
 # =====================================================
 # LIFESPAN
@@ -97,7 +108,6 @@ async def get_projects():
     try:
         collection = get_collection("projects")
         if collection is None:
-            # Return sample data if MongoDB not connected
             return [
                 {"id": "1", "title": "Project 1", "description": "Sample project"},
                 {"id": "2", "title": "Project 2", "description": "Another sample"}
@@ -154,22 +164,26 @@ async def get_contact():
     }
 
 @app.post("/contact")
-async def send_contact(name: str, email: str, subject: str, message: str):
+async def send_contact(form: ContactForm):
+    """Send contact message - accepts JSON"""
     try:
         collection = get_collection("contacts")
         if collection is not None:
-            from datetime import datetime
             await collection.insert_one({
-                "name": name,
-                "email": email,
-                "subject": subject,
-                "message": message,
+                "name": form.name,
+                "email": form.email,
+                "subject": form.subject,
+                "message": form.message,
                 "status": "unread",
                 "created_at": datetime.utcnow()
             })
-        return {"success": True, "message": "Message received!"}
+            print(f"✅ Contact saved: {form.name} ({form.email})")
+        else:
+            print(f"⚠️ Database not connected, but message received from {form.name}")
+        
+        return {"success": True, "message": "Message received successfully!"}
     except Exception as e:
-        print(f"Error saving contact: {e}")
+        print(f"❌ Error saving contact: {e}")
         return {"success": True, "message": "Message received (but not saved)"}
 
 @app.get("/health")
