@@ -1,14 +1,25 @@
-# Python
+# Virtual Environment
+venv/
 backend/venv/
-__pycache__/
-*.pyc
 
-# Environment variables
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment Variables
+.env
 backend/.env
 
-# Uploads (optional, if generated at runtime)
+# Uploads
+uploads/
 backend/uploads/
+
+# VS Code
+.vscode/
 
 # OS files
 .DS_Store
 Thumbs.db
+
+backend/structure.txt

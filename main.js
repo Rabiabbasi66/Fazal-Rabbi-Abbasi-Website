@@ -181,7 +181,10 @@ function downloadCV() {
 // Contact Form API
 // =========================
 
-const API_BASE_URL = "http://127.0.0.1:8000/api";
+//  backend URL
+const API_BASE_URL = "https://fazal-rabbi-abbasi-website-dcbx.vercel.app/api";
+
+
 
 const contactForm = document.getElementById("contact-form");
 
