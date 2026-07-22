@@ -25,7 +25,6 @@ function initThreeBackground() {
 
     camera.position.z = 5;
 
-    // Create particles
     const particlesGeometry = new THREE.BufferGeometry();
     const particleCount = 1500;
     const positions = new Float32Array(particleCount * 3);
@@ -55,7 +54,6 @@ function initThreeBackground() {
     const particles = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particles);
 
-    // Create floating geometric shapes
     const geometries = [
         new THREE.TorusGeometry(0.3, 0.1, 16, 100),
         new THREE.OctahedronGeometry(0.3),
@@ -81,7 +79,6 @@ function initThreeBackground() {
         scene.add(mesh);
     });
 
-    // Lights
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
@@ -89,7 +86,6 @@ function initThreeBackground() {
     pointLight.position.set(5, 5, 5);
     scene.add(pointLight);
 
-    // Mouse movement
     let mouseX = 0;
     let mouseY = 0;
 
@@ -98,24 +94,20 @@ function initThreeBackground() {
         mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
     });
 
-    // Animation
     const clock = new THREE.Clock();
 
     function animate() {
         const elapsedTime = clock.getElapsedTime();
 
-        // Rotate particles
         particles.rotation.y = elapsedTime * 0.05;
         particles.rotation.x = Math.sin(elapsedTime * 0.1) * 0.1;
 
-        // Animate geometric shapes
         shapes.forEach((shape, index) => {
             shape.rotation.x = elapsedTime * (0.2 + index * 0.1);
             shape.rotation.y = elapsedTime * (0.3 + index * 0.1);
             shape.position.y = Math.sin(elapsedTime + index * 2) * 2;
         });
 
-        // Camera follows mouse
         camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05;
         camera.position.y += (mouseY * 0.5 - camera.position.y) * 0.05;
         camera.lookAt(scene.position);
@@ -126,7 +118,6 @@ function initThreeBackground() {
 
     animate();
 
-    // Handle resize
     window.addEventListener('resize', () => {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
@@ -134,13 +125,11 @@ function initThreeBackground() {
     });
 }
 
-// Navigation
 const navbar = document.getElementById('navbar');
 const hamburger = document.getElementById('hamburger');
 const navMenu = document.getElementById('nav-menu');
 const navLinks = document.querySelectorAll('.nav-link');
 
-// Scroll navbar background
 window.addEventListener('scroll', () => {
     if (window.scrollY > 50) {
         navbar.classList.add('scrolled');
@@ -149,13 +138,11 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Hamburger menu
 hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('active');
     navMenu.classList.toggle('active');
 });
 
-// Smooth scroll and close mobile menu
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
@@ -166,31 +153,17 @@ navLinks.forEach(link => {
             targetSection.scrollIntoView({ behavior: 'smooth' });
         }
         
-        // Close mobile menu
         hamburger.classList.remove('active');
         navMenu.classList.remove('active');
     });
 });
 
-// Download CV function
 function downloadCV() {
     showToast('CV download functionality would be implemented here!');
 }
 
-// =========================
-// Contact Form API
-// =========================
-
-//  backend URL
-// ✅ Production backend URL
 const API_BASE_URL = "https://fazal-rabbi-abbasi-website-dcbx.vercel.app";
-
-// For local development, uncomment this:
-// const API_BASE_URL = "http://127.0.0.1:8000/api";
-
 console.log('🚀 API URL:', API_BASE_URL);
-
-
 
 const contactForm = document.getElementById("contact-form");
 
@@ -243,7 +216,6 @@ if (contactForm) {
     });
 }
 
-// Toast Notification
 function showToast(message) {
     const toast = document.getElementById('toast');
     toast.textContent = message;
@@ -254,7 +226,6 @@ function showToast(message) {
     }, 3000);
 }
 
-// Scroll to Top Button
 const scrollTopBtn = document.getElementById('scroll-top');
 
 window.addEventListener('scroll', () => {
@@ -269,7 +240,6 @@ scrollTopBtn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// Intersection Observer for animations
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -100px 0px'
@@ -284,7 +254,6 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe elements for animation
 document.querySelectorAll('.skill-card, .project-card, .service-card, .stat-card').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(30px)';
@@ -292,7 +261,6 @@ document.querySelectorAll('.skill-card, .project-card, .service-card, .stat-card
     observer.observe(el);
 });
 
-// Animate skill bars on scroll
 const skillProgressBars = document.querySelectorAll('.skill-progress');
 const skillObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -312,7 +280,6 @@ skillProgressBars.forEach(bar => {
     skillObserver.observe(bar);
 });
 
-// Add spin animation for loader icon
 const style = document.createElement('style');
 style.textContent = `
     @keyframes spin {
@@ -325,11 +292,9 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Parallax effect on scroll
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     const parallaxElements = document.querySelectorAll('.hero-right');
-
     
     parallaxElements.forEach(el => {
         const speed = 0.5;
@@ -337,15 +302,10 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize Three.js background
     initThreeBackground();
-    
-    // Initialize Lucide icons
     lucide.createIcons();
     
-    // Add smooth reveal animations to sections
     const sections = document.querySelectorAll('section');
     sections.forEach((section, index) => {
         section.style.opacity = '0';
@@ -368,7 +328,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Cursor trail effect (optional)
 let cursorTrail = [];
 const maxTrailLength = 20;
 
@@ -380,7 +339,6 @@ document.addEventListener('mousemove', (e) => {
     }
 });
 
-// Add custom cursor effect on interactive elements
 const interactiveElements = document.querySelectorAll('a, button, .project-card, .service-card, .skill-card');
 interactiveElements.forEach(el => {
     el.addEventListener('mouseenter', () => {
@@ -392,7 +350,6 @@ interactiveElements.forEach(el => {
     });
 });
 
-// Add typing effect for hero title (optional enhancement)
 function typeWriter(element, text, speed = 100) {
     let i = 0;
     element.innerHTML = '';
@@ -408,10 +365,8 @@ function typeWriter(element, text, speed = 100) {
     type();
 }
 
-// Expose downloadCV function globally
 window.downloadCV = downloadCV;
 
-// Add loading screen fade out
 window.addEventListener('load', () => {
     document.body.style.opacity = '0';
     document.body.style.transition = 'opacity 0.5s ease-in';
@@ -420,7 +375,6 @@ window.addEventListener('load', () => {
     }, 100);
 });
 
-// Add easter egg - Konami code
 let konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
 let konamiIndex = 0;
 
@@ -429,7 +383,6 @@ document.addEventListener('keydown', (e) => {
         konamiIndex++;
         if (konamiIndex === konamiCode.length) {
             showToast('🎮 Konami Code Activated! You found the easter egg!');
-            // Add some fun effect
             document.body.style.animation = 'rainbow 2s infinite';
             konamiIndex = 0;
         }
@@ -438,7 +391,6 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Add rainbow animation
 const rainbowStyle = document.createElement('style');
 rainbowStyle.textContent = `
     @keyframes rainbow {
@@ -448,7 +400,6 @@ rainbowStyle.textContent = `
 `;
 document.head.appendChild(rainbowStyle);
 
-// Performance optimization - Lazy load images
 const images = document.querySelectorAll('img[data-src]');
 const imageObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -463,77 +414,102 @@ const imageObserver = new IntersectionObserver((entries) => {
 
 images.forEach(img => imageObserver.observe(img));
 
-// Add console message
 console.log('%c👋 Hey there, curious developer!', 'font-size: 20px; font-weight: bold; color: #3b82f6;');
 console.log('%cInterested in the code? Check out the GitHub repo!', 'font-size: 14px; color: #8b5cf6;');
 console.log('%c🚀 Built with HTML, CSS, JavaScript & Three.js', 'font-size: 12px; color: #94a3b8;');
- 
-// =========================
-// Load Projects From Backend
-// =========================
 
 async function loadProjects() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/projects`);
-
-        if (!response.ok) {
-            throw new Error("Failed to fetch projects");
+    const projects = [
+        {
+            "id": "1",
+            "title": "AgriScan 3D",
+            "description": "AI-powered drone crop mapping and disease detection using WebGPU, FastAPI, MongoDB and Computer Vision.",
+            "image": "agriscan3d.jpg",
+            "tags": ["Python", "FastAPI", "AI", "Computer Vision", "MongoDB"],
+            "github_url": "https://github.com/Rabiabbasi66/AgriScan3D",
+            "demo_url": null,
+            "featured": true
+        },
+        {
+            "id": "2",
+            "title": "Abbasi Brand Cloth",
+            "description": "Modern clothing brand website with responsive UI, product showcase and FastAPI backend.",
+            "image": "abbasi-brand.jpg",
+            "tags": ["HTML", "CSS", "JavaScript", "FastAPI", "MongoDB"],
+            "github_url": "https://github.com/Rabiabbasi66/cloths-brand-frontend",
+            "demo_url": null,
+            "featured": true
+        },
+        {
+            "id": "3",
+            "title": "3D Portfolio Website",
+            "description": "Interactive portfolio built using Three.js with animations, responsive UI and backend integration.",
+            "image": "portfolio.jpg",
+            "tags": ["HTML", "CSS", "JavaScript", "Three.js", "FastAPI"],
+            "github_url": "https://github.com/Rabiabbasi66/Fazal-Rabbi-portfolio",
+            "demo_url": null,
+            "featured": true
+        },
+        {
+            "id": "4",
+            "title": "E-Commerce Platform",
+            "description": "Complete full-stack shopping platform with authentication, cart, orders and payment integration.",
+            "image": "ecommerce.jpg",
+            "tags": ["FastAPI", "MongoDB", "JavaScript", "HTML", "CSS"],
+            "github_url": null,
+            "demo_url": null,
+            "featured": false
+        },
+        {
+            "id": "5",
+            "title": "AI Chat Application",
+            "description": "AI-powered chatbot with real-time messaging and intelligent responses.",
+            "image": "ai-chat.jpg",
+            "tags": ["Python", "FastAPI", "AI", "JavaScript"],
+            "github_url": "https://github.com/Rabiabbasi66/Ai-chat-bot",
+            "demo_url": null,
+            "featured": false
+        },
+        {
+            "id": "6",
+            "title": "Task Management App",
+            "description": "Task management application with drag-and-drop interface, authentication and team collaboration.",
+            "image": "task-manager.jpg",
+            "tags": ["HTML", "CSS", "JavaScript", "MongoDB"],
+            "github_url": "https://github.com/Rabiabbasi66/task-managnment-app",
+            "demo_url": null,
+            "featured": false
         }
+    ];
 
-        const projects = await response.json();
+    const projectsGrid = document.querySelector(".projects-grid");
+    if (!projectsGrid) return;
 
-        const projectsGrid = document.querySelector(".projects-grid");
-
-        if (!projectsGrid) return;
-
-        projectsGrid.innerHTML = "";
-
-        projects.forEach(project => {
-            projectsGrid.innerHTML += `
-                <div class="project-card ${project.featured ? "featured" : ""}">
-                    <div class="project-image">
-                        <img src="${project.image}" alt="${project.title}">
-                        <div class="project-overlay">
-                            <div class="project-actions">
-
-                                ${
-                                    project.github_url
-                                    ? `<a href="${project.github_url}" target="_blank" class="project-action">
-                                            <i data-lucide="github"></i>
-                                       </a>`
-                                    : ""
-                                }
-
-                                ${
-                                    project.demo_url
-                                    ? `<a href="${project.demo_url}" target="_blank" class="project-action project-action-primary">
-                                            <i data-lucide="external-link"></i>
-                                       </a>`
-                                    : ""
-                                }
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="project-content">
-                        <h3>${project.title}</h3>
-
-                        <p>${project.description}</p>
-
-                        <div class="project-tags">
-                            ${project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join("")}
+    projectsGrid.innerHTML = "";
+    projects.forEach(project => {
+        projectsGrid.innerHTML += `
+            <div class="project-card ${project.featured ? "featured" : ""}">
+                <div class="project-image">
+                    <img src="${project.image}" alt="${project.title}">
+                    <div class="project-overlay">
+                        <div class="project-actions">
+                            ${project.github_url ? `<a href="${project.github_url}" target="_blank" class="project-action"><i data-lucide="github"></i></a>` : ""}
+                            ${project.demo_url ? `<a href="${project.demo_url}" target="_blank" class="project-action project-action-primary"><i data-lucide="external-link"></i></a>` : ""}
                         </div>
                     </div>
                 </div>
-            `;
-        });
+                <div class="project-content">
+                    <h3>${project.title}</h3>
+                    <p>${project.description}</p>
+                    <div class="project-tags">
+                        ${project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join("")}
+                    </div>
+                </div>
+            </div>
+        `;
+    });
 
-        lucide.createIcons();
-
-    } catch (error) {
-        console.error("Projects Error:", error);
-    }
+    lucide.createIcons();
 }
 
 document.addEventListener("DOMContentLoaded", loadProjects);
