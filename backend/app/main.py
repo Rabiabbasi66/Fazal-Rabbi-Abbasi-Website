@@ -13,7 +13,7 @@ from app.routes import (
     services_router
 )
 
-# ✅ ADD THIS LIFESPAN FUNCTION - This was missing
+# ✅ LIFESPAN FUNCTION
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Lifespan events for startup and shutdown"""
@@ -40,7 +40,7 @@ app = FastAPI(
     description="Backend API for Portfolio Website",
     docs_url="/docs",
     redoc_url="/redoc",
-    lifespan=lifespan  # ✅ Now this exists
+    lifespan=lifespan
 )
 
 # ✅ CORS MIDDLEWARE
@@ -70,8 +70,8 @@ async def api_root():
         "endpoints": {
             "auth": "/api/auth",
             "contact": "/api/contact",
-            "projects": "/api/projects",
-            "skills": "/api/skills",
+            "projects": "/projects",
+            "skills": "/skills",
             "services": "/api/services"
         },
         "documentation": "/docs"
@@ -85,7 +85,78 @@ async def health_check():
     }
 
 # =====================================================
-# DIRECT ROUTES FOR PROJECTS AND SKILLS
+# ✅ PROJECTS ROUTE - FETCHES FROM MONGODB
+# =====================================================
+@app.get("/projects")
+async def get_projects():
+    """Get all projects from MongoDB"""
+    try:
+        from app.database import get_collection
+        collection = get_collection("projects")
+        
+        if collection is None:
+            print("⚠️ Database not connected!")
+            return []
+        
+        # Get all projects from MongoDB
+        projects = await collection.find({}).sort("order", 1).to_list(length=100)
+        
+        # Convert to JSON format
+        result = []
+        for project in projects:
+            result.append({
+                "id": str(project["_id"]),
+                "title": project.get("title", "Untitled"),
+                "description": project.get("description", ""),
+                "image": project.get("image", ""),
+                "tags": project.get("tags", []),
+                "github_url": project.get("github_url"),
+                "demo_url": project.get("demo_url"),
+                "featured": project.get("featured", False),
+                "order": project.get("order", 0)
+            })
+        
+        print(f"✅ Found {len(result)} projects in MongoDB")
+        return result
+        
+    except Exception as e:
+        print(f"❌ Error fetching projects: {e}")
+        return []
+
+# =====================================================
+# ✅ SKILLS ROUTE - FETCHES FROM MONGODB
+# =====================================================
+@app.get("/skills")
+async def get_skills():
+    """Get all skills from MongoDB"""
+    try:
+        from app.database import get_collection
+        collection = get_collection("skills")
+        
+        if collection is None:
+            print("⚠️ Database not connected!")
+            return []
+        
+        skills = await collection.find({}).sort("order", 1).to_list(length=100)
+        
+        result = []
+        for skill in skills:
+            result.append({
+                "id": str(skill["_id"]),
+                "name": skill.get("name", ""),
+                "level": skill.get("level", 50),
+                "order": skill.get("order", 0)
+            })
+        
+        print(f"✅ Found {len(result)} skills in MongoDB")
+        return result
+        
+    except Exception as e:
+        print(f"❌ Error fetching skills: {e}")
+        return []
+
+# =====================================================
+# ✅ DIRECT ROUTES FOR DEBUGGING
 # =====================================================
 @app.get("/api/projects-direct")
 async def projects_direct():
@@ -139,7 +210,6 @@ async def skills_direct():
         return {"error": str(e), "skills": []}
 
 # Include routers
-# Include routers - ✅ REMOVE the prefix here since it's already in the router files
 app.include_router(auth_router)
 app.include_router(contact_router)
 app.include_router(projects_router)
