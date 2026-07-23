@@ -4,7 +4,7 @@
 lucide.createIcons();
 
 // ============================================
-// THREE.JS 3D BACKGROUND - ✅ STILL HERE
+// THREE.JS 3D BACKGROUND
 // ============================================
 function initThreeBackground() {
     const canvas = document.getElementById('bg-canvas');
@@ -166,7 +166,7 @@ navLinks.forEach(link => {
 });
 
 // ============================================
-// ✅ DOWNLOAD CV FUNCTION (NEW)
+// DOWNLOAD CV FUNCTION
 // ============================================
 function downloadCV() {
     const link = document.createElement('a');
@@ -185,7 +185,7 @@ const API_BASE_URL = "https://fazal-rabbi-abbasi-website-dcbx.vercel.app";
 console.log('🚀 API URL:', API_BASE_URL);
 
 // ============================================
-// ✅ CONTACT FORM HANDLER
+// CONTACT FORM HANDLER
 // ============================================
 const contactForm = document.getElementById("contact-form");
 
@@ -258,7 +258,7 @@ if (contactForm) {
 }
 
 // ============================================
-// ✅ SERVICE CARDS - "Learn More" Functionality (NEW)
+// SERVICE CARDS - "Learn More" Functionality
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
     const serviceLinks = document.querySelectorAll('.service-learn-more');
@@ -420,10 +420,10 @@ window.addEventListener('scroll', () => {
 });
 
 // ============================================
-// ✅ DOM CONTENT LOADED - Three.js Starts Here
+// DOM CONTENT LOADED - Three.js Starts Here
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
-    initThreeBackground();  // ✅ THREE.JS STARTS HERE
+    initThreeBackground();
     lucide.createIcons();
     
     const sections = document.querySelectorAll('section');
@@ -449,18 +449,137 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ============================================
-// CURSOR TRAIL
+// CURSOR TRAIL - WORKS ON ALL DEVICES
 // ============================================
-let cursorTrail = [];
-const maxTrailLength = 20;
 
-document.addEventListener('mousemove', (e) => {
-    cursorTrail.push({ x: e.clientX, y: e.clientY, time: Date.now() });
-    
-    if (cursorTrail.length > maxTrailLength) {
-        cursorTrail.shift();
+// Create trail dots
+const trailDots = [];
+const numDots = 15;
+
+for (let i = 0; i < numDots; i++) {
+    const dot = document.createElement('div');
+    dot.style.cssText = `
+        position: fixed;
+        width: ${8 - (i * 0.4)}px;
+        height: ${8 - (i * 0.4)}px;
+        background: ${i === 0 ? '#3b82f6' : `rgba(59, 130, 246, ${0.8 - (i / numDots)})`};
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition: all 0.05s ease;
+        box-shadow: ${i === 0 ? '0 0 10px rgba(59, 130, 246, 0.5)' : 'none'};
+        opacity: 0;
+    `;
+    document.body.appendChild(dot);
+    trailDots.push({
+        element: dot,
+        x: 0,
+        y: 0
+    });
+}
+
+let mouseX = 0;
+let mouseY = 0;
+let isActive = false;
+let hideTimeout;
+
+// Update dots position
+function updateDots() {
+    if (!isActive) {
+        requestAnimationFrame(updateDots);
+        return;
     }
+    
+    trailDots.forEach((dot, index) => {
+        if (index === 0) {
+            dot.x = mouseX;
+            dot.y = mouseY;
+        } else {
+            const dx = trailDots[index - 1].x - dot.x;
+            const dy = trailDots[index - 1].y - dot.y;
+            dot.x += dx * 0.3;
+            dot.y += dy * 0.3;
+        }
+        
+        dot.element.style.left = dot.x + 'px';
+        dot.element.style.top = dot.y + 'px';
+    });
+    
+    requestAnimationFrame(updateDots);
+}
+
+// Track mouse (for desktop)
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    isActive = true;
+    
+    trailDots.forEach((dot, index) => {
+        dot.element.style.opacity = 1 - (index / numDots * 0.5);
+    });
+    
+    clearTimeout(hideTimeout);
+    
+    hideTimeout = setTimeout(() => {
+        trailDots.forEach(dot => {
+            dot.element.style.opacity = '0';
+        });
+        isActive = false;
+    }, 3000);
 });
+
+// Track touch (for mobile/tablet)
+document.addEventListener('touchmove', (e) => {
+    const touch = e.touches[0];
+    if (touch) {
+        mouseX = touch.clientX;
+        mouseY = touch.clientY;
+        isActive = true;
+        
+        trailDots.forEach((dot, index) => {
+            dot.element.style.opacity = 1 - (index / numDots * 0.5);
+        });
+        
+        clearTimeout(hideTimeout);
+        
+        hideTimeout = setTimeout(() => {
+            trailDots.forEach(dot => {
+                dot.element.style.opacity = '0';
+            });
+            isActive = false;
+        }, 3000);
+    }
+}, { passive: true });
+
+// Track touch start
+document.addEventListener('touchstart', (e) => {
+    const touch = e.touches[0];
+    if (touch) {
+        mouseX = touch.clientX;
+        mouseY = touch.clientY;
+        isActive = true;
+        
+        trailDots.forEach((dot, index) => {
+            dot.element.style.opacity = 1 - (index / numDots * 0.5);
+        });
+        
+        clearTimeout(hideTimeout);
+    }
+}, { passive: true });
+
+// Show dots when mouse enters (desktop)
+document.addEventListener('mouseenter', () => {
+    isActive = true;
+    trailDots.forEach((dot, index) => {
+        dot.element.style.opacity = 1 - (index / numDots * 0.5);
+    });
+});
+
+// Start animation
+updateDots();
+
+console.log('🖱️ Cursor trail enabled for all devices');
 
 // ============================================
 // INTERACTIVE ELEMENTS
@@ -695,16 +814,14 @@ async function loadProjects() {
 
 document.addEventListener("DOMContentLoaded", loadProjects);
 
-
 // ============================================
-// BUTTON RIPPLE EFFECT (Optional)
+// BUTTON RIPPLE EFFECT
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
     const buttons = document.querySelectorAll('.btn');
     
     buttons.forEach(btn => {
         btn.addEventListener('click', function(e) {
-            // Create ripple effect
             const ripple = document.createElement('span');
             ripple.classList.add('ripple');
             
@@ -717,7 +834,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             this.appendChild(ripple);
             
-            // Remove ripple after animation
             setTimeout(() => {
                 ripple.remove();
             }, 600);
