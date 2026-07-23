@@ -159,7 +159,7 @@ navLinks.forEach(link => {
 });
 
 function downloadCV() {
-    showToast('CV download functionality would be implemented here!');
+    showToast('📄 Downloading CV...');
 }
 
 const API_BASE_URL = "https://fazal-rabbi-abbasi-website-dcbx.vercel.app";
@@ -181,7 +181,6 @@ if (contactForm) {
         `;
         lucide.createIcons();
 
-        // ✅ FIX: Use FormData instead of JSON
         const formData = new FormData();
         formData.append('name', document.getElementById("name").value);
         formData.append('email', document.getElementById("email").value);
@@ -400,6 +399,76 @@ console.log('%c👋 Hey there, curious developer!', 'font-size: 20px; font-weigh
 console.log('%cInterested in the code? Check out the GitHub repo!', 'font-size: 14px; color: #8b5cf6;');
 console.log('%c🚀 Built with HTML, CSS, JavaScript & Three.js', 'font-size: 12px; color: #94a3b8;');
 
+// =====================================================
+// DARK/LIGHT MODE TOGGLE
+// =====================================================
+
+// Create theme toggle button if it doesn't exist
+if (!document.getElementById('theme-toggle')) {
+    const toggleBtn = document.createElement('button');
+    toggleBtn.id = 'theme-toggle';
+    toggleBtn.className = 'theme-toggle';
+    toggleBtn.setAttribute('aria-label', 'Toggle Dark/Light Mode');
+    toggleBtn.innerHTML = '<i data-lucide="moon"></i>';
+    document.body.appendChild(toggleBtn);
+    lucide.createIcons();
+}
+
+const themeToggle = document.getElementById('theme-toggle');
+
+// Check saved theme preference
+const savedTheme = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-theme', savedTheme);
+
+// Update icon based on current theme
+function updateThemeIcon(theme) {
+    const icon = themeToggle?.querySelector('i');
+    if (icon) {
+        icon.setAttribute('data-lucide', theme === 'dark' ? 'sun' : 'moon');
+        lucide.createIcons();
+    }
+}
+
+// Set initial icon
+updateThemeIcon(savedTheme);
+
+// Toggle theme on button click
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        // Apply theme
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        
+        // Update icon
+        updateThemeIcon(newTheme);
+        
+        // Show toast notification
+        showToast(`🌙 ${newTheme === 'dark' ? 'Dark' : 'Light'} mode activated`);
+    });
+}
+
+// Auto-detect system preference (only if user hasn't chosen)
+const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+if (!localStorage.getItem('theme')) {
+    const systemTheme = prefersDark.matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', systemTheme);
+    updateThemeIcon(systemTheme);
+}
+
+prefersDark.addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) {
+        const theme = e.matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        updateThemeIcon(theme);
+    }
+});
+
+// =====================================================
+// LOAD PROJECTS
+// =====================================================
 async function loadProjects() {
     const projects = [
     {

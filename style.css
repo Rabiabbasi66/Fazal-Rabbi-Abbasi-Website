@@ -1409,3 +1409,276 @@ section {
     outline: 2px solid #3b82f6;
     outline-offset: 2px;
 }
+
+/* =====================================================
+   THEME TOGGLE BUTTON (Dark/Light Mode)
+===================================================== */
+
+.theme-toggle {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+}
+
+.theme-toggle:active {
+    transform: scale(0.95);
+}
+
+.theme-toggle i {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.5s ease;
+}
+
+.theme-toggle:hover i {
+    transform: rotate(180deg);
+}
+
+/* =====================================================
+   LIGHT/DARK MODE CSS VARIABLES
+===================================================== */
+
+/* Light Mode (default) */
+:root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-card: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --border-color: #e2e8f0;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --navbar-bg: rgba(255, 255, 255, 0.95);
+    --hero-bg: #f8fafc;
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-card: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --border-color: #334155;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    --navbar-bg: rgba(15, 23, 42, 0.95);
+    --hero-bg: #0f172a;
+}
+
+/* Apply theme variables to all elements */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Navbar */
+.navbar {
+    background: var(--navbar-bg) !important;
+    backdrop-filter: blur(10px);
+    transition: background 0.3s ease;
+}
+
+/* Cards */
+.project-card,
+.service-card,
+.skill-card,
+.highlight-card,
+.stat-card {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+}
+
+/* Hero Section */
+.hero {
+    background: var(--hero-bg);
+    transition: background 0.3s ease;
+}
+
+/* All sections */
+section {
+    background: var(--bg-primary);
+    transition: background 0.3s ease;
+}
+
+section:nth-child(even) {
+    background: var(--bg-secondary);
+}
+
+/* Text colors */
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.hero-description,
+.about-text,
+.section-subtitle,
+.service-card p,
+.project-content p {
+    color: var(--text-secondary);
+}
+
+/* Borders */
+hr {
+    border-color: var(--border-color);
+}
+
+/* Form inputs */
+input,
+textarea,
+select {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #3b82f6;
+    outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--text-muted);
+}
+
+/* Nav links */
+.nav-menu li a {
+    color: var(--text-secondary);
+}
+
+.logo-text {
+    color: var(--text-primary);
+}
+
+/* Footer */
+.footer {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-column h4 {
+    color: var(--text-primary);
+}
+
+.footer-column p,
+.footer-links li a {
+    color: var(--text-secondary);
+}
+
+/* Toast notification */
+.toast {
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Scrollbar for dark mode */
+[data-theme="dark"] ::-webkit-scrollbar {
+    width: 10px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 5px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: #2563eb;
+}
+
+/* Contact info cards */
+.contact-info-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+}
+
+.contact-info-value {
+    color: var(--text-primary);
+}
+
+.contact-info-label {
+    color: var(--text-muted);
+}
+
+/* Service learn more */
+.service-learn-more {
+    color: #3b82f6;
+}
+
+/* Tech tags */
+.tech-tag {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+.tech-tag:hover {
+    background: #3b82f6;
+    color: white;
+}
+
+/* Footer brand */
+.footer-brand .logo-text {
+    color: var(--text-primary);
+}
+
+/* Responsive adjustments for theme toggle */
+@media (max-width: 768px) {
+    .theme-toggle {
+        bottom: 80px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+    }
+    
+    .theme-toggle i {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .theme-toggle {
+        bottom: 70px;
+        right: 12px;
+        width: 40px;
+        height: 40px;
+    }
+    
+    .theme-toggle i {
+        width: 18px;
+        height: 18px;
+    }
+}
