@@ -1,7 +1,11 @@
-// Initialize Lucide Icons
+// ============================================
+// INITIALIZE LUCIDE ICONS
+// ============================================
 lucide.createIcons();
 
-// Three.js 3D Background
+// ============================================
+// THREE.JS 3D BACKGROUND - ✅ STILL HERE
+// ============================================
 function initThreeBackground() {
     const canvas = document.getElementById('bg-canvas');
     if (!canvas) return;
@@ -125,6 +129,9 @@ function initThreeBackground() {
     });
 }
 
+// ============================================
+// NAVBAR
+// ============================================
 const navbar = document.getElementById('navbar');
 const hamburger = document.getElementById('hamburger');
 const navMenu = document.getElementById('nav-menu');
@@ -158,18 +165,27 @@ navLinks.forEach(link => {
     });
 });
 
+// ============================================
+// ✅ DOWNLOAD CV FUNCTION (NEW)
+// ============================================
 function downloadCV() {
+    const link = document.createElement('a');
+    link.href = 'fazalrabbiabbasicv.pdf';
+    link.download = 'Fazal_Rabi_CV.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
     showToast('📄 Downloading CV...');
 }
 
 // ============================================
-// ✅ SINGLE API_BASE_URL DECLARATION
+// API URL
 // ============================================
 const API_BASE_URL = "https://fazal-rabbi-abbasi-website-dcbx.vercel.app";
 console.log('🚀 API URL:', API_BASE_URL);
 
 // ============================================
-// ✅ FIXED CONTACT FORM HANDLER
+// ✅ CONTACT FORM HANDLER
 // ============================================
 const contactForm = document.getElementById("contact-form");
 
@@ -187,7 +203,6 @@ if (contactForm) {
         `;
         lucide.createIcons();
 
-        // Send as JSON
         const formData = {
             name: document.getElementById("name").value.trim(),
             email: document.getElementById("email").value.trim(),
@@ -197,7 +212,6 @@ if (contactForm) {
 
         console.log('📤 Sending:', formData);
 
-        // Validate
         if (!formData.name || !formData.email || !formData.subject || !formData.message) {
             showToast("⚠️ Please fill in all fields");
             submitButton.disabled = false;
@@ -205,7 +219,6 @@ if (contactForm) {
             return;
         }
 
-        // Validate email
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
             showToast("⚠️ Please enter a valid email address");
             submitButton.disabled = false;
@@ -244,6 +257,45 @@ if (contactForm) {
     });
 }
 
+// ============================================
+// ✅ SERVICE CARDS - "Learn More" Functionality (NEW)
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    const serviceLinks = document.querySelectorAll('.service-learn-more');
+    const contactSection = document.getElementById('contact');
+    const subjectInput = document.getElementById('subject');
+    
+    serviceLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const serviceCard = this.closest('.service-card');
+            const serviceName = serviceCard.querySelector('h3')?.textContent || 'Service';
+            
+            if (subjectInput) {
+                subjectInput.value = `Inquiry about: ${serviceName}`;
+                subjectInput.focus();
+                subjectInput.classList.add('subject-highlight');
+                setTimeout(() => {
+                    subjectInput.classList.remove('subject-highlight');
+                }, 2000);
+            }
+            
+            if (contactSection) {
+                contactSection.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+            
+            console.log(`📝 Service clicked: ${serviceName}`);
+        });
+    });
+});
+
+// ============================================
+// TOAST NOTIFICATION
+// ============================================
 function showToast(message) {
     let toast = document.getElementById('toast');
     if (!toast) {
@@ -261,6 +313,7 @@ function showToast(message) {
         toast.style.transform = 'translateY(100px)';
         toast.style.opacity = '0';
         toast.style.transition = 'all 0.3s ease';
+        toast.style.maxWidth = '400px';
         document.body.appendChild(toast);
     }
     
@@ -275,6 +328,9 @@ function showToast(message) {
     }, 3000);
 }
 
+// ============================================
+// SCROLL TO TOP
+// ============================================
 const scrollTopBtn = document.getElementById('scroll-top');
 
 window.addEventListener('scroll', () => {
@@ -289,6 +345,9 @@ scrollTopBtn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
+// ============================================
+// INTERSECTION OBSERVER - Animations
+// ============================================
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -100px 0px'
@@ -310,6 +369,9 @@ document.querySelectorAll('.skill-card, .project-card, .service-card, .stat-card
     observer.observe(el);
 });
 
+// ============================================
+// SKILL BARS ANIMATION
+// ============================================
 const skillProgressBars = document.querySelectorAll('.skill-progress');
 const skillObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -329,6 +391,9 @@ skillProgressBars.forEach(bar => {
     skillObserver.observe(bar);
 });
 
+// ============================================
+// SPIN ANIMATION STYLE
+// ============================================
 const style = document.createElement('style');
 style.textContent = `
     @keyframes spin {
@@ -341,6 +406,9 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
+// ============================================
+// PARALLAX EFFECT
+// ============================================
 window.addEventListener('scroll', () => {
     const scrolled = window.pageYOffset;
     const parallaxElements = document.querySelectorAll('.hero-right');
@@ -351,8 +419,11 @@ window.addEventListener('scroll', () => {
     });
 });
 
+// ============================================
+// ✅ DOM CONTENT LOADED - Three.js Starts Here
+// ============================================
 document.addEventListener('DOMContentLoaded', () => {
-    initThreeBackground();
+    initThreeBackground();  // ✅ THREE.JS STARTS HERE
     lucide.createIcons();
     
     const sections = document.querySelectorAll('section');
@@ -377,6 +448,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// ============================================
+// CURSOR TRAIL
+// ============================================
 let cursorTrail = [];
 const maxTrailLength = 20;
 
@@ -388,6 +462,9 @@ document.addEventListener('mousemove', (e) => {
     }
 });
 
+// ============================================
+// INTERACTIVE ELEMENTS
+// ============================================
 const interactiveElements = document.querySelectorAll('a, button, .project-card, .service-card, .skill-card');
 interactiveElements.forEach(el => {
     el.addEventListener('mouseenter', () => {
@@ -401,6 +478,9 @@ interactiveElements.forEach(el => {
 
 window.downloadCV = downloadCV;
 
+// ============================================
+// PAGE LOAD ANIMATION
+// ============================================
 window.addEventListener('load', () => {
     document.body.style.opacity = '0';
     document.body.style.transition = 'opacity 0.5s ease-in';
@@ -409,6 +489,9 @@ window.addEventListener('load', () => {
     }, 100);
 });
 
+// ============================================
+// KONAMI CODE EASTER EGG
+// ============================================
 let konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
 let konamiIndex = 0;
 
@@ -434,6 +517,9 @@ rainbowStyle.textContent = `
 `;
 document.head.appendChild(rainbowStyle);
 
+// ============================================
+// LAZY LOAD IMAGES
+// ============================================
 const images = document.querySelectorAll('img[data-src]');
 const imageObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -448,15 +534,16 @@ const imageObserver = new IntersectionObserver((entries) => {
 
 images.forEach(img => imageObserver.observe(img));
 
+// ============================================
+// CONSOLE LOGS
+// ============================================
 console.log('%c👋 Hey there, curious developer!', 'font-size: 20px; font-weight: bold; color: #3b82f6;');
 console.log('%cInterested in the code? Check out the GitHub repo!', 'font-size: 14px; color: #8b5cf6;');
 console.log('%c🚀 Built with HTML, CSS, JavaScript & Three.js', 'font-size: 12px; color: #94a3b8;');
 
-// =====================================================
+// ============================================
 // DARK/LIGHT MODE TOGGLE
-// =====================================================
-
-// Create theme toggle button if it doesn't exist
+// ============================================
 if (!document.getElementById('theme-toggle')) {
     const toggleBtn = document.createElement('button');
     toggleBtn.id = 'theme-toggle';
@@ -469,11 +556,9 @@ if (!document.getElementById('theme-toggle')) {
 
 const themeToggle = document.getElementById('theme-toggle');
 
-// Check saved theme preference
 const savedTheme = localStorage.getItem('theme') || 'light';
 document.documentElement.setAttribute('data-theme', savedTheme);
 
-// Update icon based on current theme
 function updateThemeIcon(theme) {
     const icon = themeToggle?.querySelector('i');
     if (icon) {
@@ -482,28 +567,20 @@ function updateThemeIcon(theme) {
     }
 }
 
-// Set initial icon
 updateThemeIcon(savedTheme);
 
-// Toggle theme on button click
 if (themeToggle) {
     themeToggle.addEventListener('click', () => {
         const currentTheme = document.documentElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         
-        // Apply theme
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
-        
-        // Update icon
         updateThemeIcon(newTheme);
-        
-        // Show toast notification
         showToast(`🌙 ${newTheme === 'dark' ? 'Dark' : 'Light'} mode activated`);
     });
 }
 
-// Auto-detect system preference (only if user hasn't chosen)
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 if (!localStorage.getItem('theme')) {
     const systemTheme = prefersDark.matches ? 'dark' : 'light';
@@ -519,9 +596,9 @@ prefersDark.addEventListener('change', (e) => {
     }
 });
 
-// =====================================================
+// ============================================
 // LOAD PROJECTS
-// =====================================================
+// ============================================
 async function loadProjects() {
     const projects = [
     {
@@ -617,3 +694,33 @@ async function loadProjects() {
 }
 
 document.addEventListener("DOMContentLoaded", loadProjects);
+
+
+// ============================================
+// BUTTON RIPPLE EFFECT (Optional)
+// ============================================
+document.addEventListener('DOMContentLoaded', function() {
+    const buttons = document.querySelectorAll('.btn');
+    
+    buttons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            // Create ripple effect
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+            ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+            
+            this.appendChild(ripple);
+            
+            // Remove ripple after animation
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
+});
