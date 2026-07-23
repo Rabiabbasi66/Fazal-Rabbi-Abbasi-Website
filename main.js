@@ -165,9 +165,6 @@ function downloadCV() {
 const API_BASE_URL = "https://fazal-rabbi-abbasi-website-dcbx.vercel.app";
 console.log('🚀 API URL:', API_BASE_URL);
 
-// ============================================
-// ✅ FIXED CONTACT FORM HANDLER
-// ============================================
 const contactForm = document.getElementById("contact-form");
 
 if (contactForm) {
@@ -184,48 +181,25 @@ if (contactForm) {
         `;
         lucide.createIcons();
 
-        // ✅ FIXED: Send as JSON, not FormData
-        const formData = {
-            name: document.getElementById("name").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            subject: document.getElementById("subject").value.trim(),
-            message: document.getElementById("message").value.trim()
-        };
-
-        // Validate
-        if (!formData.name || !formData.email || !formData.subject || !formData.message) {
-            showToast("⚠️ Please fill in all fields");
-            submitButton.disabled = false;
-            submitButton.innerHTML = originalText;
-            return;
-        }
-
-        // Validate email
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-            showToast("⚠️ Please enter a valid email address");
-            submitButton.disabled = false;
-            submitButton.innerHTML = originalText;
-            return;
-        }
+        const formData = new FormData();
+        formData.append('name', document.getElementById("name").value);
+        formData.append('email', document.getElementById("email").value);
+        formData.append('subject', document.getElementById("subject").value);
+        formData.append('message', document.getElementById("message").value);
 
         try {
-            // ✅ FIXED: JSON request with proper headers
             const response = await fetch(`${API_BASE_URL}/contact`, {
                 method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(formData),
+                body: formData,
             });
 
             const data = await response.json();
 
-            if (response.ok && data.success) {
+            if (response.ok) {
                 showToast("✅ Message sent successfully!");
                 contactForm.reset();
             } else {
-                showToast(data.message || data.detail || "❌ Failed to send message.");
+                showToast(data.detail || "❌ Failed to send message.");
             }
         } catch (error) {
             console.error(error);
