@@ -299,12 +299,10 @@ section {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: linear-gradient(
-        45deg,
-        transparent 30%,
-        rgba(255, 255, 255, 0.08) 50%,
-        transparent 70%
-    );
+    background: linear-gradient(45deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.08) 50%,
+            transparent 70%);
     transform: rotate(45deg) translateX(-100%);
     transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     z-index: -1;
@@ -321,11 +319,9 @@ section {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(
-        circle at center,
-        rgba(59, 130, 246, 0.1) 0%,
-        transparent 70%
-    );
+    background: radial-gradient(circle at center,
+            rgba(59, 130, 246, 0.1) 0%,
+            transparent 70%);
     opacity: 0;
     transition: opacity 0.6s ease;
     z-index: -2;
@@ -341,7 +337,7 @@ section {
     border-color: #3b82f6;
     color: #93bbfc;
     transform: translateY(-4px) scale(1.06);
-    box-shadow: 
+    box-shadow:
         0 10px 40px rgba(59, 130, 246, 0.3),
         0 0 60px rgba(59, 130, 246, 0.1),
         0 0 100px rgba(59, 130, 246, 0.05),
@@ -364,14 +360,17 @@ section {
    ============================================ */
 
 @keyframes premiumPulse {
-    0%, 100% {
-        box-shadow: 
+
+    0%,
+    100% {
+        box-shadow:
             0 10px 40px rgba(59, 130, 246, 0.3),
             0 0 60px rgba(59, 130, 246, 0.1);
         border-color: #3b82f6;
     }
+
     50% {
-        box-shadow: 
+        box-shadow:
             0 10px 50px rgba(59, 130, 246, 0.4),
             0 0 80px rgba(139, 92, 246, 0.15);
         border-color: #8b5cf6;
@@ -392,12 +391,16 @@ section {
 }
 
 @keyframes waveEmoji {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: rotate(0deg) scale(1);
     }
+
     25% {
         transform: rotate(15deg) scale(1.1);
     }
+
     75% {
         transform: rotate(-15deg) scale(1.1);
     }
@@ -412,6 +415,7 @@ section {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -562,7 +566,7 @@ section {
     overflow: hidden;
     border: 2px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    transition: transform 0.3s ease;          
+    transition: transform 0.3s ease;
 }
 
 .about-image-wrapper:hover {
@@ -603,7 +607,7 @@ section {
     color: #60a5fa;
     animation: float 2s ease-in-out infinite;
     will-change: transform;
-    transform: translateZ(0); 
+    transform: translateZ(0);
 }
 
 .about-title {
@@ -736,12 +740,29 @@ section {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-.gradient-blue { background: linear-gradient(to bottom right, #3b82f6, #06b6d4); }
-.gradient-purple { background: linear-gradient(to bottom right, #8b5cf6, #ec4899); }
-.gradient-green { background: linear-gradient(to bottom right, #10b981, #34d399); }
-.gradient-orange { background: linear-gradient(to bottom right, #f97316, #ef4444); }
-.gradient-yellow { background: linear-gradient(to bottom right, #eab308, #f97316); }
-.gradient-indigo { background: linear-gradient(to bottom right, #6366f1, #8b5cf6); }
+.gradient-blue {
+    background: linear-gradient(to bottom right, #3b82f6, #06b6d4);
+}
+
+.gradient-purple {
+    background: linear-gradient(to bottom right, #8b5cf6, #ec4899);
+}
+
+.gradient-green {
+    background: linear-gradient(to bottom right, #10b981, #34d399);
+}
+
+.gradient-orange {
+    background: linear-gradient(to bottom right, #f97316, #ef4444);
+}
+
+.gradient-yellow {
+    background: linear-gradient(to bottom right, #eab308, #f97316);
+}
+
+.gradient-indigo {
+    background: linear-gradient(to bottom right, #6366f1, #8b5cf6);
+}
 
 .skill-header h3 {
     font-size: 1.5rem;
@@ -793,8 +814,10 @@ section {
 .additional-skills {
     width: 100%;
     display: flex;
-    flex-direction: column; /* Puts Title on top, Tags on bottom */
-    align-items: center;    /* Centers everything horizontally */
+    flex-direction: column;
+    /* Puts Title on top, Tags on bottom */
+    align-items: center;
+    /* Centers everything horizontally */
     justify-content: center;
     padding: 60px 20px;
     margin: 0 auto;
@@ -812,11 +835,15 @@ section {
 /* The actual tags container */
 .tech-tags {
     display: flex;
-    flex-wrap: wrap;         /* This makes them go to the next line */
-    justify-content: center; /* This centers the rows of tags */
+    flex-wrap: wrap;
+    /* This makes them go to the next line */
+    justify-content: center;
+    /* This centers the rows of tags */
     align-items: center;
-    gap: 15px;               /* Space between tags */
-    max-width: 1000px;       /* Limits width so they "stack" like your Figma image */
+    gap: 15px;
+    /* Space between tags */
+    max-width: 1000px;
+    /* Limits width so they "stack" like your Figma image */
     margin: 0 auto;
 }
 
@@ -830,12 +857,14 @@ section {
     color: #ccd6f6;
     font-size: 0.95rem;
     transition: all 0.3s ease;
-    white-space: nowrap;     /* Keeps text on one line inside the tag */
+    white-space: nowrap;
+    /* Keeps text on one line inside the tag */
 }
 
 /* Hover Effect */
 .tech-tag:hover {
-    background: rgba(100, 108, 255, 0.2); /* Soft purple/indigo glow */
+    background: rgba(100, 108, 255, 0.2);
+    /* Soft purple/indigo glow */
     border-color: #646cff;
     transform: translateY(-5px);
     color: #fff;
@@ -1269,29 +1298,43 @@ section {
     color: var(--text-secondary);
 }
 
+/* Contact Form Inputs - Unified with CSS Variables */
+.contact-form input,
+.contact-form textarea,
 .form-group input,
 .form-group textarea {
-    padding: 0.75rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.5rem;
-    color: white;
-    font-family: inherit;
+    width: 100%;
+    padding: 12px 15px;
+    background: var(--bg-card);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
     font-size: 1rem;
+    color: var(--text-primary);
+    font-family: inherit;
     transition: all 0.3s ease;
 }
 
+.contact-form input::placeholder,
+.contact-form textarea::placeholder,
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus,
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: rgba(59, 130, 246, 0.5);
-    background: rgba(255, 255, 255, 0.1);
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    background: var(--bg-card);
 }
 
-.form-group textarea {
+.form-group textarea,
+.contact-form textarea {
     resize: none;
 }
-
 /* Footer */
 .footer {
     position: relative;
@@ -1445,6 +1488,7 @@ section {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1456,6 +1500,7 @@ section {
         opacity: 0;
         transform: translateX(-50px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -1467,6 +1512,7 @@ section {
         opacity: 0;
         transform: translateX(50px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -1477,15 +1523,19 @@ section {
     from {
         transform: translateY(-100%);
     }
+
     to {
         transform: translateY(0);
     }
 }
 
 @keyframes float {
-    0%, 100% {
+
+    0%,
+    100% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(-20px);
     }
@@ -1495,6 +1545,7 @@ section {
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }
@@ -1866,7 +1917,7 @@ textarea::placeholder {
         width: 45px;
         height: 45px;
     }
-    
+
     .theme-toggle i {
         width: 20px;
         height: 20px;
@@ -1880,7 +1931,7 @@ textarea::placeholder {
         width: 40px;
         height: 40px;
     }
-    
+
     .theme-toggle i {
         width: 18px;
         height: 18px;
@@ -1929,17 +1980,19 @@ textarea::placeholder {
 }
 
 @keyframes highlightPulse {
-    0% { 
-        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); 
-        border-color: #3b82f6; 
+    0% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+        border-color: #3b82f6;
     }
-    50% { 
-        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); 
-        border-color: #3b82f6; 
+
+    50% {
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+        border-color: #3b82f6;
     }
-    100% { 
-        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); 
-        border-color: #e5e7eb; 
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+        border-color: #e5e7eb;
     }
 }
 
@@ -2017,8 +2070,13 @@ textarea::placeholder {
    ============================================ */
 
 @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .spin {
@@ -2165,7 +2223,7 @@ textarea::placeholder {
     margin-bottom: 10px;
 }
 
-.service-card > p {
+.service-card>p {
     color: #64748b;
     font-size: 0.95rem;
     line-height: 1.6;
@@ -2194,12 +2252,29 @@ textarea::placeholder {
 }
 
 /* 4. GRADIENT BACKGROUNDS */
-.gradient-blue { background: linear-gradient(135deg, #3b82f6, #60a5fa); }
-.gradient-purple { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
-.gradient-orange { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
-.gradient-green { background: linear-gradient(135deg, #10b981, #34d399); }
-.gradient-indigo { background: linear-gradient(135deg, #6366f1, #818cf8); }
-.gradient-yellow { background: linear-gradient(135deg, #eab308, #facc15); }
+.gradient-blue {
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+}
+
+.gradient-purple {
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+}
+
+.gradient-orange {
+    background: linear-gradient(135deg, #f59e0b, #fbbf24);
+}
+
+.gradient-green {
+    background: linear-gradient(135deg, #10b981, #34d399);
+}
+
+.gradient-indigo {
+    background: linear-gradient(135deg, #6366f1, #818cf8);
+}
+
+.gradient-yellow {
+    background: linear-gradient(135deg, #eab308, #facc15);
+}
 
 /* 5. SERVICES GRID */
 .services-grid {
@@ -2265,17 +2340,19 @@ textarea::placeholder {
 }
 
 @keyframes highlightPulse {
-    0% { 
-        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); 
-        border-color: #3b82f6; 
+    0% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+        border-color: #3b82f6;
     }
-    50% { 
-        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); 
-        border-color: #3b82f6; 
+
+    50% {
+        box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+        border-color: #3b82f6;
     }
-    100% { 
-        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); 
-        border-color: #e5e7eb; 
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+        border-color: #e5e7eb;
     }
 }
 
@@ -2351,8 +2428,13 @@ textarea::placeholder {
 
 /* 10. LOADING SPINNER */
 @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .spin {
@@ -2456,12 +2538,18 @@ textarea::placeholder {
 .contact-form textarea {
     width: 100%;
     padding: 12px 15px;
-    border: 2px solid #e5e7eb;
+    border: 2px solid var(--border-color);
     border-radius: 10px;
     font-size: 1rem;
     transition: all 0.3s ease;
     font-family: inherit;
-    background: white;
+    background: var(--bg-card);
+    color: var(--text-primary);
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+    color: var(--text-muted);
 }
 
 .contact-form input:focus,
@@ -2482,19 +2570,19 @@ textarea::placeholder {
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .services-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .services-cta {
         padding: 30px 20px;
     }
-    
+
     .services-cta h3 {
         font-size: 1.5rem;
     }
-    
+
     .hero-buttons {
         justify-content: center;
     }
@@ -2504,12 +2592,12 @@ textarea::placeholder {
     .stat-value {
         font-size: 2rem;
     }
-    
+
     .stats-grid {
         grid-template-columns: 1fr 1fr;
         gap: 10px;
     }
-    
+
     .stat-card {
         padding: 15px;
     }
@@ -2739,8 +2827,13 @@ textarea::placeholder {
 }
 
 @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* ============================================
@@ -2775,21 +2868,21 @@ textarea::placeholder {
         padding: 12px 25px;
         font-size: 0.9rem;
     }
-    
+
     .btn-block {
         padding: 14px 25px;
         font-size: 0.95rem;
     }
-    
+
     .hero-buttons {
         justify-content: center;
     }
-    
+
     .cta-buttons {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .cta-buttons .btn {
         width: 100%;
         max-width: 280px;
@@ -2803,7 +2896,7 @@ textarea::placeholder {
         font-size: 0.85rem;
         gap: 6px;
     }
-    
+
     .btn-block {
         padding: 12px 20px;
         font-size: 0.9rem;
@@ -3045,8 +3138,13 @@ textarea::placeholder {
 }
 
 @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* ============================================
@@ -3082,22 +3180,22 @@ textarea::placeholder {
         font-size: 0.9rem;
         min-width: 140px;
     }
-    
+
     .btn-block {
         padding: 14px 25px;
         font-size: 0.95rem;
         min-width: unset;
     }
-    
+
     .hero-buttons {
         justify-content: center;
     }
-    
+
     .cta-buttons {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .cta-buttons .btn {
         width: 100%;
         max-width: 280px;
@@ -3112,7 +3210,7 @@ textarea::placeholder {
         gap: 6px;
         min-width: 120px;
     }
-    
+
     .btn-block {
         padding: 12px 20px;
         font-size: 0.9rem;
@@ -3134,9 +3232,11 @@ textarea::placeholder {
     0% {
         box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
     }
+
     70% {
         box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
     }
+
     100% {
         box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
     }
@@ -3549,9 +3649,11 @@ textarea::placeholder {
     0% {
         box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
     }
+
     70% {
         box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
     }
+
     100% {
         box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
     }
@@ -3571,9 +3673,11 @@ textarea::placeholder {
     0% {
         box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
     }
+
     70% {
         box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
     }
+
     100% {
         box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
     }
@@ -3612,9 +3716,11 @@ textarea::placeholder {
     0% {
         box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
     }
+
     70% {
         box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
     }
+
     100% {
         box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
     }
@@ -3816,9 +3922,11 @@ textarea::placeholder {
     0% {
         box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
     }
+
     70% {
         box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
     }
+
     100% {
         box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
     }
@@ -3916,18 +4024,18 @@ textarea::placeholder {
 }
 
 .project-action-btn.live-demo {
-    background: linear-gradient(135deg,#3b82f6,#8b5cf6) !important;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6) !important;
     color: #fff !important;
 }
 
 .project-action-btn.github-btn {
     background: #fff !important;
     color: #111827 !important;
-    border: 1px solid rgba(255,255,255,.2) !important;
+    border: 1px solid rgba(255, 255, 255, .2) !important;
 }
 
 .project-action-btn.disabled {
-    background: rgba(255,255,255,.2) !important;
+    background: rgba(255, 255, 255, .2) !important;
     color: #94a3b8 !important;
     pointer-events: none !important;
 }
@@ -4128,9 +4236,11 @@ textarea::placeholder {
     0% {
         box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
     }
+
     70% {
         box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
     }
+
     100% {
         box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
     }
@@ -4152,6 +4262,7 @@ textarea::placeholder {
         opacity: 0;
         transform: translateY(20px) scale(0.9);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -4162,12 +4273,29 @@ textarea::placeholder {
     animation: slideUpFade 0.5s ease-out forwards !important;
 }
 
-.project-card:nth-child(1) .project-actions-visible { animation-delay: 0.1s !important; }
-.project-card:nth-child(2) .project-actions-visible { animation-delay: 0.15s !important; }
-.project-card:nth-child(3) .project-actions-visible { animation-delay: 0.2s !important; }
-.project-card:nth-child(4) .project-actions-visible { animation-delay: 0.25s !important; }
-.project-card:nth-child(5) .project-actions-visible { animation-delay: 0.3s !important; }
-.project-card:nth-child(6) .project-actions-visible { animation-delay: 0.35s !important; }
+.project-card:nth-child(1) .project-actions-visible {
+    animation-delay: 0.1s !important;
+}
+
+.project-card:nth-child(2) .project-actions-visible {
+    animation-delay: 0.15s !important;
+}
+
+.project-card:nth-child(3) .project-actions-visible {
+    animation-delay: 0.2s !important;
+}
+
+.project-card:nth-child(4) .project-actions-visible {
+    animation-delay: 0.25s !important;
+}
+
+.project-card:nth-child(5) .project-actions-visible {
+    animation-delay: 0.3s !important;
+}
+
+.project-card:nth-child(6) .project-actions-visible {
+    animation-delay: 0.35s !important;
+}
 
 /* ============================================
    GLOW EFFECT ON BUTTONS
@@ -4278,6 +4406,7 @@ textarea::placeholder {
         opacity: 0;
         transform: translateX(-50%) translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateX(-50%) translateY(0);
@@ -4296,9 +4425,12 @@ textarea::placeholder {
    SPECIAL EFFECT - BUTTON SPARKLE
    ============================================ */
 @keyframes sparkle {
-    0%, 100% {
+
+    0%,
+    100% {
         background-position: 0% 50%;
     }
+
     50% {
         background-position: 100% 50%;
     }
