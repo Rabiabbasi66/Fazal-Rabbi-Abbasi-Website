@@ -29,6 +29,7 @@
                 <li><a href="#skills" class="nav-link">Skills</a></li>
                 <li><a href="#projects" class="nav-link">Projects</a></li>
                 <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#upwork" class="nav-link">Upwork</a></li>
                 <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
 
@@ -61,6 +62,10 @@
                         <a href="#projects" class="btn btn-primary">
                             <i class="fa-solid fa-code"></i>
                             View Projects
+                        </a>
+                        <a href="https://www.upwork.com/freelancers/~014851cdad1612d7e5?companyReference=2031454716732761811&mp_source=share" target="_blank" class="btn btn-primary pulse-btn">
+                            <i data-lucide="calendar"></i>
+                            Book a Call
                         </a>
                         <a href="fazalrabbiabbasicv.pdf" class="btn btn-secondary" onclick="downloadCV(); return false;">
                             <i data-lucide="download"></i>
@@ -146,7 +151,7 @@
                             </div>
                             <div class="highlight-content">
                                 <h4>Education</h4>
-                                <p>7th Semester - BS. Software Engineering, Full-Stack Development Track</p>
+                                <p>7th Semester - BS. Software Engineering, <strong style="color: #3ae423;">DevOps Engineering</strong></p>
                             </div>
                         </div>
                         <div class="highlight-card">
@@ -182,7 +187,7 @@
                             </div>
                             <div class="highlight-content">
                                 <h4>Passion</h4>
-                                <p>Creating beautiful, functional, and user-friendly digital experiences</p>
+                                <p>My vision is to become a DevOps Engineer who doesn't just deploy code — but architects systems that are automated, secure, and infinitely scalable. I'm driven by the challenge of making complex infrastructure look simple, and turning downtime into a thing of the past.</p>
                             </div>
                         </div>
                         <div class="highlight-card" style="border: 1px solid rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.05);">
@@ -200,11 +205,11 @@
 
             <div class="stats-grid">
                 <div class="stat-card">
-                    <div class="stat-value">1.5+</div>
+                    <div class="stat-value">2+</div>
                     <div class="stat-label">Years Experience</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-value">5+</div>
+                    <div class="stat-value">3+</div>
                     <div class="stat-label">Projects Completed</div>
                 </div>
                 <div class="stat-card">
@@ -402,7 +407,7 @@
                     </div>
                 </div>
 
-                <!-- DevOps - With Learning Badges & Ambition -->
+                <!-- DevOps -->
                 <div class="skill-card" data-category="devops" style="border: 2px solid rgba(59, 130, 246, 0.3);">
                     <div class="skill-header">
                         <div class="skill-icon" style="background: linear-gradient(135deg, #f59e0b, #f97316);">
@@ -634,18 +639,226 @@
         </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
-                <p class="section-subtitle">A selection of projects showcasing my skills and creativity</p>
-            </div>
-            <div class="projects-grid">
-                <!-- Projects will be loaded dynamically from backend -->
-            </div>
+    
+    <!-- ============================================ -->
+<!-- PROJECTS SECTION - WITH VISIBLE LIVE DEMO BUTTONS -->
+<!-- ============================================ -->
+<section id="projects" class="projects">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
+            <p class="section-subtitle">Live demos of projects delivered on <span style="color: #60a5fa;">Upwork</span></p>
         </div>
-    </section>
+        <div class="projects-grid">
+
+            <!-- Project 1: 3D Portfolio Website -->
+            <div class="project-card featured">
+                <div class="project-image">
+                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/portfolio.jpg" alt="3D Portfolio Website">
+                    <!-- BUTTONS NOW ALWAYS VISIBLE -->
+                    <div class="project-actions-visible">
+                        <a href="https://fazal-rabbi-abbasi-website.vercel.app" target="_blank" class="project-action-btn live-demo" title="Live Demo">
+                            <i data-lucide="external-link"></i>
+                            Live Demo
+                        </a>
+                        <a href="https://github.com/Rabiabbasi66/Fazal-Rabbi-portfolio" target="_blank" class="project-action-btn github-btn" title="GitHub">
+                            <i data-lucide="github"></i>
+                            Code
+                        </a>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3>3D Portfolio Website</h3>
+                    <p>Interactive portfolio built using Three.js with animations, responsive UI and backend integration.</p>
+                    <div class="project-upwork-badge">
+                        <span>✅ Delivered on Upwork</span>
+                        
+                    </div>
+                    <div class="project-result">
+                        <span>✅ 95 Lighthouse Score</span>
+                        <span>⚡ Deployed on Vercel</span>
+                        <span>🎯 3D Web Experience</span>
+                    </div>
+                    <div class="project-tags">
+                        <span class="project-tag">Three.js</span>
+                        <span class="project-tag">FastAPI</span>
+                        <span class="project-tag">MongoDB</span>
+                        <span class="project-tag">Tailwind</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2: Task Management App -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/task-manager.jpg" alt="Task Management App">
+                    <div class="project-actions-visible">
+                        <a href="https://task-managnment-app.vercel.app/" target="_blank" class="project-action-btn live-demo" title="Live Demo">
+                            <i data-lucide="external-link"></i>
+                            Live Demo
+                        </a>
+                        <a href="https://github.com/Rabiabbasi66/task-managnment-app" target="_blank" class="project-action-btn github-btn" title="GitHub">
+                            <i data-lucide="github"></i>
+                            Code
+                        </a>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3>Task Management App</h3>
+                    <p>Task management application with drag-and-drop interface, authentication and team collaboration.</p>
+                    <div class="project-upwork-badge">
+                        <span>✅ Delivered on Upwork</span>
+                        
+                    </div>
+                    <div class="project-result">
+                        <span>✅ Drag & Drop</span>
+                        <span>⚡ Real-time Updates</span>
+                        <span>🔐 Authentication</span>
+                    </div>
+                    <div class="project-tags">
+                        <span class="project-tag">React.js</span>
+                        <span class="project-tag">FastAPI</span>
+                        <span class="project-tag">MongoDB</span>
+                        <span class="project-tag">Tailwind</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3: AI Chat Application -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/ai-chat.jpg" alt="AI Chat Application">
+                    <div class="project-actions-visible">
+                        <a href="https://chat-app-steel-alpha.vercel.app/" target="_blank" class="project-action-btn live-demo" title="Live Demo">
+                            <i data-lucide="external-link"></i>
+                            Live Demo
+                        </a>
+                        <a href="https://github.com/Rabiabbasi66/Ai-chat-bot" target="_blank" class="project-action-btn github-btn" title="GitHub">
+                            <i data-lucide="github"></i>
+                            Code
+                        </a>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3>AI Chat Application</h3>
+                    <p>AI-powered chatbot with real-time messaging and intelligent responses.</p>
+                    <div class="project-upwork-badge">
+                        <span>✅ Delivered on Upwork</span>
+                        
+                    </div>
+                    <div class="project-result">
+                        <span>✅ AI Integration</span>
+                        <span>⚡ Real-time Chat</span>
+                        <span>💬 WebSockets</span>
+                    </div>
+                    <div class="project-tags">
+                        <span class="project-tag">AI/LLM</span>
+                        <span class="project-tag">WebSockets</span>
+                        <span class="project-tag">FastAPI</span>
+                        <span class="project-tag">React.js</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 4: AgriScan 3D -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/agriscan.jpg" alt="AgriScan 3D">
+                    <div class="project-actions-visible">
+                        <a href="#" target="_blank" class="project-action-btn live-demo disabled" title="Live Demo Coming Soon">
+                            <i data-lucide="external-link"></i>
+                            Coming Soon
+                        </a>
+                        <a href="https://github.com/Rabiabbasi66/AgriScan3D" target="_blank" class="project-action-btn github-btn" title="GitHub">
+                            <i data-lucide="github"></i>
+                            Code
+                        </a>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3>AgriScan 3D</h3>
+                    <p>AI-powered drone crop mapping and disease detection using WebGPU, FastAPI, MongoDB and Computer Vision.</p>
+                    <div class="project-result">
+                        <span>✅ AI Detection</span>
+                        <span>⚡ WebGPU</span>
+                        <span>🌾 Crop Mapping</span>
+                    </div>
+                    <div class="project-tags">
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">FastAPI</span>
+                        <span class="project-tag">AI</span>
+                        <span class="project-tag">MongoDB</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 5: Abbasi Brand Cloth -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/abbasi-brand.jpg" alt="Abbasi Brand Cloth">
+                    <div class="project-actions-visible">
+                        <a href="#" target="_blank" class="project-action-btn live-demo disabled" title="Live Demo Coming Soon">
+                            <i data-lucide="external-link"></i>
+                            Coming Soon
+                        </a>
+                        <a href="https://github.com/Rabiabbasi66/cloths-brand-frontend" target="_blank" class="project-action-btn github-btn" title="GitHub">
+                            <i data-lucide="github"></i>
+                            Code
+                        </a>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3>Abbasi Brand Cloth</h3>
+                    <p>Modern clothing brand website with responsive UI, product showcase and FastAPI backend.</p>
+                    <div class="project-result">
+                        <span>✅ E-commerce</span>
+                        <span>⚡ Responsive</span>
+                        <span>🛒 Product Management</span>
+                    </div>
+                    <div class="project-tags">
+                        <span class="project-tag">HTML</span>
+                        <span class="project-tag">CSS</span>
+                        <span class="project-tag">FastAPI</span>
+                        <span class="project-tag">MongoDB</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 6: E-Commerce Platform -->
+            <div class="project-card">
+                <div class="project-image">
+                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/ecommerce.jpg" alt="E-Commerce Platform">
+                    <div class="project-actions-visible">
+                        <a href="#" target="_blank" class="project-action-btn live-demo disabled" title="Live Demo Coming Soon">
+                            <i data-lucide="external-link"></i>
+                            Coming Soon
+                        </a>
+                        <a href="#" target="_blank" class="project-action-btn github-btn" title="GitHub">
+                            <i data-lucide="github"></i>
+                            Code
+                        </a>
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3>E-Commerce Platform</h3>
+                    <p>Complete full-stack shopping platform with authentication, cart, orders and payment integration.</p>
+                    <div class="project-result">
+                        <span>✅ Payment Integration</span>
+                        <span>⚡ Authentication</span>
+                        <span>🛒 Shopping Cart</span>
+                    </div>
+                    <div class="project-tags">
+                        <span class="project-tag">FastAPI</span>
+                        <span class="project-tag">MongoDB</span>
+                        <span class="project-tag">JavaScript</span>
+                        <span class="project-tag">Stripe</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
         
     <!-- Services Section -->
     <section id="services" class="services">
@@ -758,6 +971,117 @@
             </div>
         </div>
     </section>
+
+    <!-- ============================================ -->
+    <!-- UPWORK SECTION - WITH YOUR 3 PROJECTS -->
+    <!-- ============================================ -->
+    <section id="upwork" class="upwork">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Hire Me on <span class="gradient-text">Upwork</span></h2>
+                <p class="section-subtitle">Available for freelance projects. Let's build something amazing together!</p>
+            </div>
+
+            <div class="upwork-content">
+                <!-- Upwork Profile Card -->
+                <div class="upwork-profile-card">
+                    <div class="upwork-profile-left">
+                        <div class="upwork-profile-image">
+                            <img src="portfolio new.PNG" alt="Upwork Profile">
+                        </div>
+                        <div class="upwork-badge" style="background: rgba(251, 191, 36, 0.2); border-color: #fbbf24; color: #fbbf24;">
+                            <span>🌱 Available Now</span>
+                        </div>
+                    </div>
+                    <div class="upwork-profile-right">
+                        <h3>Fazal-E-Rabbi Abbasi</h3>
+                        <p class="upwork-profile-title">Full-Stack Developer | FastAPI | React | MongoDB</p>
+                        
+                        <div class="upwork-profile-details">
+                            <div class="upwork-detail-item">
+                                <i data-lucide="check-circle"></i>
+                                <span>✅ Identity Verified</span>
+                            </div>
+                
+                            <div class="upwork-detail-item">
+                                <i data-lucide="check-circle"></i>
+                                <span>✅ Available for Work</span>
+                            </div>
+                            <div class="upwork-detail-item">
+                                <i data-lucide="check-circle"></i>
+                                <span>✅ 2+ Years Experience</span>
+                            </div>
+                        </div>
+
+                        <div class="upwork-offer">
+                            <h4>💼 What I Offer:</h4>
+                            <div class="upwork-offer-items">
+                                <span class="offer-tag">FullStack Development</span>
+                                <span class="offer-tag">FastAPI & React</span>
+                                <span class="offer-tag">3D Web (Three.js)</span>
+                                <span class="offer-tag">REST APIs</span>
+                                <span class="offer-tag">MongoDB / PostgreSQL</span>
+                                <span class="offer-tag">DevOps (Docker, AWS)</span>
+                            </div>
+                        </div>
+
+                        <!-- UPWORK PROJECTS I'VE COMPLETED -->
+                        <div class="upwork-projects">
+                            <h4>📁 Projects I've Delivered on Upwork:</h4>
+                            <div class="upwork-project-list">
+                                <a href="https://fazal-rabbi-abbasi-website.vercel.app" target="_blank" class="upwork-project-item">
+                                    <span class="project-icon">🌐</span>
+                                    <span class="project-name">3D Portfolio Website</span>
+                                    <span class="project-badge">Live</span>
+                                </a>
+                                <a href="https://task-managnment-app.vercel.app/" target="_blank" class="upwork-project-item">
+                                    <span class="project-icon">📋</span>
+                                    <span class="project-name">Task Management App</span>
+                                    <span class="project-badge">Live</span>
+                                </a>
+                                <a href="https://chat-app-steel-alpha.vercel.app/" target="_blank" class="upwork-project-item">
+                                    <span class="project-icon">💬</span>
+                                    <span class="project-name">AI Chat Application</span>
+                                    <span class="project-badge">Live</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="upwork-buttons">
+                            <a href="https://www.upwork.com/freelancers/~014851cdad1612d7e5?companyReference=2031454716732761811&mp_source=share" target="_blank" class="btn btn-primary upwork-btn">
+                                <i data-lucide="external-link"></i>
+                                View My Upwork Profile
+                            </a>
+                            <a href="https://www.upwork.com/freelancers/~014851cdad1612d7e5?companyReference=2031454716732761811&mp_source=share" target="_blank" class="btn btn-secondary upwork-btn">
+                                <i data-lucide="message-circle"></i>
+                                Message Me on Upwork
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upwork CTA -->
+                <div class="upwork-cta">
+                    <h3>Ready to Start Your Project?</h3>
+                    <p>I'm available for freelance projects. Click below to message me on Upwork!</p>
+                    <div class="upwork-cta-buttons">
+                        <a href="https://www.upwork.com/freelancers/~014851cdad1612d7e5?companyReference=2031454716732761811&mp_source=share" target="_blank" class="btn btn-primary">
+                            <i data-lucide="briefcase"></i>
+                            Hire Me on Upwork
+                        </a>
+                        <a href="https://www.upwork.com/freelancers/~014851cdad1612d7e5?companyReference=2031454716732761811&mp_source=share" target="_blank" class="btn btn-secondary pulse-btn">
+                            <i data-lucide="calendar"></i>
+                            Book a Call
+                        </a>
+                    </div>
+                    <p style="margin-top: 15px; font-size: 0.85rem; opacity: 0.9;">
+                        💬 Click "Book a Call" to send me a message on Upwork
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
     <!-- Contact Section -->
     <section id="contact" class="contact">
@@ -889,6 +1213,8 @@
                         <li><a href="#home">Home</a></li>
                         <li><a href="#about">About</a></li>
                         <li><a href="#projects">Projects</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#upwork">Upwork</a></li>
                         <li><a href="#contact">Contact</a></li>
                     </ul>
                 </div>

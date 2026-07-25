@@ -718,89 +718,128 @@ prefersDark.addEventListener('change', (e) => {
 // ============================================
 // LOAD PROJECTS
 // ============================================
+// ============================================
+// LOAD PROJECTS - WITH BUTTONS!
+// ============================================
 async function loadProjects() {
     const projects = [
-    {
-        "id": "1",
-        "title": "AgriScan 3D",
-        "description": "AI-powered drone crop mapping and disease detection using WebGPU, FastAPI, MongoDB and Computer Vision.",
-        "image": "https://fazal-rabbi-abbasi-website.vercel.app/agriscan.jpg",
-        "tags": ["Python", "FastAPI", "AI", "Computer Vision", "MongoDB"],
-        "github_url": "https://github.com/Rabiabbasi66/AgriScan3D",
-        "demo_url": null,
-        "featured": true
-    },
-    {
-        "id": "2",
-        "title": "Abbasi Brand Cloth",
-        "description": "Modern clothing brand website with responsive UI, product showcase and FastAPI backend.",
-        "image": "https://fazal-rabbi-abbasi-website.vercel.app/abbasi-brand.jpg",
-        "tags": ["HTML", "CSS", "JavaScript", "FastAPI", "MongoDB"],
-        "github_url": "https://github.com/Rabiabbasi66/cloths-brand-frontend",
-        "demo_url": null,
-        "featured": true
-    },
-    {
-        "id": "3",
-        "title": "3D Portfolio Website",
-        "description": "Interactive portfolio built using Three.js with animations, responsive UI and backend integration.",
-        "image": "https://fazal-rabbi-abbasi-website.vercel.app/portfolio.jpg",
-        "tags": ["HTML", "CSS", "JavaScript", "Three.js", "FastAPI"],
-        "github_url": "https://github.com/Rabiabbasi66/Fazal-Rabbi-portfolio",
-        "demo_url": null,
-        "featured": true
-    },
-    {
-        "id": "4",
-        "title": "E-Commerce Platform",
-        "description": "Complete full-stack shopping platform with authentication, cart, orders and payment integration.",
-        "image": "https://fazal-rabbi-abbasi-website.vercel.app/ecommerce.jpg",
-        "tags": ["FastAPI", "MongoDB", "JavaScript", "HTML", "CSS"],
-        "github_url": null,
-        "demo_url": null,
-        "featured": false
-    },
-    {
-        "id": "5",
-        "title": "AI Chat Application",
-        "description": "AI-powered chatbot with real-time messaging and intelligent responses.",
-        "image": "https://fazal-rabbi-abbasi-website.vercel.app/ai-chat.jpg",
-        "tags": ["Python", "FastAPI", "AI", "JavaScript"],
-        "github_url": "https://github.com/Rabiabbasi66/Ai-chat-bot",
-        "demo_url": null,
-        "featured": false
-    },
-    {
-        "id": "6",
-        "title": "Task Management App",
-        "description": "Task management application with drag-and-drop interface, authentication and team collaboration.",
-        "image": "https://fazal-rabbi-abbasi-website.vercel.app/task-manager.jpg",
-        "tags": ["HTML", "CSS", "JavaScript", "MongoDB"],
-        "github_url": "https://github.com/Rabiabbasi66/task-managnment-app",
-        "demo_url": null,
-        "featured": false
-    }
-];
+        {
+            "id": "1",
+            "title": "AgriScan 3D",
+            "description": "AI-powered drone crop mapping and disease detection using WebGPU, FastAPI, MongoDB and Computer Vision.",
+            "image": "https://fazal-rabbi-abbasi-website.vercel.app/agriscan.jpg",
+            "tags": ["Python", "FastAPI", "AI", "Computer Vision", "MongoDB"],
+            "github_url": "https://github.com/Rabiabbasi66/AgriScan3D",
+            "demo_url": null,
+            "featured": true,
+            "upwork": false
+        },
+        {
+            "id": "2",
+            "title": "Abbasi Brand Cloth",
+            "description": "Modern clothing brand website with responsive UI, product showcase and FastAPI backend.",
+            "image": "https://fazal-rabbi-abbasi-website.vercel.app/abbasi-brand.jpg",
+            "tags": ["HTML", "CSS", "JavaScript", "FastAPI", "MongoDB"],
+            "github_url": "https://github.com/Rabiabbasi66/cloths-brand-frontend",
+            "demo_url": null,
+            "featured": true,
+            "upwork": false
+        },
+        {
+            "id": "3",
+            "title": "3D Portfolio Website",
+            "description": "Interactive portfolio built using Three.js with animations, responsive UI and backend integration.",
+            "image": "https://fazal-rabbi-abbasi-website.vercel.app/portfolio.jpg",
+            "tags": ["HTML", "CSS", "JavaScript", "Three.js", "FastAPI"],
+            "github_url": "https://github.com/Rabiabbasi66/Fazal-Rabbi-portfolio",
+            "demo_url": "https://fazal-rabbi-abbasi-website.vercel.app",
+            "featured": true,
+            "upwork": true
+        },
+        {
+            "id": "4",
+            "title": "E-Commerce Platform",
+            "description": "Complete full-stack shopping platform with authentication, cart, orders and payment integration.",
+            "image": "https://fazal-rabbi-abbasi-website.vercel.app/ecommerce.jpg",
+            "tags": ["FastAPI", "MongoDB", "JavaScript", "HTML", "CSS"],
+            "github_url": null,
+            "demo_url": null,
+            "featured": false,
+            "upwork": false
+        },
+        {
+            "id": "5",
+            "title": "AI Chat Application",
+            "description": "AI-powered chatbot with real-time messaging and intelligent responses.",
+            "image": "https://fazal-rabbi-abbasi-website.vercel.app/ai-chat.jpg",
+            "tags": ["Python", "FastAPI", "AI", "JavaScript"],
+            "github_url": "https://github.com/Rabiabbasi66/Ai-chat-bot",
+            "demo_url": "https://chat-app-steel-alpha.vercel.app/",
+            "featured": false,
+            "upwork": true
+        },
+        {
+            "id": "6",
+            "title": "Task Management App",
+            "description": "Task management application with drag-and-drop interface, authentication and team collaboration.",
+            "image": "https://fazal-rabbi-abbasi-website.vercel.app/task-manager.jpg",
+            "tags": ["HTML", "CSS", "JavaScript", "MongoDB"],
+            "github_url": "https://github.com/Rabiabbasi66/task-managnment-app",
+            "demo_url": "https://task-managnment-app.vercel.app/",
+            "featured": false,
+            "upwork": true
+        }
+    ];
 
     const projectsGrid = document.querySelector(".projects-grid");
     if (!projectsGrid) return;
 
+    // Clear existing content
     projectsGrid.innerHTML = "";
+    
+    // Generate project cards with buttons
     projects.forEach(project => {
+        const hasDemo = project.demo_url && project.demo_url !== "#" && project.demo_url !== null;
+        const hasGithub = project.github_url && project.github_url !== "#" && project.github_url !== null;
+        
+        const demoButton = hasDemo 
+            ? `<a href="${project.demo_url}" target="_blank" class="project-action-btn live-demo" title="Live Demo">
+                <i data-lucide="external-link"></i>
+                Live Demo
+               </a>`
+            : `<a href="#" class="project-action-btn live-demo disabled" title="Live Demo Coming Soon">
+                <i data-lucide="external-link"></i>
+                Coming Soon
+               </a>`;
+        
+        const githubButton = hasGithub
+            ? `<a href="${project.github_url}" target="_blank" class="project-action-btn github-btn" title="GitHub">
+                <i data-lucide="github"></i>
+                Code
+               </a>`
+            : `<a href="#" class="project-action-btn github-btn disabled" title="GitHub">
+                <i data-lucide="github"></i>
+                Code
+               </a>`;
+
         projectsGrid.innerHTML += `
             <div class="project-card ${project.featured ? "featured" : ""}">
                 <div class="project-image">
                     <img src="${project.image}" alt="${project.title}">
-                    <div class="project-overlay">
-                        <div class="project-actions">
-                            ${project.github_url ? `<a href="${project.github_url}" target="_blank" class="project-action"><i data-lucide="github"></i></a>` : ""}
-                            ${project.demo_url ? `<a href="${project.demo_url}" target="_blank" class="project-action project-action-primary"><i data-lucide="external-link"></i></a>` : ""}
-                        </div>
+                    <!-- BUTTONS - ALWAYS VISIBLE -->
+                    <div class="project-actions-visible">
+                        ${demoButton}
+                        ${githubButton}
                     </div>
                 </div>
                 <div class="project-content">
                     <h3>${project.title}</h3>
                     <p>${project.description}</p>
+                    ${project.upwork ? `
+                    <div class="project-upwork-badge">
+                        <span>✅ Delivered on Upwork</span>
+                        <span>⭐ Client: Happy Client</span>
+                    </div>` : ''}
                     <div class="project-tags">
                         ${project.tags.map(tag => `<span class="project-tag">${tag}</span>`).join("")}
                     </div>
@@ -809,11 +848,13 @@ async function loadProjects() {
         `;
     });
 
-    lucide.createIcons();
+    // Re-initialize Lucide icons
+    setTimeout(() => {
+        lucide.createIcons();
+    }, 100);
+    
+    console.log('✅ Projects loaded with buttons!');
 }
-
-document.addEventListener("DOMContentLoaded", loadProjects);
-
 // ============================================
 // BUTTON RIPPLE EFFECT
 // ============================================
@@ -840,3 +881,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+
