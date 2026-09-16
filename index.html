@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fazal-E-Rabbi Abbasi - Full-Stack Developer Portfolio</title>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fazal-rabbi-abbasi-website.vercel.app">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Three.js CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Three.js CDN (deferred: downloads in background, never blocks first paint) -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Lucide Icons (deferred: runs after HTML parsing, in order before main.js) -->
+    <script defer src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
     <!-- 3D Background Canvas -->
@@ -93,7 +96,7 @@
                     <div class="hero-image-wrapper floating">
                         <div class="glow-effect"></div>
                         <div class="hero-image-container">
-                            <img src="portfolio new.PNG" alt="Portfolio" class="hero-image">
+                            <img src="portfolio-new.webp" alt="Portfolio" class="hero-image" fetchpriority="high" decoding="async">
                             <div class="image-overlay"></div>
                         </div>
                     </div>
@@ -115,7 +118,7 @@
             <div class="about-content">
                 <div class="about-left">
                     <div class="about-image-wrapper">
-                        <img src="safar-safarov-koOdUvfGr4c-unsplash.jpg" alt="Developer workspace" class="about-image">
+                        <img src="safar-safarov-koOdUvfGr4c-unsplash.jpg" alt="Developer workspace" class="about-image" loading="lazy" decoding="async">
                         <div class="about-image-overlay"></div>
                         <div class="about-icon-badge">
                             <i data-lucide="user"></i>
@@ -654,7 +657,7 @@
             <!-- Project 1: DevOps Monitor Pro -->
             <div class="project-card featured">
                 <div class="project-image">
-                    <img src="devops-monitor-pro.svg" alt="DevOps Monitor Pro - real-time infrastructure monitoring dashboard">
+                    <img src="devops-monitor-pro.svg" alt="DevOps Monitor Pro - real-time infrastructure monitoring dashboard" loading="lazy" decoding="async">
                     <div class="project-actions-visible">
                         <a href="https://devops-monitor-pro-ncfzbp7999gwequkrpd4ad.streamlit.app/" target="_blank" class="project-action-btn live-demo" title="Live Demo">
                             <i data-lucide="external-link"></i>
@@ -696,7 +699,7 @@
             <!-- Project 2: 3D Portfolio Website -->
             <div class="project-card featured">
                 <div class="project-image">
-                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/portfolio.jpg" alt="3D Portfolio Website">
+                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/portfolio.jpg" alt="3D Portfolio Website" loading="lazy" decoding="async">
                     <!-- BUTTONS NOW ALWAYS VISIBLE -->
                     <div class="project-actions-visible">
                         <a href="https://fazal-rabbi-abbasi-website.vercel.app" target="_blank" class="project-action-btn live-demo" title="Live Demo">
@@ -733,7 +736,7 @@
             <!-- Project 3: Task Management App -->
             <div class="project-card">
                 <div class="project-image">
-                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/task-manager.jpg" alt="Task Management App">
+                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/task-manager.jpg" alt="Task Management App" loading="lazy" decoding="async">
                     <div class="project-actions-visible">
                         <a href="https://task-managnment-app.vercel.app/" target="_blank" class="project-action-btn live-demo" title="Live Demo">
                             <i data-lucide="external-link"></i>
@@ -769,7 +772,7 @@
             <!-- Project 4: AI Chat Application -->
             <div class="project-card">
                 <div class="project-image">
-                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/ai-chat.jpg" alt="AI Chat Application">
+                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/ai-chat.jpg" alt="AI Chat Application" loading="lazy" decoding="async">
                     <div class="project-actions-visible">
                         <a href="https://chat-app-steel-alpha.vercel.app/" target="_blank" class="project-action-btn live-demo" title="Live Demo">
                             <i data-lucide="external-link"></i>
@@ -805,7 +808,7 @@
             <!-- Project 5: AgriScan 3D -->
             <div class="project-card">
                 <div class="project-image">
-                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/agriscan.jpg" alt="AgriScan 3D">
+                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/agriscan.jpg" alt="AgriScan 3D" loading="lazy" decoding="async">
                     <div class="project-actions-visible">
                         <a href="#" target="_blank" class="project-action-btn live-demo disabled" title="Live Demo Coming Soon">
                             <i data-lucide="external-link"></i>
@@ -965,7 +968,7 @@
                 <div class="upwork-profile-card">
                     <div class="upwork-profile-left">
                         <div class="upwork-profile-image">
-                            <img src="portfolio new.PNG" alt="Upwork Profile">
+                            <img src="portfolio-new.webp" alt="Upwork Profile" loading="lazy" decoding="async">
                         </div>
                         <div class="upwork-badge" style="background: rgba(251, 191, 36, 0.2); border-color: #fbbf24; color: #fbbf24;">
                             <span>🌱 Available Now</span>
@@ -1233,6 +1236,6 @@
     <!-- Toast Notification -->
     <div id="toast" class="toast"></div>
 
-    <script src="main.js"></script>
+    <script defer src="main.js"></script>
 </body>
 </html>
