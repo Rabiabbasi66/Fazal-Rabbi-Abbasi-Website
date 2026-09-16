@@ -4474,3 +4474,29 @@ textarea::placeholder {
     background: rgba(0, 0, 0, 0.05) !important;
     color: #94a3b8 !important;
 }
+
+/* ============================================
+   DEVOPS MONITOR PRO - DOWNLOAD AGENT BUTTON
+   (third project button, follows existing style)
+   ============================================ */
+.project-action-btn.download-agent {
+    background: rgba(59, 130, 246, 0.15) !important;
+    color: #60a5fa !important;
+    border: 1px solid rgba(59, 130, 246, 0.35) !important;
+}
+
+.project-action-btn.download-agent:hover {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4) !important;
+}
+
+[data-theme="light"] .project-action-btn.download-agent {
+    background: rgba(59, 130, 246, 0.08) !important;
+    color: #2563eb !important;
+}
+
+/* Allow the action bar to wrap when a card has 3 buttons (e.g. DevOps Monitor Pro) */
+.project-actions-visible {
+    flex-wrap: wrap !important;
+}
