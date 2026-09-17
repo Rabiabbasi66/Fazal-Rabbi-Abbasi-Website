@@ -145,13 +145,20 @@ const hamburger = document.getElementById('hamburger');
 const navMenu = document.getElementById('nav-menu');
 const navLinks = document.querySelectorAll('.nav-link');
 
+// PERF: rAF-throttled + passive scroll listener (no layout reads, one class toggle per frame)
+let navbarScrollTicking = false;
 window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
-});
+    if (navbarScrollTicking) return;
+    navbarScrollTicking = true;
+    requestAnimationFrame(() => {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+        navbarScrollTicking = false;
+    });
+}, { passive: true });
 
 hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('active');

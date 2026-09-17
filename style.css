@@ -15,10 +15,6 @@
     --accent-pink: #ec4899;
 }
 
-html {
-    scroll-behavior: smooth;
-}
-
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(to bottom right, #0f172a, #1e293b, #0f172a);
@@ -125,7 +121,6 @@ section {
     background: rgba(255, 255, 255, 0.1);
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
 }
 
 .btn-secondary:hover {
@@ -282,8 +277,6 @@ section {
     position: relative;
     overflow: hidden;
     transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 4px 15px rgba(59, 130, 246, 0.08);
     z-index: 1;
 }
@@ -598,7 +591,6 @@ section {
     width: 3rem;
     height: 3rem;
     background: rgba(59, 130, 246, 0.2);
-    backdrop-filter: blur(10px);
     border: 1px solid rgba(59, 130, 246, 0.3);
     border-radius: 9999px;
     display: flex;
@@ -673,7 +665,6 @@ section {
 
 .stat-card {
     background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 1rem;
     padding: 2rem;
@@ -711,7 +702,6 @@ section {
 
 .skill-card {
     background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 1rem;
     padding: 1.5rem;
@@ -850,7 +840,6 @@ section {
 /* Individual Tag Styling */
 .tech-tag {
     background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 10px 22px;
     border-radius: 50px;
@@ -883,7 +872,6 @@ section {
 
 .project-card {
     background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 1rem;
     overflow: hidden;
@@ -956,7 +944,6 @@ section {
 
 .btn-live-demo.disabled {
     background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
     color: #94a3b8;
     cursor: not-allowed;
     box-shadow: none;
@@ -978,7 +965,6 @@ section {
     font-weight: 6rem;
     text-decoration: none;
     background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
     color: #1a1a2e;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -1083,7 +1069,6 @@ section {
 
 .service-card {
     background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 1rem;
     padding: 2rem;
@@ -1175,7 +1160,6 @@ section {
 
 .services-cta {
     background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
-    backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 1rem;
     padding: 3rem;
@@ -3796,7 +3780,6 @@ textarea::placeholder {
 
 .live-demo.disabled {
     background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
     color: #94a3b8;
     cursor: not-allowed;
     box-shadow: none;
@@ -3809,7 +3792,6 @@ textarea::placeholder {
 
 .github-btn {
     background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
     color: #1a1a2e;
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -4063,8 +4045,6 @@ textarea::placeholder {
     background: rgba(0, 0, 0, 0.5) !important;
     padding: 10px 15px !important;
     border-radius: 16px !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
 }
@@ -4195,8 +4175,6 @@ textarea::placeholder {
    ============================================ */
 .project-action-btn.disabled {
     background: rgba(255, 255, 255, 0.15) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
     color: #94a3b8 !important;
     cursor: not-allowed !important;
     box-shadow: none !important;
@@ -4450,8 +4428,6 @@ textarea::placeholder {
    ============================================ */
 [data-theme="light"] .project-actions-visible {
     background: rgba(255, 255, 255, 0.85) !important;
-    backdrop-filter: blur(12px) !important;
-    -webkit-backdrop-filter: blur(12px) !important;
     border-color: rgba(0, 0, 0, 0.1) !important;
 }
 
