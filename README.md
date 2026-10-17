@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/Rabiabbasi66"><img src="https://img.shields.io/badge/GitHub-Rabiabbasi66-181717?logo=github&logoColor=white" alt="GitHub"></a>
-  <a href="https://www.linkedin.com/in/fazal-rabi-abbasi-33ab98369"><img src="https://img.shields.io/badge/LinkedIn-Fazal%20Rabi%20Abbasi-0A66C2?logo=linkedin&logoColor=white" alt="LinkedIn"></a>
+  <a href="https://www.linkedin.com/in/fazal-e-rabbi-abbasi-a0200a443/"><img src="https://img.shields.io/badge/LinkedIn-Fazal%20Rabi%20Abbasi-0A66C2?logo=linkedin&logoColor=white" alt="LinkedIn"></a>
   <a href="https://www.instagram.com/fazal_rabbi2816/"><img src="https://img.shields.io/badge/Instagram-fazal__rabbi2816-E4405F?logo=instagram&logoColor=white" alt="Instagram"></a>
   <a href="https://fazal-rabbi-abbasi-website.vercel.app"><img src="https://img.shields.io/badge/Portfolio-Live%20Website-3b82f6?logo=vercel&logoColor=white" alt="Portfolio"></a>
   <a href="mailto:Rabif1820@gmail.com"><img src="https://img.shields.io/badge/Email-Rabif1820%40gmail.com-EA4335?logo=gmail&logoColor=white" alt="Email"></a>
@@ -68,6 +68,6 @@ Currently in 7th semester, with a focus on DevOps Engineering.
 
 - **Email:** [Rabif1820@gmail.com](mailto:Rabif1820@gmail.com)
 - **GitHub:** [github.com/Rabiabbasi66](https://github.com/Rabiabbasi66)
-- **LinkedIn:** [fazal-rabi-abbasi-33ab98369](https://www.linkedin.com/in/fazal-rabi-abbasi-33ab98369)
+- **LinkedIn:** [fazal-e-rabbi-abbasi-a0200a443](https://www.linkedin.com/in/fazal-e-rabbi-abbasi-a0200a443/)
 - **Instagram:** [@fazal_rabbi2816](https://www.instagram.com/fazal_rabbi2816/)
 - **Portfolio:** [fazal-rabbi-abbasi-website.vercel.app](https://fazal-rabbi-abbasi-website.vercel.app)
