@@ -416,8 +416,7 @@ h1, h2, h3, p, figure { margin: 0; }
 }
 .typer__role-text { color: var(--accent-ink); }
 
-/* Single shared cursor; JS moves it to the line being typed.
-   Blinks once per second while idle, stays solid while typing. */
+/* Single shared cursor; JS moves it to the line being typed. */
 .typer__cursor {
   display: inline-block;
   width: 2px;
@@ -427,16 +426,14 @@ h1, h2, h3, p, figure { margin: 0; }
   background: var(--accent);
   animation: blink 1s steps(1, end) infinite;
 }
-.typer__cursor.is-typing { animation: none; }
 
 @keyframes blink { 50% { opacity: 0; } }
 
-/* Narrow phones: name and role may wrap, so two lines are reserved for each */
+/* Narrow phones: scale the name down so it still fits on one line; the role
+   line may wrap, so two lines are reserved for it. */
 @media (max-width: 479px) {
-  .typer__name,
-  .typer__role { white-space: normal; }
-  .typer__name { height: 2.4em; }
-  .typer__role { height: 3em; }
+  .typer__name { font-size: clamp(1.3rem, 6.4vw, 1.8rem); }
+  .typer__role { white-space: normal; height: 3em; }
 }
 
 .hero__intro {
