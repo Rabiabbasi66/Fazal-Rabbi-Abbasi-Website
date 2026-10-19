@@ -313,7 +313,7 @@ h1, h2, h3, p, figure { margin: 0; }
 
 .hero__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); /* wide enough for the one-line name */
   align-items: center;
   gap: clamp(32px, 6vw, 80px);
 }
@@ -384,51 +384,60 @@ h1, h2, h3, p, figure { margin: 0; }
   box-shadow: 0 0 0 3px var(--success-soft);
 }
 
-/* Typing lines: ghost copies reserve the final size, live copy overlays them */
-.type-line { display: grid; }
-.type-line > * { grid-area: 1 / 1; }
-.type-ghost { visibility: hidden; }
-.type-ghost::after,
-.caret {
-  content: "";
+/* Typing headline
+   Every line is a fixed-height block (height = line-height x lines), so the
+   terminal card and everything below it never move while text is typed. */
+.typer { display: block; }
+.typer__line {
+  display: block;
+  white-space: nowrap;           /* one line each on desktop */
+  color: var(--text);
+}
+.typer__greet {
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-weight: 500;
+  line-height: 1.4;
+  height: 1.5em;               /* line-height + small buffer for rounding */
+}
+.typer__name {
+  margin-top: 4px;
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  height: 1.25em;
+  letter-spacing: -0.025em;
+}
+.typer__role {
+  margin-top: 14px;
+  font-size: clamp(0.98rem, 1.7vw, 1.2rem);  /* monospace: fixed-width glyphs, no jitter */
+  font-weight: 500;
+  line-height: 1.45;
+  height: 1.55em;
+}
+.typer__role-text { color: var(--accent-ink); }
+
+/* Single shared cursor; JS moves it to the line being typed.
+   Blinks once per second while idle, stays solid while typing. */
+.typer__cursor {
   display: inline-block;
   width: 2px;
   height: 0.95em;
   margin-left: 3px;
   vertical-align: -0.1em;
+  background: var(--accent);
+  animation: blink 1s steps(1, end) infinite;
 }
-.caret { background: var(--accent); visibility: hidden; }
-.caret.is-active { visibility: visible; animation: blink 1s steps(1, end) infinite; }
+.typer__cursor.is-typing { animation: none; }
 
 @keyframes blink { 50% { opacity: 0; } }
 
-.headline { display: block; }
-.headline__greet {
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
-  font-weight: 500;
-  color: var(--text);
-  line-height: 1.4;
+/* Narrow phones: name and role may wrap, so two lines are reserved for each */
+@media (max-width: 479px) {
+  .typer__name,
+  .typer__role { white-space: normal; }
+  .typer__name { height: 2.4em; }
+  .typer__role { height: 3em; }
 }
-.headline__name {
-  margin-top: 4px;
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.025em;
-  color: var(--text);
-}
-
-.roles {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  column-gap: 0.5ch;
-  margin-top: 16px;
-  font-size: clamp(1.05rem, 1.8vw, 1.3rem);
-  line-height: 1.45;
-}
-.roles__prefix { color: var(--text); font-weight: 500; }
-.roles__text { color: var(--accent-ink); font-weight: 500; }
 
 .hero__intro {
   max-width: 56ch;

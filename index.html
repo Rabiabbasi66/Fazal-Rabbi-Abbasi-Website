@@ -91,28 +91,16 @@
             <div class="terminal__body">
               <p class="status mono"><span class="status__dot" aria-hidden="true"></span>Open to internships</p>
 
-              <!-- Typing headline: ghost text reserves the final size so the layout never jumps -->
-              <h1 class="headline" id="hero-title" aria-label="Hi, I'm Fazal-E-Rabbi Abbasi">
-                <span class="type-line headline__greet" aria-hidden="true">
-                  <span class="type-ghost">Hi, I'm</span>
-                  <span class="type-live"><span data-type="greet">Hi, I'm</span><span class="caret" data-caret="greet"></span></span>
-                </span>
-                <span class="type-line headline__name" aria-hidden="true">
-                  <span class="type-ghost">Fazal-E-Rabbi Abbasi</span>
-                  <span class="type-live"><span data-type="name">Fazal-E-Rabbi Abbasi</span><span class="caret" data-caret="name"></span></span>
-                </span>
+              <!-- Typing headline.
+                   Each line is a fixed-height block, so the card never resizes while typing.
+                   The static text below is the reduced-motion / no-JS fallback; main.js clears and retypes it.
+                   One shared cursor (.typer__cursor) is moved by JS to the line being typed. -->
+              <h1 class="typer" id="hero-title"
+                  aria-label="Hi, I'm Fazal-E-Rabbi Abbasi, Python Developer, Backend Developer, Aspiring Platform Engineer, Linux and Docker Enthusiast">
+                <span class="typer__line typer__greet"><span class="typer__text" data-typer="greet" aria-hidden="true">Hi, I'm</span></span>
+                <span class="typer__line typer__name"><span class="typer__text" data-typer="name" aria-hidden="true">Fazal-E-Rabbi Abbasi</span></span>
+                <span class="typer__line typer__role mono"><span class="typer__text" aria-hidden="true"><span class="typer__prefix" data-typer="prefix">I'm a </span><span class="typer__role-text" data-typer="role">Python Developer</span></span><span class="typer__cursor" aria-hidden="true"></span></span>
               </h1>
-
-              <p class="roles" aria-label="I'm a Python Developer, Backend Developer, Aspiring Platform Engineer, and Linux &amp; DevOps Enthusiast">
-                <span class="roles__prefix" aria-hidden="true">I'm a</span>
-                <span class="type-line roles__text mono" aria-hidden="true">
-                  <span class="type-ghost">Python Developer</span>
-                  <span class="type-ghost">Backend Developer</span>
-                  <span class="type-ghost">Aspiring Platform Engineer</span>
-                  <span class="type-ghost">Linux &amp; DevOps Enthusiast</span>
-                  <span class="type-live"><span data-type="role">Python Developer</span><span class="caret" data-caret="role"></span></span>
-                </span>
-              </p>
             </div>
           </div>
 

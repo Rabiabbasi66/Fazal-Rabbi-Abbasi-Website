@@ -59,13 +59,11 @@ function init() {
     { type: 'sphere', color: palette.sand, anchor: 'photo', ax: 0.96, ay: 1.0, z: -1, px: 60 },
     { type: 'ico', color: palette.terracotta, anchor: 'photo', ax: -0.06, ay: -0.03, z: -3, px: 24 },
     { type: 'torus', color: palette.sand, anchor: 'text', ax: 0.86, ay: 0.95, z: -3, px: 30 },
-    { type: 'sphere', color: palette.caramel, anchor: 'photo', ax: -0.12, ay: 0.9, z: -4, px: 16 },
   ];
   // Single-column layout: only the empty space to the right of the small photo.
   const mobileSpecs = [
     { type: 'torus', color: palette.caramel, anchor: 'photo', ax: 1.95, ay: 0.32, z: -2, px: 30 },
     { type: 'ico', color: palette.beige, anchor: 'photo', ax: 1.4, ay: 0.72, z: -1, px: 24 },
-    { type: 'sphere', color: palette.terracotta, anchor: 'photo', ax: 1.6, ay: 0.12, z: -3, px: 10 },
   ];
 
   const anchors = {

@@ -66,80 +66,163 @@
 
   /* ==========================================================================
      Typing headline
+     One async state machine runs the whole loop, so steps can never overlap.
+     Timers are deadline-based (no drift), pause while the tab is hidden and
+     are cancelled on page unload.
      ========================================================================== */
+  const TYPER_TIMING = {
+    type: 90,            // ms per character while typing (all lines)
+    eraseRole: 50,       // ms per character when erasing a role
+    eraseAll: 50,        // ms per character when erasing "I'm a", name and greeting
+    afterGreet: 400,     // pause after "Hi, I'm"
+    afterName: 700,      // pause after the name
+    roleHold: 2000,      // how long a finished role stays visible
+    beforeEraseAll: 1000,// pause after the last role is erased
+    beforeRestart: 600,  // pause before the loop starts again
+  };
   const ROLES = [
     'Python Developer',
     'Backend Developer',
     'Aspiring Platform Engineer',
-    'Linux & DevOps Enthusiast',
+    'Linux & Docker Enthusiast',
   ];
-  const TYPE_SPEED = 70;      // ms per character while typing
-  const DELETE_SPEED = 35;    // ms per character while deleting
-  const ROLE_HOLD = 1800;     // ms a finished role stays visible
-  const GREET_PAUSE = 300;    // ms after "Hi, I'm"
 
-  const typeTargets = {
-    greet: document.querySelector('[data-type="greet"]'),
-    name: document.querySelector('[data-type="name"]'),
-    role: document.querySelector('[data-type="role"]'),
-  };
-  const carets = {
-    greet: document.querySelector('[data-caret="greet"]'),
-    name: document.querySelector('[data-caret="name"]'),
-    role: document.querySelector('[data-caret="role"]'),
-  };
+  function initTyper() {
+    const parts = {
+      greet: document.querySelector('[data-typer="greet"]'),
+      name: document.querySelector('[data-typer="name"]'),
+      prefix: document.querySelector('[data-typer="prefix"]'),
+      role: document.querySelector('[data-typer="role"]'),
+    };
+    const cursor = document.querySelector('.typer__cursor');
+    if (!cursor || Object.values(parts).some((el) => !el)) return;
 
-  function showCaret(key) {
-    Object.entries(carets).forEach(([k, el]) => el && el.classList.toggle('is-active', k === key));
-  }
+    // Reduced motion: keep the static markup (full name + first role), no loop.
+    if (prefersReducedMotion) return;
 
-  async function typeText(el, text, speed) {
-    for (let i = 1; i <= text.length; i++) {
-      el.textContent = text.slice(0, i);
-      await sleep(speed);
+    const texts = {
+      greet: parts.greet.textContent,
+      name: parts.name.textContent,
+      prefix: parts.prefix.textContent,
+    };
+
+    const STOP = Symbol('typer-stopped');
+    let stopped = false;
+    let timer = 0;
+    let pending = null;     // { resolve, reject } of the current wait()
+    let deadline = 0;       // absolute time (ms) the current wait() should end
+    let hiddenAt = 0;
+
+    /** Wait `ms` after the previous deadline (not after "now"), so timer lag never accumulates. */
+    function wait(ms) {
+      return new Promise((resolve, reject) => {
+        if (stopped) { reject(STOP); return; }
+        pending = { resolve, reject };
+        deadline = Math.max(deadline + ms, performance.now());
+        schedule();
+      });
     }
-  }
 
-  async function deleteText(el, speed) {
-    while (el.textContent.length) {
-      el.textContent = el.textContent.slice(0, -1);
-      await sleep(speed);
+    function schedule() {
+      clearTimeout(timer);
+      if (!pending || document.hidden) return; // resumed by visibilitychange
+      timer = setTimeout(() => {
+        const p = pending;
+        pending = null;
+        p.resolve();
+      }, Math.max(0, deadline - performance.now()));
     }
-  }
 
-  async function runTyping() {
-    const { greet, name, role } = typeTargets;
-    if (!greet || !name || !role) return;
+    // Pause while hidden; on return, shift the schedule so it resumes exactly where it stopped.
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        clearTimeout(timer);
+        hiddenAt = performance.now();
+      } else {
+        deadline += performance.now() - hiddenAt;
+        schedule();
+      }
+    });
 
-    const greetText = greet.textContent;
-    const nameText = name.textContent;
+    // Cancel timers on unload; restart cleanly if the page comes back from the back/forward cache.
+    window.addEventListener('pagehide', () => {
+      stopped = true;
+      clearTimeout(timer);
+      if (pending) { pending.reject(STOP); pending = null; }
+    });
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted && stopped) { stopped = false; run(); }
+    });
 
-    // Reduced motion: keep the static markup (full name + first role), just show the caret.
-    if (prefersReducedMotion) { showCaret('role'); return; }
-
-    greet.textContent = '';
-    name.textContent = '';
-    role.textContent = '';
-
-    showCaret('greet');
-    await sleep(350);
-    await typeText(greet, greetText, TYPE_SPEED);
-    await sleep(GREET_PAUSE);
-
-    showCaret('name');
-    await typeText(name, nameText, TYPE_SPEED);
-    await sleep(500);
-
-    showCaret('role');
-    for (let i = 0; ; i = (i + 1) % ROLES.length) {
-      await typeText(role, ROLES[i], TYPE_SPEED);
-      await sleep(ROLE_HOLD);
-      await deleteText(role, DELETE_SPEED);
-      await sleep(250);
+    /** Put the single cursor at the end of the given line. */
+    function moveCursor(key) {
+      parts[key].closest('.typer__line').appendChild(cursor);
     }
+
+    async function type(el, text, speed) {
+      cursor.classList.add('is-typing');
+      for (const ch of text) {
+        el.textContent += ch;
+        await wait(speed);
+      }
+      cursor.classList.remove('is-typing');
+    }
+
+    async function erase(el, speed) {
+      cursor.classList.add('is-typing');
+      while (el.textContent.length) {
+        el.textContent = el.textContent.slice(0, -1);
+        await wait(speed);
+      }
+      cursor.classList.remove('is-typing');
+    }
+
+    async function loop() {
+      const T = TYPER_TIMING;
+      for (;;) {
+        // 1. "Hi, I'm"
+        moveCursor('greet');
+        await type(parts.greet, texts.greet, T.type);
+        await wait(T.afterGreet);
+
+        // 2. Name
+        moveCursor('name');
+        await type(parts.name, texts.name, T.type);
+        await wait(T.afterName);
+
+        // 3-4. "I'm a " + each role: type, hold, erase
+        moveCursor('role');
+        await type(parts.prefix, texts.prefix, T.type);
+        for (const role of ROLES) {
+          await type(parts.role, role, T.type);
+          await wait(T.roleHold);
+          await erase(parts.role, T.eraseRole);
+        }
+
+        // 5. Erase bottom-up: "I'm a ", name, greeting
+        await wait(T.beforeEraseAll);
+        await erase(parts.prefix, T.eraseAll);
+        moveCursor('name');
+        await erase(parts.name, T.eraseAll);
+        moveCursor('greet');
+        await erase(parts.greet, T.eraseAll);
+
+        // 6. Short pause, then start over
+        await wait(T.beforeRestart);
+      }
+    }
+
+    function run() {
+      Object.values(parts).forEach((el) => { el.textContent = ''; });
+      cursor.classList.remove('is-typing');
+      deadline = performance.now();
+      loop().catch((err) => { if (err !== STOP) throw err; });
+    }
+
+    run();
   }
 
-  runTyping();
+  initTyper();
 
   /* ==========================================================================
      CSS 3D tilt (desktop / fine pointer only)
