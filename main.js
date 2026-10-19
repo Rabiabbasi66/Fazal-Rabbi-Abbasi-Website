@@ -5,7 +5,6 @@
 (() => {
   'use strict';
 
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -96,16 +95,6 @@
     };
     const cursor = document.querySelector('.typer__cursor');
     if (Object.values(parts).some((el) => !el) || !cursor) return;
-
-    // Reduced motion: fill the hero in once and leave it static.
-    if (prefersReducedMotion) {
-      parts.greeting.textContent = HERO.greeting;
-      parts.name.textContent = HERO.name;
-      parts.prefix.textContent = HERO.prefix;
-      parts.role.textContent = HERO.roles[0];
-      cursor.remove();
-      return;
-    }
 
     /** Put the single cursor at the end of the line that owns `el`. */
     function moveCursorTo(el) {
@@ -199,7 +188,7 @@
     });
   }
 
-  if (hasFinePointer && !prefersReducedMotion) {
+  if (hasFinePointer) {
     document.querySelectorAll('[data-tilt]').forEach((el) => {
       initTilt(el, el.classList.contains('photo') ? 7 : 6);
     });
@@ -209,7 +198,7 @@
      Fade-up on scroll
      ========================================================================== */
   const revealEls = document.querySelectorAll('.reveal');
-  if (!('IntersectionObserver' in window) || prefersReducedMotion) {
+  if (!('IntersectionObserver' in window)) {
     revealEls.forEach((el) => el.classList.add('is-visible'));
   } else {
     const revealObserver = new IntersectionObserver((entries, obs) => {

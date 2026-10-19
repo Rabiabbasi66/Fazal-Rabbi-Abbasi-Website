@@ -765,17 +765,3 @@ h1, h2, h3, p, figure { margin: 0; }
   .brand__name { display: none; }
   .hero__actions .btn { flex: 1 1 auto; }
 }
-
-/* ==========================================================================
-   Reduced motion: no animation, static everything
-   ========================================================================== */
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-  .js .reveal { opacity: 1; transform: none; }
-  .tilt { transform: none; }
-}
