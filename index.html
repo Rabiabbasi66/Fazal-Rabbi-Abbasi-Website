@@ -1,1236 +1,414 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fazal-E-Rabbi Abbasi - Full-Stack Developer Portfolio</title>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preconnect" href="https://unpkg.com" crossorigin>
-    <link rel="dns-prefetch" href="https://fazal-rabbi-abbasi-website.vercel.app">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Three.js CDN (deferred: downloads in background, never blocks first paint) -->
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Lucide Icons (deferred: runs after HTML parsing, in order before main.js) -->
-    <script defer src="https://unpkg.com/lucide@latest"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fazal-E-Rabbi Abbasi | Python &amp; Backend Developer</title>
+  <meta name="description" content="Portfolio of Fazal-E-Rabbi Abbasi, 7th semester Software Engineering student, Python and backend developer and aspiring platform engineer focused on Linux, Docker and CI/CD.">
+  <meta name="author" content="Fazal-E-Rabbi Abbasi">
+  <meta name="theme-color" content="#FAF7F2">
+  <link rel="canonical" href="https://fazal-rabbi-abbasi-website.vercel.app/">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <!-- Open Graph / social preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Fazal-E-Rabbi Abbasi">
+  <meta property="og:title" content="Fazal-E-Rabbi Abbasi | Python &amp; Backend Developer">
+  <meta property="og:description" content="Backend developer and aspiring platform engineer. Python, FastAPI, Linux, Docker and CI/CD.">
+  <meta property="og:url" content="https://fazal-rabbi-abbasi-website.vercel.app/">
+  <meta property="og:image" content="https://fazal-rabbi-abbasi-website.vercel.app/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Fazal-E-Rabbi Abbasi, Python and Backend Developer">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Fazal-E-Rabbi Abbasi | Python &amp; Backend Developer">
+  <meta name="twitter:description" content="Backend developer and aspiring platform engineer. Python, FastAPI, Linux, Docker and CI/CD.">
+  <meta name="twitter:image" content="https://fazal-rabbi-abbasi-website.vercel.app/og-image.jpg">
+
+  <!-- Self-hosted fonts + critical hero image -->
+  <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="images/fazal-480.webp" as="image" type="image/webp">
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" crossorigin>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Mark JS as available before first paint so reveal animations never flash -->
+  <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
-    <!-- 3D Background Canvas -->
-    <canvas id="bg-canvas"></canvas>
+  <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- Navigation -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <div class="logo-icon">FRA</div>
-                <span class="logo-text">Fazal-E-Rabbi Abbasi</span>
+  <!-- ============ NAVBAR ============ -->
+  <header class="nav" id="nav">
+    <div class="container nav__inner">
+      <a href="#home" class="brand" aria-label="Fazal-E-Rabbi Abbasi, back to top">
+        <span class="brand__mark" aria-hidden="true">FRA</span>
+        <span class="brand__name">Fazal-E-Rabbi Abbasi</span>
+      </a>
+
+      <button class="nav__toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Open menu">
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+      </button>
+
+      <nav aria-label="Primary">
+        <ul class="nav__menu" id="nav-menu">
+          <li><a class="nav__link" href="#about">About</a></li>
+          <li><a class="nav__link" href="#projects">Projects</a></li>
+          <li><a class="nav__link" href="#skills">Skills</a></li>
+          <li><a class="nav__link" href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <!-- Three.js background (decorative) -->
+      <canvas class="hero__canvas" id="hero-canvas" aria-hidden="true"></canvas>
+
+      <div class="container hero__grid">
+        <div class="hero__media">
+          <figure class="photo tilt" data-tilt>
+            <img
+              src="images/fazal-480.webp"
+              srcset="images/fazal-480.webp 480w, images/fazal-720.webp 720w"
+              sizes="(max-width: 860px) 220px, 420px"
+              width="480" height="720"
+              alt="Portrait of Fazal-E-Rabbi Abbasi in a grey blazer in an office"
+              fetchpriority="high" decoding="async">
+          </figure>
+        </div>
+
+        <div class="hero__text">
+          <div class="terminal">
+            <div class="terminal__bar">
+              <span class="terminal__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="terminal__label mono">~/fazal $ whoami</span>
             </div>
-            
-            <ul class="nav-menu" id="nav-menu">
-                <li><a href="#home" class="nav-link">Home</a></li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#skills" class="nav-link">Skills</a></li>
-                <li><a href="#projects" class="nav-link">Projects</a></li>
-                <li><a href="#services" class="nav-link">Services</a></li>
-                <li><a href="#upwork" class="nav-link">Upwork</a></li>
-                <li><a href="#contact" class="nav-link">Contact</a></li>
+
+            <div class="terminal__body">
+              <p class="status mono"><span class="status__dot" aria-hidden="true"></span>Open to internships</p>
+
+              <!-- Typing headline.
+                   Each line is a fixed-height block, so the card never resizes while typing.
+                   The static text below is the reduced-motion / no-JS fallback; main.js clears and retypes it.
+                   One shared cursor (.typer__cursor) is moved by JS to the line being typed. -->
+              <h1 class="typer" id="hero-title"
+                  aria-label="Hi, I'm Fazal-E-Rabbi Abbasi, Python Developer, Backend Developer, Aspiring Platform Engineer, Linux and Docker Enthusiast">
+                <span class="typer__line typer__greet"><span class="typer__text" data-typer="greet" aria-hidden="true">Hi, I'm</span></span>
+                <span class="typer__line typer__name"><span class="typer__text" data-typer="name" aria-hidden="true">Fazal-E-Rabbi Abbasi</span></span>
+                <span class="typer__line typer__role mono"><span class="typer__text" aria-hidden="true"><span class="typer__prefix" data-typer="prefix">I'm a </span><span class="typer__role-text" data-typer="role">Python Developer</span></span><span class="typer__cursor" aria-hidden="true"></span></span>
+              </h1>
+            </div>
+          </div>
+
+          <p class="hero__intro">
+            7th Semester Software Engineering Student focused on backend development and DevOps engineering:
+            building scalable, automated and resilient systems with Python, FastAPI, Linux and Docker.
+          </p>
+
+          <div class="hero__actions">
+            <a href="#projects" class="btn btn--primary">View Projects</a>
+            <a href="fazalrabbiabbasicv.pdf" class="btn btn--outline" download="Fazal_Rabbi_Abbasi_CV.pdf">
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-5-5m5 5 5-5M5 21h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Download CV
+            </a>
+          </div>
+
+          <ul class="socials" aria-label="Social profiles">
+            <li>
+              <a class="social" href="https://github.com/Rabiabbasi66" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-github"/></svg>
+              </a>
+            </li>
+            <li>
+              <a class="social" href="https://www.linkedin.com/in/fazal-e-rabbi-abbasi-a0200a443/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-linkedin"/></svg>
+              </a>
+            </li>
+            <li>
+              <a class="social" href="https://www.instagram.com/fazal_rabbi2816/" target="_blank" rel="noopener noreferrer" aria-label="Instagram profile">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-instagram"/></svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow mono">01 / about</p>
+          <h2 class="section__title" id="about-title">Backend Developer &amp; Aspiring Platform Engineer</h2>
+        </header>
+
+        <div class="about reveal">
+          <div class="about__copy">
+            <p>
+              I'm a 7th-semester BS Software Engineering student and a backend-focused developer. What I enjoy most
+              sits behind the interface: designing APIs that behave predictably, modeling data so it stays consistent
+              as an application grows, and writing code another developer can read without a walkthrough.
+            </p>
+            <p>
+              My main tools are Python and FastAPI, with MongoDB and MySQL for database work. I'm now working toward
+              platform engineering: Linux fundamentals, Docker and container workflows, and the CI/CD side of shipping
+              software. The goal is to understand and operate the systems reliable applications depend on.
+            </p>
+          </div>
+
+          <ul class="facts" aria-label="Quick facts">
+            <li class="fact">
+              <span class="fact__label mono">Degree</span>
+              <span class="fact__value">BS Software Engineering</span>
+              <span class="fact__meta">Sarhad University of Science &amp; IT, Peshawar (2023 to 2027)</span>
+            </li>
+            <li class="fact">
+              <span class="fact__label mono">Semester</span>
+              <span class="fact__value">7th Semester</span>
+              <span class="fact__meta">Based in Abbottabad, Pakistan</span>
+            </li>
+            <li class="fact">
+              <span class="fact__label mono">Focus</span>
+              <span class="fact__value">Backend &amp; Platform</span>
+              <span class="fact__meta">APIs and databases, Linux, Docker, CI/CD</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ PROJECTS ============ -->
+    <section class="section section--alt" id="projects" aria-labelledby="projects-title">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow mono">02 / projects</p>
+          <h2 class="section__title" id="projects-title">Selected work</h2>
+          <p class="section__lead">Projects I've built and deployed, from monitoring tools to AI-powered apps.</p>
+        </header>
+
+        <ul class="projects">
+          <li class="reveal">
+            <article class="card tilt" data-tilt>
+              <div class="card__media">
+                <img src="devops-monitor-pro.svg" width="800" height="450" loading="lazy" decoding="async" alt="DevOps Monitor Pro dashboard showing live CPU, RAM and disk charts">
+              </div>
+              <div class="card__body">
+                <h3 class="card__title">DevOps Monitor Pro</h3>
+                <p class="card__desc">Infrastructure monitoring and alerting platform that tracks Windows machines in real time (CPU, RAM, disk) through a dedicated agent, with a WebSockets live feed.</p>
+                <ul class="tags" aria-label="Tech stack">
+                  <li>Python</li><li>FastAPI</li><li>Streamlit</li><li>MongoDB</li><li>WebSockets</li><li>JWT</li><li>Docker</li><li>GitHub Actions</li>
+                </ul>
+                <div class="card__links">
+                  <a href="https://devops-monitor-pro-ncfzbp7999gwequkrpd4ad.streamlit.app/" target="_blank" rel="noopener noreferrer">Live<span class="sr-only"> demo of DevOps Monitor Pro</span></a>
+                  <a href="https://github.com/Rabiabbasi66/devops-monitor-pro" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> repository for DevOps Monitor Pro</span></a>
+                  <a href="https://github.com/Rabiabbasi66/devops-monitor-pro/releases/latest/download/DevOpsMonitorAgent-Setup.exe" rel="noopener noreferrer">Windows Agent<span class="sr-only"> download</span></a>
+                </div>
+              </div>
+            </article>
+          </li>
+
+          <li class="reveal">
+            <article class="card tilt" data-tilt>
+              <div class="card__media">
+                <img src="images/agriscan.webp" width="960" height="759" loading="lazy" decoding="async" alt="AgriScan 3D crop mapping interface">
+              </div>
+              <div class="card__body">
+                <h3 class="card__title">AgriScan 3D</h3>
+                <p class="card__desc">AI-powered drone crop mapping and disease detection using WebGPU rendering, FastAPI, MongoDB and computer vision.</p>
+                <ul class="tags" aria-label="Tech stack">
+                  <li>Python</li><li>FastAPI</li><li>Computer Vision</li><li>MongoDB</li><li>WebGPU</li>
+                </ul>
+                <div class="card__links">
+                  <a href="https://agriscan-3d.vercel.app/" target="_blank" rel="noopener noreferrer">Live<span class="sr-only"> demo of AgriScan 3D</span></a>
+                  <a href="https://github.com/Rabiabbasi66/Agriscan-3D-frontend" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> repository for AgriScan 3D</span></a>
+                </div>
+              </div>
+            </article>
+          </li>
+
+          <li class="reveal">
+            <article class="card tilt" data-tilt>
+              <div class="card__media">
+                <img src="images/task-manager.webp" width="960" height="721" loading="lazy" decoding="async" alt="Task Management App board view">
+              </div>
+              <div class="card__body">
+                <h3 class="card__title">Task Management App</h3>
+                <p class="card__desc">Task management application with a drag-and-drop interface, authentication, real-time updates and team collaboration.</p>
+                <ul class="tags" aria-label="Tech stack">
+                  <li>React.js</li><li>FastAPI</li><li>MongoDB</li><li>Tailwind</li>
+                </ul>
+                <div class="card__links">
+                  <a href="https://task-managnment-app.vercel.app/" target="_blank" rel="noopener noreferrer">Live<span class="sr-only"> demo of Task Management App</span></a>
+                  <a href="https://github.com/Rabiabbasi66/task-managnment-app" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> repository for Task Management App</span></a>
+                </div>
+              </div>
+            </article>
+          </li>
+
+          <li class="reveal">
+            <article class="card tilt" data-tilt>
+              <div class="card__media">
+                <img src="images/ai-chat.webp" width="960" height="720" loading="lazy" decoding="async" alt="AI Chat Application conversation screen">
+              </div>
+              <div class="card__body">
+                <h3 class="card__title">AI Chat Application</h3>
+                <p class="card__desc">AI-powered chatbot with real-time messaging over WebSockets and intelligent responses.</p>
+                <ul class="tags" aria-label="Tech stack">
+                  <li>AI / LLM</li><li>WebSockets</li><li>FastAPI</li><li>React.js</li>
+                </ul>
+                <div class="card__links">
+                  <a href="https://chat-app-steel-alpha.vercel.app/" target="_blank" rel="noopener noreferrer">Live<span class="sr-only"> demo of AI Chat Application</span></a>
+                  <a href="https://github.com/Rabiabbasi66/Chat-app" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> repository for AI Chat Application</span></a>
+                </div>
+              </div>
+            </article>
+          </li>
+
+          <li class="reveal">
+            <article class="card tilt" data-tilt>
+              <div class="card__media">
+                <img src="images/portfolio.webp" width="960" height="536" loading="lazy" decoding="async" alt="Earlier version of this portfolio website">
+              </div>
+              <div class="card__body">
+                <h3 class="card__title">3D Portfolio Website</h3>
+                <p class="card__desc">This site: a hand-written portfolio with subtle Three.js 3D, responsive layout and a FastAPI + MongoDB contact backend.</p>
+                <ul class="tags" aria-label="Tech stack">
+                  <li>Three.js</li><li>JavaScript</li><li>FastAPI</li><li>MongoDB</li>
+                </ul>
+                <div class="card__links">
+                  <a href="https://fazal-rabbi-abbasi-website.vercel.app" target="_blank" rel="noopener noreferrer">Live<span class="sr-only"> portfolio website</span></a>
+                  <a href="https://github.com/Rabiabbasi66/Fazal-Rabbi-Abbasi-Website" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> repository for the portfolio website</span></a>
+                </div>
+              </div>
+            </article>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ SKILLS ============ -->
+    <section class="section" id="skills" aria-labelledby="skills-title">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow mono">03 / skills</p>
+          <h2 class="section__title" id="skills-title">Toolkit</h2>
+          <p class="section__lead">Backend, databases and infrastructure. Items marked <span class="chip__note mono">learning</span> are in progress.</p>
+        </header>
+
+        <div class="skills">
+          <div class="skill-group reveal">
+            <h3 class="skill-group__title mono">Languages</h3>
+            <ul class="chips">
+              <li class="chip">Python</li><li class="chip">JavaScript</li><li class="chip">TypeScript</li><li class="chip">SQL</li><li class="chip">HTML5</li><li class="chip">CSS3</li>
+            </ul>
+          </div>
+          <div class="skill-group reveal">
+            <h3 class="skill-group__title mono">Backend</h3>
+            <ul class="chips">
+              <li class="chip">FastAPI</li><li class="chip">REST APIs</li><li class="chip">Node.js</li><li class="chip">Express.js</li><li class="chip">GraphQL</li><li class="chip">JWT / OAuth</li><li class="chip">WebSockets</li><li class="chip">MongoDB Atlas</li><li class="chip">PostgreSQL</li><li class="chip">MySQL</li><li class="chip">Redis</li><li class="chip">Firebase</li>
+            </ul>
+          </div>
+          <div class="skill-group reveal">
+            <h3 class="skill-group__title mono">DevOps and Linux</h3>
+            <ul class="chips">
+              <li class="chip">Linux / Unix</li><li class="chip">Git &amp; GitHub</li><li class="chip">GitHub Actions</li>
+              <li class="chip">Docker <span class="chip__note mono">learning</span></li>
+              <li class="chip">CI/CD Pipelines <span class="chip__note mono">learning</span></li>
+              <li class="chip">AWS (EC2, S3, RDS) <span class="chip__note mono">learning</span></li>
+              <li class="chip">Kubernetes <span class="chip__note mono">goal</span></li>
+              <li class="chip">Vercel</li><li class="chip">Render</li><li class="chip">Netlify</li>
+            </ul>
+          </div>
+          <div class="skill-group reveal">
+            <h3 class="skill-group__title mono">Tools</h3>
+            <ul class="chips">
+              <li class="chip">VS Code</li><li class="chip">Postman</li><li class="chip">Swagger / OpenAPI</li><li class="chip">React.js</li><li class="chip">Tailwind CSS</li><li class="chip">Three.js</li><li class="chip">Vite / Webpack</li><li class="chip">NPM / Yarn</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="section section--alt" id="contact" aria-labelledby="contact-title">
+      <div class="container">
+        <header class="section__head reveal">
+          <p class="eyebrow mono">04 / contact</p>
+          <h2 class="section__title" id="contact-title">Let's talk</h2>
+          <p class="section__lead">I'm always interested in hearing about internships, projects and opportunities. Whether you have a question or just want to say hi, feel free to reach out.</p>
+        </header>
+
+        <div class="contact">
+          <div class="contact__info reveal">
+            <ul class="contact__list">
+              <li>
+                <span class="contact__label mono">Email</span>
+                <a href="mailto:Rabif1820@gmail.com">Rabif1820@gmail.com</a>
+              </li>
+              <li>
+                <span class="contact__label mono">Phone</span>
+                <a href="tel:+923110853195">+92 311 085 31 95</a>
+              </li>
+              <li>
+                <span class="contact__label mono">WhatsApp</span>
+                <a href="https://wa.me/923110853195?text=Hello%20Fazal%20I%20saw%20your%20portfolio%20and%20want%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a>
+              </li>
+              <li>
+                <span class="contact__label mono">Freelance</span>
+                <a href="https://www.upwork.com/freelancers/~014851cdad1612d7e5?companyReference=2031454716732761811&amp;mp_source=share" target="_blank" rel="noopener noreferrer">Upwork profile</a>
+              </li>
+              <li>
+                <span class="contact__label mono">Location</span>
+                <span>Abbottabad, Pakistan</span>
+              </li>
             </ul>
 
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+            <ul class="socials" aria-label="Social profiles">
+              <li><a class="social" href="https://github.com/Rabiabbasi66" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-github"/></svg></a></li>
+              <li><a class="social" href="https://www.linkedin.com/in/fazal-e-rabbi-abbasi-a0200a443/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-linkedin"/></svg></a></li>
+              <li><a class="social" href="https://www.instagram.com/fazal_rabbi2816/" target="_blank" rel="noopener noreferrer" aria-label="Instagram profile"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-instagram"/></svg></a></li>
+            </ul>
+          </div>
+
+          <form class="form reveal" id="contact-form" novalidate>
+            <div class="form__row">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" autocomplete="name" required minlength="2" maxlength="100" placeholder="Your name">
             </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-left">
-                    <span class="welcome-badge">👋 Welcome to my portfolio</span>
-                    <h1 class="hero-title">
-                        Hi, I'm <span class="gradient-text">FAZAL-E-RABBI ABBASI</span>
-                    </h1>
-                    <p class="hero-subtitle">Aspiring Platform Engineer | Backend | DevOps | Linux</p>
-                    <p class="hero-description">
-                        7th Semester Software Engineering Student passionate about creating innovative web
-                        solutions. Specialized in modern frameworks and 3D web experiences. Currently expanding my expertise in 
-                        <strong style="color: #60a5fa;">Backend Development & Devops Engineering</strong> — building scalable, 
-                        automated, and resilient systems. Always eager to learn and grow in the ever-evolving world of technology.
-                    </p>
-                    
-                    <div class="hero-buttons">
-                        <a href="#projects" class="btn btn-primary">
-                            <i class="fa-solid fa-code"></i>
-                            View Projects
-                        </a>
-                        <a href="https://www.upwork.com/freelancers/~014851cdad1612d7e5?companyReference=2031454716732761811&mp_source=share" target="_blank" class="btn btn-primary pulse-btn">
-                            <i data-lucide="calendar"></i>
-                            Book a Call
-                        </a>
-                        <a href="fazalrabbiabbasicv.pdf" class="btn btn-secondary" onclick="downloadCV(); return false;">
-                            <i data-lucide="download"></i>
-                            Download CV
-                        </a>
-                    </div>
-
-                    <div class="social-links">
-                        <a href="https://github.com/Rabiabbasi66" target="_blank" class="social-link">
-                            <i class="fa-brands fa-github"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/fazal-e-rabbi-abbasi-a0200a443/" target="_blank" class="social-link">
-                            <i class="fa-brands fa-linkedin"></i>
-                        </a>
-                        <a href="mailto:Rabif1820@gmail.com" class="social-link">
-                            <i class="fa-solid fa-envelope"></i>
-                        </a>
-                        <a href="https://www.instagram.com/fazal_rabbi2816/" target="_blank" class="social-link">
-                            <i class="fa-brands fa-instagram"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="hero-right">
-                    <div class="hero-image-wrapper floating">
-                        <div class="glow-effect"></div>
-                        <div class="hero-image-container">
-                            <img src="portfolio-new.webp" alt="Portfolio" class="hero-image" fetchpriority="high" decoding="async">
-                            <div class="image-overlay"></div>
-                        </div>
-                    </div>
-                    <div class="decorative-circle circle-1"></div>
-                    <div class="decorative-circle circle-2"></div>
-                </div>
+            <div class="form__row">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
             </div>
+            <div class="form__row">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="5" required minlength="10" maxlength="2000" placeholder="Tell me about the role or project"></textarea>
+            </div>
+            <button type="submit" class="btn btn--primary">Send message</button>
+            <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+          </form>
         </div>
+      </div>
     </section>
+  </main>
 
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">About <span class="gradient-text">Me</span></h2>
-                <p class="section-subtitle">Building the future of web, one line of code at a time</p>
-            </div>
-
-            <div class="about-content">
-                <div class="about-left">
-                    <div class="about-image-wrapper">
-                        <img src="safar-safarov-koOdUvfGr4c-unsplash.jpg" alt="Developer workspace" class="about-image" loading="lazy" decoding="async">
-                        <div class="about-image-overlay"></div>
-                        <div class="about-icon-badge">
-                            <i data-lucide="user"></i>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="about-right">
-                    <h3 class="about-title">Backend Developer & Aspiring Platform Engineer</h3>
-                    
-                    <p class="about-text">
-                        I'm a 7th-semester BS Software Engineering student and a backend-focused developer. What I enjoy most in 
-                        software sits behind the interface: designing APIs that behave predictably, modeling data so it stays 
-                        consistent as an application grows, and writing code another developer can read without a walkthrough. 
-                        I prefer correctness over decoration — a request that returns the right data, a query that holds up as 
-                        the collection grows.
-                    </p>
-
-                    <p class="about-text">
-                        My main tools are Python and FastAPI for backend services and REST APIs, with MongoDB and MySQL for 
-                        database work: schema design, queries, and decisions that keep data clean over time. Git and GitHub 
-                        handle version control and collaboration. My projects are full-stack — a task management app with 
-                        authentication, an AI chat app built on WebSockets, and DevOps Monitor Pro, where a FastAPI backend 
-                        collects live metrics from a Windows agent. Building those interfaces taught me what a backend must 
-                        deliver.
-                    </p>
-
-                    <p class="about-text" style="border-left: 3px solid #3b82f6; padding-left: 15px; background: rgba(59, 130, 246, 0.05); border-radius: 0 8px 8px 0; padding: 12px 15px;">
-                        <strong style="color: #60a5fa;">🚀 Platform Engineering Direction:</strong> I'm working toward platform engineering, and my current focus is 
-                        the layer underneath the application — Linux fundamentals, Docker and container workflows, and the 
-                        CI/CD and deployment side of shipping software. Rather than collecting tool names, I'm learning how a 
-                        service is packaged, how it reaches production, and what fails first when something goes wrong. The 
-                        goal is to understand and operate the systems reliable applications depend on.
-                    </p>
-
-                    <div class="about-highlights">
-                        <div class="highlight-card">
-                            <div class="highlight-icon">
-                                <i data-lucide="graduation-cap"></i>
-                            </div>
-                            <div class="highlight-content">
-                                <h4>Education</h4>
-                                <p>7th Semester - BS Software Engineering</p>
-                            </div>
-                        </div>
-                        <div class="highlight-card">
-                            <div class="highlight-icon">
-                                <i data-lucide="school"></i>
-                            </div>
-                            <div class="highlight-content">
-                                <h4>College</h4>
-                                <p>Pre-Engineering - Pakistan Scout Cadet College Batrasi, Manshera (2018-2020)</p>
-                            </div>
-                        </div>
-                        <div class="highlight-card">
-                            <div class="highlight-icon">
-                                <i data-lucide="building-2"></i>
-                            </div>
-                            <div class="highlight-content">
-                                <h4>University</h4>
-                                <p>BS Software Engineering - Sarhad University of Science and Information Technology, Peshawar (2023-2027)</p>
-                            </div>
-                        </div>
-                        <div class="highlight-card">
-                            <div class="highlight-icon">
-                                <i data-lucide="target"></i>
-                            </div>
-                            <div class="highlight-content">
-                                <h4>Current Focus</h4>
-                                <p>Backend APIs and databases, building toward <strong style="color: #60a5fa;">Platform Engineering</strong></p>
-                            </div>
-                        </div>
-                        <div class="highlight-card">
-                            <div class="highlight-icon">
-                                <i data-lucide="heart"></i>
-                            </div>
-                            <div class="highlight-content">
-                                <h4>Passion</h4>
-                                <p>I'm drawn to the infrastructure side of software: automating deployments, keeping services observable, and making systems easier for the next person to operate. That's the direction I'm working toward.</p>
-                            </div>
-                        </div>
-                        <div class="highlight-card" style="border: 1px solid rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.05);">
-                            <div class="highlight-icon" style="background: linear-gradient(to bottom right, #f59e0b, #f97316);">
-                                <i data-lucide="cloud-upload"></i>
-                            </div>
-                            <div class="highlight-content">
-                                <h4>DevOps Engineer Ambition</h4>
-                                <p style="color: #60a5fa;">Learning Docker, CI/CD, AWS, Kubernetes — Building scalable, automated infrastructure</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value">2+</div>
-                    <div class="stat-label">Years Experience</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">3+</div>
-                    <div class="stat-label">Projects Completed</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">20+</div>
-                    <div class="stat-label">Technologies</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">🚀</div>
-                    <div class="stat-label">Learning DevOps</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Skills Section -->
-    <section id="skills" class="skills">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Skills & <span class="gradient-text">Expertise</span></h2>
-                <p class="section-subtitle">Backend, Databases & Infrastructure Toolkit</p>
-                <p style="color: #60a5fa; font-size: 0.9rem; margin-top: 5px;">
-                    🚀 Currently expanding my DevOps Engineering & Cloud Computing skills
-                </p>
-            </div>
-
-            <div class="skills-grid">
-                <!-- Backend -->
-                <div class="skill-card" data-category="backend">
-                    <div class="skill-header">
-                        <div class="skill-icon gradient-purple">
-                            <i data-lucide="server"></i>
-                        </div>
-                        <h3>Backend</h3>
-                    </div>
-                    <div class="skill-list">
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Python</span>
-                                <span>90%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 90%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>FastAPI</span>
-                                <span>85%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 85%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>REST APIs</span>
-                                <span>80%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 80%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>JWT / OAuth</span>
-                                <span>75%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 75%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>WebSockets</span>
-                                <span>60%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 60%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Frontend -->
-                <div class="skill-card" data-category="frontend">
-                    <div class="skill-header">
-                        <div class="skill-icon gradient-blue">
-                            <i data-lucide="code-2"></i>
-                        </div>
-                        <h3>Frontend</h3>
-                    </div>
-                    <div class="skill-list">
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>React.js</span>
-                                <span>75%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 75%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>JavaScript</span>
-                                <span>80%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 80%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>TypeScript</span>
-                                <span>60%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 60%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Tailwind CSS</span>
-                                <span>90%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 90%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Three.js</span>
-                                <span>65%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 65%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Database -->
-                <div class="skill-card" data-category="database">
-                    <div class="skill-header">
-                        <div class="skill-icon gradient-green">
-                            <i data-lucide="database"></i>
-                        </div>
-                        <h3>Database</h3>
-                    </div>
-                    <div class="skill-list">
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>MongoDB Atlas</span>
-                                <span>85%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 85%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>PostgreSQL</span>
-                                <span>80%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 80%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>MySQL</span>
-                                <span>75%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 75%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Redis</span>
-                                <span>70%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 70%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Firebase</span>
-                                <span>80%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 80%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- DevOps -->
-                <div class="skill-card" data-category="devops" style="border: 2px solid rgba(59, 130, 246, 0.3);">
-                    <div class="skill-header">
-                        <div class="skill-icon" style="background: linear-gradient(135deg, #f59e0b, #f97316);">
-                            <i data-lucide="cloud-upload"></i>
-                        </div>
-                        <h3>DevOps <span style="font-size: 0.7rem; background: rgba(251, 191, 36, 0.2); padding: 2px 10px; border-radius: 20px; color: #fbbf24; margin-left: 8px;">🚀 Ambition</span></h3>
-                    </div>
-                    <div class="skill-list">
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Git & GitHub</span>
-                                <span>90%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 90%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Docker <span style="font-size: 0.7rem; color: #fbbf24;">📖 Learning</span></span>
-                                <span>50%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 50%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>CI/CD Pipelines <span style="font-size: 0.7rem; color: #fbbf24;">📖 Learning</span></span>
-                                <span>45%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 45%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Linux / Unix</span>
-                                <span>75%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 75%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>AWS (EC2, S3, RDS) <span style="font-size: 0.7rem; color: #fbbf24;">📖 Learning</span></span>
-                                <span>40%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 40%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Kubernetes <span style="font-size: 0.7rem; color: #fbbf24;">🎯 Goal</span></span>
-                                <span>25%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 25%; background: linear-gradient(to right, #f59e0b, #f97316);"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="margin-top: 12px; padding: 8px 12px; background: rgba(251, 191, 36, 0.1); border-radius: 8px; border-left: 3px solid #fbbf24;">
-                        <p style="font-size: 0.8rem; color: #fbbf24; margin: 0;">
-                            🚀 <strong>DevOps Engineer Goal:</strong> Building scalable, automated, and resilient cloud infrastructure
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Deployment -->
-                <div class="skill-card" data-category="deployment">
-                    <div class="skill-header">
-                        <div class="skill-icon gradient-indigo">
-                            <i data-lucide="cloud-upload"></i>
-                        </div>
-                        <h3>Deployment</h3>
-                    </div>
-                    <div class="skill-list">
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Vercel</span>
-                                <span>95%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 95%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Render</span>
-                                <span>85%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 85%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Netlify</span>
-                                <span>80%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 80%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Heroku</span>
-                                <span>75%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 75%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Firebase Hosting</span>
-                                <span>75%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 75%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tools -->
-                <div class="skill-card" data-category="tools">
-                    <div class="skill-header">
-                        <div class="skill-icon gradient-yellow">
-                            <i data-lucide="wrench"></i>
-                        </div>
-                        <h3>Tools & Technologies</h3>
-                    </div>
-                    <div class="skill-list">
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>VS Code</span>
-                                <span>90%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 90%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Postman</span>
-                                <span>85%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 85%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Swagger / OpenAPI</span>
-                                <span>80%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 80%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>Vite / Webpack</span>
-                                <span>70%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 70%"></div>
-                            </div>
-                        </div>
-                        <div class="skill-item">
-                            <div class="skill-info">
-                                <span>NPM / Yarn</span>
-                                <span>80%</span>
-                            </div>
-                            <div class="skill-bar">
-                                <div class="skill-progress" style="width: 80%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="additional-skills">
-                <h3>Other Technologies & Tools</h3>
-                <div class="tech-tags">
-                    <span class="tech-tag">Python</span>
-                    <span class="tech-tag">FastAPI</span>
-                    <span class="tech-tag">React.js</span>
-                    <span class="tech-tag">JavaScript</span>
-                    <span class="tech-tag">TypeScript</span>
-                    <span class="tech-tag">MongoDB Atlas</span>
-                    <span class="tech-tag">PostgreSQL</span>
-                    <span class="tech-tag">Redis</span>
-                    <span class="tech-tag" style="border-color: #fbbf24;">Docker 📖</span>
-                    <span class="tech-tag" style="border-color: #fbbf24;">AWS 📖</span>
-                    <span class="tech-tag">Vercel</span>
-                    <span class="tech-tag">Render</span>
-                    <span class="tech-tag">Git</span>
-                    <span class="tech-tag">GitHub</span>
-                    <span class="tech-tag" style="border-color: #fbbf24;">CI/CD 📖</span>
-                    <span class="tech-tag">Tailwind CSS</span>
-                    <span class="tech-tag">Three.js</span>
-                    <span class="tech-tag">WebSockets</span>
-                    <span class="tech-tag">JWT</span>
-                    <span class="tech-tag">OAuth</span>
-                    <span class="tech-tag">REST APIs</span>
-                    <span class="tech-tag">GraphQL</span>
-                    <span class="tech-tag">Firebase</span>
-                    <span class="tech-tag">Linux</span>
-                    <span class="tech-tag">Postman</span>
-                    <span class="tech-tag">Swagger</span>
-                    <span class="tech-tag">Vite</span>
-                    <span class="tech-tag">Webpack</span>
-                    <span class="tech-tag">HTML5</span>
-                    <span class="tech-tag">CSS3</span>
-                    <span class="tech-tag">Node.js</span>
-                    <span class="tech-tag">Express.js</span>
-                    <span class="tech-tag">Netlify</span>
-                    <span class="tech-tag" style="border-color: #fbbf24; background: rgba(251, 191, 36, 0.1);">Kubernetes 🎯</span>
-                </div>
-                <div style="text-align: center; margin-top: 20px; color: #fbbf24; font-size: 0.9rem;">
-                    📖 Currently learning: Docker, AWS, CI/CD Pipelines<br>
-                    🎯 DevOps Engineer Goal: Master cloud infrastructure, automation, and scalability
-                </div>
-            </div>
-        </div>
-    </section>
-
-    
-    <!-- ============================================ -->
-<!-- PROJECTS SECTION - WITH VISIBLE LIVE DEMO BUTTONS -->
-<!-- ============================================ -->
-<section id="projects" class="projects">
-    <div class="container">
-        <div class="section-header">
-            <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
-            <p class="section-subtitle">Live demos of projects I've built and deployed</p>
-        </div>
-        <div class="projects-grid">
-
-            <!-- Project 1: DevOps Monitor Pro -->
-            <div class="project-card featured">
-                <div class="project-image">
-                    <img src="devops-monitor-pro.svg" alt="DevOps Monitor Pro - real-time infrastructure monitoring dashboard" loading="lazy" decoding="async">
-                    <div class="project-actions-visible">
-                        <a href="https://devops-monitor-pro-ncfzbp7999gwequkrpd4ad.streamlit.app/" target="_blank" class="project-action-btn live-demo" title="Live Demo">
-                            <i data-lucide="external-link"></i>
-                            Live Demo
-                        </a>
-                        <a href="https://github.com/Rabiabbasi66/devops-monitor-pro" target="_blank" class="project-action-btn github-btn" title="GitHub">
-                            <i data-lucide="github"></i>
-                            Code
-                        </a>
-                        <a href="https://github.com/Rabiabbasi66/devops-monitor-pro/releases/latest/download/DevOpsMonitorAgent-Setup.exe" target="_blank" class="project-action-btn download-agent" title="Download Windows Agent">
-                            <i data-lucide="download"></i>
-                            Download Agent
-                        </a>
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3>DevOps Monitor Pro</h3>
-                    <p>Full-stack infrastructure monitoring and alerting platform that monitors Windows machines in real time using a dedicated monitoring agent.</p>
-                    <div class="project-result">
-                        <span>✅ Real-time CPU / RAM / Disk</span>
-                        <span>⚡ WebSockets Live Feed</span>
-                        <span>🔐 JWT Authentication</span>
-                        <span>🐳 Docker &amp; CI/CD</span>
-                    </div>
-                    <div class="project-tags">
-                        <span class="project-tag">Python</span>
-                        <span class="project-tag">FastAPI</span>
-                        <span class="project-tag">Streamlit</span>
-                        <span class="project-tag">MongoDB</span>
-                        <span class="project-tag">WebSockets</span>
-                        <span class="project-tag">JWT Auth</span>
-                        <span class="project-tag">Docker</span>
-                        <span class="project-tag">GitHub Actions</span>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Project 2: 3D Portfolio Website -->
-            <div class="project-card featured">
-                <div class="project-image">
-                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/portfolio.jpg" alt="3D Portfolio Website" loading="lazy" decoding="async">
-                    <!-- BUTTONS NOW ALWAYS VISIBLE -->
-                    <div class="project-actions-visible">
-                        <a href="https://fazal-rabbi-abbasi-website.vercel.app" target="_blank" class="project-action-btn live-demo" title="Live Demo">
-                            <i data-lucide="external-link"></i>
-                            Live Demo
-                        </a>
-                        <a href="https://github.com/Rabiabbasi66/Fazal-Rabbi-portfolio" target="_blank" class="project-action-btn github-btn" title="GitHub">
-                            <i data-lucide="github"></i>
-                            Code
-                        </a>
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3>3D Portfolio Website</h3>
-                    <p>Interactive portfolio built using Three.js with animations, responsive UI and backend integration.</p>
-                    <div class="project-result">
-                        <span>✅ 95 Lighthouse Score</span>
-                        <span>⚡ Deployed on Vercel</span>
-                        <span>🎯 3D Web Experience</span>
-                    </div>
-                    <div class="project-tags">
-                        <span class="project-tag">Three.js</span>
-                        <span class="project-tag">FastAPI</span>
-                        <span class="project-tag">MongoDB</span>
-                        <span class="project-tag">Tailwind</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 3: Task Management App -->
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/task-manager.jpg" alt="Task Management App" loading="lazy" decoding="async">
-                    <div class="project-actions-visible">
-                        <a href="https://task-managnment-app.vercel.app/" target="_blank" class="project-action-btn live-demo" title="Live Demo">
-                            <i data-lucide="external-link"></i>
-                            Live Demo
-                        </a>
-                        <a href="https://github.com/Rabiabbasi66/task-managnment-app" target="_blank" class="project-action-btn github-btn" title="GitHub">
-                            <i data-lucide="github"></i>
-                            Code
-                        </a>
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3>Task Management App</h3>
-                    <p>Task management application with drag-and-drop interface, authentication and team collaboration.</p>
-                    <div class="project-result">
-                        <span>✅ Drag & Drop</span>
-                        <span>⚡ Real-time Updates</span>
-                        <span>🔐 Authentication</span>
-                    </div>
-                    <div class="project-tags">
-                        <span class="project-tag">React.js</span>
-                        <span class="project-tag">FastAPI</span>
-                        <span class="project-tag">MongoDB</span>
-                        <span class="project-tag">Tailwind</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 4: AI Chat Application -->
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/ai-chat.jpg" alt="AI Chat Application" loading="lazy" decoding="async">
-                    <div class="project-actions-visible">
-                        <a href="https://chat-app-steel-alpha.vercel.app/" target="_blank" class="project-action-btn live-demo" title="Live Demo">
-                            <i data-lucide="external-link"></i>
-                            Live Demo
-                        </a>
-                        <a href="https://github.com/Rabiabbasi66/Ai-chat-bot" target="_blank" class="project-action-btn github-btn" title="GitHub">
-                            <i data-lucide="github"></i>
-                            Code
-                        </a>
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3>AI Chat Application</h3>
-                    <p>AI-powered chatbot with real-time messaging and intelligent responses.</p>
-                    <div class="project-result">
-                        <span>✅ AI Integration</span>
-                        <span>⚡ Real-time Chat</span>
-                        <span>💬 WebSockets</span>
-                    </div>
-                    <div class="project-tags">
-                        <span class="project-tag">AI/LLM</span>
-                        <span class="project-tag">WebSockets</span>
-                        <span class="project-tag">FastAPI</span>
-                        <span class="project-tag">React.js</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project 5: AgriScan 3D -->
-            <div class="project-card">
-                <div class="project-image">
-                    <img src="https://fazal-rabbi-abbasi-website.vercel.app/agriscan.jpg" alt="AgriScan 3D" loading="lazy" decoding="async">
-                    <div class="project-actions-visible">
-                        <a href="https://agriscan-3d.vercel.app/" target="_blank" class="project-action-btn live-demo" title="Live Demo">
-                            <i data-lucide="external-link"></i>
-                            Live Demo
-                        </a>
-                        <a href="https://github.com/Rabiabbasi66/Agriscan-3D-frontend" target="_blank" class="project-action-btn github-btn" title="GitHub">
-                            <i data-lucide="github"></i>
-                            Code
-                        </a>
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3>AgriScan 3D</h3>
-                    <p>AI-powered drone crop mapping and disease detection using WebGPU, FastAPI, MongoDB and Computer Vision.</p>
-                    <div class="project-result">
-                        <span>✅ AI Detection</span>
-                        <span>⚡ WebGPU</span>
-                        <span>🌾 Crop Mapping</span>
-                    </div>
-                    <div class="project-tags">
-                        <span class="project-tag">Python</span>
-                        <span class="project-tag">FastAPI</span>
-                        <span class="project-tag">AI</span>
-                        <span class="project-tag">MongoDB</span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>&copy; <span id="year">2026</span> Fazal-E-Rabbi Abbasi. Built by hand with HTML, CSS and a little Three.js.</p>
     </div>
-</section>
-        
-    <!-- Services Section -->
-    <section id="services" class="services">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Services I <span class="gradient-text">Offer</span></h2>
-                <p class="section-subtitle">Comprehensive solutions for all your digital needs</p>
-            </div>
+  </footer>
 
-            <div class="services-grid">
-                <div class="service-card" id="service-frontend">
-                    <div class="service-icon gradient-blue">
-                        <i data-lucide="code-2"></i>
-                    </div>
-                    <h3>Frontend Development</h3>
-                    <p>Building responsive, interactive, and high-performance user interfaces that provide seamless user experiences across all devices.</p>
-                    <ul class="service-features">
-                        <li>React.js & Modern Frameworks</li>
-                        <li>Tailwind CSS & SCSS</li>
-                        <li>Responsive & Adaptive Design</li>
-                        <li>Performance Optimization</li>
-                    </ul>
-                    <div class="service-learn-more" data-service="Frontend Development">Learn More →</div>
-                </div>
+  <!-- Reusable icon symbols (contact section) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.26 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></symbol>
+    <symbol id="i-linkedin" viewBox="0 0 24 24"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></symbol>
+    <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></symbol>
+  </svg>
 
-                <div class="service-card" id="service-backend">
-                    <div class="service-icon gradient-purple">
-                        <i data-lucide="server"></i>
-                    </div>
-                    <h3>Backend Development</h3>
-                    <p>Robust and scalable backend solutions with proper architecture, security, and performance optimization.</p>
-                    <ul class="service-features">
-                        <li>Python & FastAPI</li>
-                        <li>RESTful API Development</li>
-                        <li>Database Management (MongoDB/PostgreSQL)</li>
-                        <li>Authentication & Security</li>
-                    </ul>
-                    <div class="service-learn-more" data-service="Backend Development">Learn More →</div>
-                </div>
-
-                <div class="service-card" id="service-uiux">
-                    <div class="service-icon gradient-orange">
-                        <i data-lucide="palette"></i>
-                    </div>
-                    <h3>UI/UX Design</h3>
-                    <p>Creating intuitive, user-centered designs through research and prototyping to ensure your product is both beautiful and functional.</p>
-                    <ul class="service-features">
-                        <li>Wireframing & Prototyping</li>
-                        <li>User Research & Analysis</li>
-                        <li>Design Systems in Figma</li>
-                        <li>Visual Identity Design</li>
-                    </ul>
-                    <div class="service-learn-more" data-service="UI/UX Design">Learn More →</div>
-                </div>
-
-                <div class="service-card" id="service-api">
-                    <div class="service-icon gradient-green">
-                        <i data-lucide="rocket"></i>
-                    </div>
-                    <h3>API Development</h3>
-                    <p>Robust and scalable backend APIs with proper documentation, security, and performance optimization.</p>
-                    <ul class="service-features">
-                        <li>RESTful APIs</li>
-                        <li>GraphQL</li>
-                        <li>Authentication</li>
-                        <li>Database Design</li>
-                    </ul>
-                    <div class="service-learn-more" data-service="API Development">Learn More →</div>
-                </div>
-
-                <div class="service-card" id="service-database">
-                    <div class="service-icon gradient-green">
-                        <i data-lucide="database"></i>
-                    </div>
-                    <h3>Database Management</h3>
-                    <p>Designing and optimizing complex data structures for maximum efficiency, reliability, and lightning-fast retrieval.</p>
-                    <ul class="service-features">
-                        <li>PostgreSQL & MySQL</li>
-                        <li>MongoDB (NoSQL)</li>
-                        <li>Data Modeling</li>
-                        <li>Query Optimization</li>
-                    </ul>
-                    <div class="service-learn-more" data-service="Database Management">Learn More →</div>
-                </div>
-
-                <div class="service-card" id="service-performance">
-                    <div class="service-icon gradient-indigo">
-                        <i data-lucide="zap"></i>
-                    </div>
-                    <h3>Performance Optimization</h3>
-                    <p>Speed up your existing applications with advanced optimization techniques and best practices.</p>
-                    <ul class="service-features">
-                        <li>Code Splitting</li>
-                        <li>Lazy Loading</li>
-                        <li>Cache Strategy</li>
-                        <li>Bundle Optimization</li>
-                    </ul>
-                    <div class="service-learn-more" data-service="Performance Optimization">Learn More →</div>
-                </div>
-            </div>
-
-            <!-- CTA Section -->
-            <div class="services-cta">
-                <h3>Ready to Start Your Project?</h3>
-                <p>Let's collaborate to bring your ideas to life. I'm available for freelance projects, full-time opportunities, and interesting collaborations.</p>
-                <div class="cta-buttons">
-                    <a href="#contact" class="btn btn-primary">Get in Touch</a>
-                    <a href="#projects" class="btn btn-secondary">View My Work</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ============================================ -->
-    <!-- UPWORK SECTION - WITH YOUR 3 PROJECTS -->
-    <!-- ============================================ -->
-    <section id="upwork" class="upwork">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Hire Me on <span class="gradient-text">Upwork</span></h2>
-                <p class="section-subtitle">Available for freelance projects. Let's build something amazing together!</p>
-            </div>
-
-            <div class="upwork-content">
-                <!-- Upwork Profile Card -->
-                <div class="upwork-profile-card">
-                    <div class="upwork-profile-left">
-                        <div class="upwork-profile-image">
-                            <img src="portfolio-new.webp" alt="Upwork Profile" loading="lazy" decoding="async">
-                        </div>
-                        <div class="upwork-badge" style="background: rgba(251, 191, 36, 0.2); border-color: #fbbf24; color: #fbbf24;">
-                            <span>🌱 Available Now</span>
-                        </div>
-                    </div>
-                    <div class="upwork-profile-right">
-                        <h3>Fazal-E-Rabbi Abbasi</h3>
-                        <p class="upwork-profile-title">Aspiring Platform Engineer | Backend | DevOps | Linux</p>
-                        
-                        <div class="upwork-profile-details">
-                            <div class="upwork-detail-item">
-                                <i data-lucide="check-circle"></i>
-                                <span>✅ Identity Verified</span>
-                            </div>
-                
-                            <div class="upwork-detail-item">
-                                <i data-lucide="check-circle"></i>
-                                <span>✅ Available for Work</span>
-                            </div>
-                            <div class="upwork-detail-item">
-                                <i data-lucide="check-circle"></i>
-                                <span>✅ 2+ Years Experience</span>
-                            </div>
-                        </div>
-
-                        <div class="upwork-offer">
-                            <h4>💼 What I Offer:</h4>
-                            <div class="upwork-offer-items">
-                                <span class="offer-tag">FullStack Development</span>
-                                <span class="offer-tag">FastAPI & React</span>
-                                <span class="offer-tag">3D Web (Three.js)</span>
-                                <span class="offer-tag">REST APIs</span>
-                                <span class="offer-tag">MongoDB / PostgreSQL</span>
-                                <span class="offer-tag">DevOps (Docker, AWS)</span>
-                            </div>
-                        </div>
-
-                        <!-- FEATURED / LIVE PROJECTS -->
-                        <div class="upwork-projects">
-                            <h4>📁 Featured Projects</h4>
-                            <div class="upwork-project-list">
-                                <a href="https://fazal-rabbi-abbasi-website.vercel.app" target="_blank" class="upwork-project-item">
-                                    <span class="project-icon">🌐</span>
-                                    <span class="project-name">3D Portfolio Website</span>
-                                    <span class="project-badge">Live</span>
-                                </a>
-                                <a href="https://task-managnment-app.vercel.app/" target="_blank" class="upwork-project-item">
-                                    <span class="project-icon">📋</span>
-                                    <span class="project-name">Task Management App</span>
-                                    <span class="project-badge">Live</span>
-                                </a>
-                                <a href="https://chat-app-steel-alpha.vercel.app/" target="_blank" class="upwork-project-item">
-                                    <span class="project-icon">💬</span>
-                                    <span class="project-name">AI Chat Application</span>
-                                    <span class="project-badge">Live</span>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="upwork-buttons">
-                            <a href="https://www.upwork.com/freelancers/~014851cdad1612d7e5?companyReference=2031454716732761811&mp_source=share" target="_blank" class="btn btn-primary upwork-btn">
-                                <i data-lucide="external-link"></i>
-                                View My Upwork Profile
-                            </a>
-                            <a href="https://www.upwork.com/freelancers/~014851cdad1612d7e5?companyReference=2031454716732761811&mp_source=share" target="_blank" class="btn btn-secondary upwork-btn">
-                                <i data-lucide="message-circle"></i>
-                                Message Me on Upwork
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Upwork CTA -->
-                <div class="upwork-cta">
-                    <h3>Ready to Start Your Project?</h3>
-                    <p>I'm available for freelance projects. Click below to message me on Upwork!</p>
-                    <div class="upwork-cta-buttons">
-                        <a href="https://www.upwork.com/freelancers/~014851cdad1612d7e5?companyReference=2031454716732761811&mp_source=share" target="_blank" class="btn btn-primary">
-                            <i data-lucide="briefcase"></i>
-                            Hire Me on Upwork
-                        </a>
-                        <a href="https://www.upwork.com/freelancers/~014851cdad1612d7e5?companyReference=2031454716732761811&mp_source=share" target="_blank" class="btn btn-secondary pulse-btn">
-                            <i data-lucide="calendar"></i>
-                            Book a Call
-                        </a>
-                    </div>
-                    <p style="margin-top: 15px; font-size: 0.85rem; opacity: 0.9;">
-                        💬 Click "Book a Call" to send me a message on Upwork
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Get In <span class="gradient-text">Touch</span></h2>
-                <p class="section-subtitle">Have a project in mind? Let's create something amazing together!</p>
-            </div>
-
-            <div class="contact-content">
-                <div class="contact-left">
-                    <h3>Let's Talk</h3>
-                    <p class="contact-description">
-                        I'm always interested in hearing about new projects and opportunities. 
-                        Whether you have a question or just want to say hi, feel free to reach out!
-                    </p>
-
-                    <div class="contact-info">
-                        <a href="mailto:Rabif1820@gmail.com" class="contact-info-card">
-                            <div class="contact-info-icon">
-                                <i data-lucide="mail"></i>
-                            </div>
-                            <div class="contact-info-content">
-                                <div class="contact-info-label">Email</div>
-                                <div class="contact-info-value">Rabif1820@gmail.com</div>
-                            </div>
-                        </a>
-
-                        <a href="tel:+923110853195" class="contact-info-card">
-                            <div class="contact-info-icon">
-                                <i data-lucide="phone"></i>
-                            </div>
-                            <div class="contact-info-content">
-                                <div class="contact-info-label">Phone</div>
-                                <div class="contact-info-value">+92 311 085 31 95</div>
-                            </div>
-                        </a>
-                    
-                        <a href="https://wa.me/923110853195?text=Hello%20Fazal%20I%20saw%20your%20portfolio%20and%20want%20to%20discuss%20a%20project." target="_blank" class="contact-info-card">
-                            <div class="contact-info-icon">
-                                <i data-lucide="message-circle"></i>
-                            </div>
-                            <div class="contact-info-content">
-                                <div class="contact-info-label">WhatsApp</div>
-                                <div class="contact-info-value">Chat on WhatsApp</div>
-                            </div>
-                        </a>
-                        <div class="contact-info-card">
-                            <div class="contact-info-icon">
-                                <i data-lucide="map-pin"></i>
-                            </div>
-                            <div class="contact-info-content">
-                                <div class="contact-info-label">Location</div>
-                                <div class="contact-info-value">Abbottabad, Pakistan</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="contact-social">
-                        <h4>Follow Me</h4>
-                        <div class="contact-social-links">
-                            <a href="https://github.com/Rabiabbasi66" target="_blank" class="social-link">
-                                <i class="fa-brands fa-github"></i>
-                            </a>
-                            <a href="https://www.linkedin.com/in/fazal-e-rabbi-abbasi-a0200a443/" target="_blank" class="social-link">
-                                <i class="fa-brands fa-linkedin"></i>
-                            </a>
-                            <a href="mailto:Rabif1820@gmail.com" target="_blank" class="social-link">
-                                <i class="fa-solid fa-envelope"></i>
-                            </a>
-                            <a href="https://www.instagram.com/fazal_rabbi2816/" target="_blank" class="social-link">
-                                <i class="fa-brands fa-instagram"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="contact-right">
-                    <form id="contact-form" class="contact-form">
-                        <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" name="name" required placeholder="Your Name">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required placeholder="your.email@example.com">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="subject">Subject</label>
-                            <input type="text" id="subject" name="subject" required placeholder="Project Discussion">
-                        </div>
-
-                        <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" rows="6" required placeholder="Tell me about your project..."></textarea>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary btn-block">
-                            <i data-lucide="send"></i>
-                            Send Message
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <div class="footer-brand">
-                        <div class="logo-icon">FRA</div>
-                        <span class="logo-text">Fazal Rabbi Abbasi</span>
-                    </div>
-                    <p>Living, learning, Building the future, one commit at a time.</p>
-                    <div class="footer-love">
-                        <span>Systematically built</span>
-                        <span>by Me @2026</span>
-                    </div>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Quick Links</h4>
-                    <ul class="footer-links">
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#upwork">Upwork</a></li>
-                        <li><a href="#contact">Contact</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Services</h4>
-                    <ul class="footer-links">
-                        <li><a href="#services">Frontend Development</a></li>
-                        <li><a href="#services">Backend Development</a></li>
-                        <li><a href="#services">UI/UX Design</a></li>
-                        <li><a href="#services">Consulting</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-column">
-                    <h4>Connect</h4>
-                    <ul class="footer-links">
-                        <li><a href="https://github.com/Rabiabbasi66" target="_blank">GitHub</a></li>
-                        <li><a href="https://www.linkedin.com/in/fazal-e-rabbi-abbasi-a0200a443/" target="_blank">LinkedIn</a></li>
-                        <li><a href="https://www.instagram.com/fazal_rabbi2816/" target="_blank">Instagram</a></li>
-                        <li><a href="mailto:Rabif1820@gmail.com">Email</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scroll to Top Button -->
-    <button id="scroll-top" class="scroll-top">
-        <i data-lucide="arrow-up"></i>
-    </button>
-
-    <!-- Theme Toggle Button (Dark/Light Mode) -->
-    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark/Light Mode">
-        <i data-lucide="moon"></i>
-    </button>
-
-    <!-- Toast Notification -->
-    <div id="toast" class="toast"></div>
-
-    <script defer src="main.js"></script>
+  <script src="main.js" defer></script>
+  <script type="module" src="three-scene.js"></script>
 </body>
 </html>

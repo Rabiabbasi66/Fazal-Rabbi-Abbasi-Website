@@ -1,749 +1,363 @@
-// ============================================
-// INITIALIZE LUCIDE ICONS
-// ============================================
-// Guard: if the deferred Lucide library failed to load,
-// the rest of the page functionality still works.
-if (typeof lucide !== 'undefined') {
-    lucide.createIcons();
-}
+/* ==========================================================================
+   main.js — navigation, typing headline, 3D tilt, scroll reveal, contact form
+   Vanilla JS, no dependencies.
+   ========================================================================== */
+(() => {
+  'use strict';
 
-// ============================================
-// THREE.JS 3D BACKGROUND
-// ============================================
-function initThreeBackground() {
-    const canvas = document.getElementById('bg-canvas');
-    if (!canvas) return;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-    // Graceful degradation: if the deferred Three.js library is not available,
-    // skip the 3D background — the rest of the page keeps working normally.
-    if (typeof THREE === 'undefined') return;
+  /* ---------- Footer year ---------- */
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-        75,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000
-    );
-    
-    const renderer = new THREE.WebGLRenderer({
-        canvas: canvas,
-        alpha: true,
-        antialias: true
+  /* ==========================================================================
+     Mobile navigation
+     ========================================================================== */
+  const toggle = document.getElementById('nav-toggle');
+  const menu = document.getElementById('nav-menu');
+
+  function setMenu(open) {
+    if (!toggle || !menu) return;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    menu.classList.toggle('is-open', open);
+  }
+
+  if (toggle && menu) {
+    toggle.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
+    menu.addEventListener('click', (e) => { if (e.target.closest('a')) setMenu(false); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.classList.contains('is-open')) { setMenu(false); toggle.focus(); }
     });
-    
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-    camera.position.z = 5;
-
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particleCount = 1500;
-    const positions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
-
-    for (let i = 0; i < particleCount * 3; i += 3) {
-        positions[i] = (Math.random() - 0.5) * 20;
-        positions[i + 1] = (Math.random() - 0.5) * 20;
-        positions[i + 2] = (Math.random() - 0.5) * 20;
-
-        colors[i] = 0.3 + Math.random() * 0.4;
-        colors[i + 1] = 0.2 + Math.random() * 0.3;
-        colors[i + 2] = 0.6 + Math.random() * 0.4;
-    }
-
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-    const particlesMaterial = new THREE.PointsMaterial({
-        size: 0.05,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.8,
-        blending: THREE.AdditiveBlending,
+    document.addEventListener('click', (e) => {
+      if (menu.classList.contains('is-open') && !e.target.closest('.nav')) setMenu(false);
     });
+    window.matchMedia('(min-width: 761px)').addEventListener('change', (e) => { if (e.matches) setMenu(false); });
+  }
 
-    const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particles);
+  /* ==========================================================================
+     Active section highlight
+     ========================================================================== */
+  const navLinks = Array.from(document.querySelectorAll('.nav__link'));
+  const linkFor = new Map(navLinks.map((a) => [a.getAttribute('href').slice(1), a]));
+  const trackedSections = ['home', ...linkFor.keys()]
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
 
-    const geometries = [
-        new THREE.TorusGeometry(0.3, 0.1, 16, 100),
-        new THREE.OctahedronGeometry(0.3),
-        new THREE.TetrahedronGeometry(0.3),
-    ];
-
-    const material = new THREE.MeshPhongMaterial({
-        color: 0x4488ff,
-        transparent: true,
-        opacity: 0.3,
-        wireframe: true,
+  function setActive(id) {
+    navLinks.forEach((a) => {
+      const active = a === linkFor.get(id);
+      a.classList.toggle('is-active', active);
+      if (active) a.setAttribute('aria-current', 'location');
+      else a.removeAttribute('aria-current');
     });
+  }
 
-    const shapes = [];
-    geometries.forEach((geometry, index) => {
-        const mesh = new THREE.Mesh(geometry, material);
-        mesh.position.set(
-            (Math.random() - 0.5) * 10,
-            (Math.random() - 0.5) * 10,
-            (Math.random() - 0.5) * 10
-        );
-        shapes.push(mesh);
-        scene.add(mesh);
-    });
+  if ('IntersectionObserver' in window && trackedSections.length) {
+    // A section is "active" when it crosses a thin band near the upper middle of the viewport.
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => { if (entry.isIntersecting) setActive(entry.target.id); });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    trackedSections.forEach((s) => sectionObserver.observe(s));
+  }
 
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
+  /* ==========================================================================
+     Typing headline
+     One async state machine runs the whole loop, so steps can never overlap.
+     Timers are deadline-based (no drift), pause while the tab is hidden and
+     are cancelled on page unload.
+     ========================================================================== */
+  const TYPER_TIMING = {
+    type: 90,            // ms per character while typing (all lines)
+    eraseRole: 50,       // ms per character when erasing a role
+    eraseAll: 50,        // ms per character when erasing "I'm a", name and greeting
+    afterGreet: 400,     // pause after "Hi, I'm"
+    afterName: 700,      // pause after the name
+    roleHold: 2000,      // how long a finished role stays visible
+    beforeEraseAll: 1000,// pause after the last role is erased
+    beforeRestart: 600,  // pause before the loop starts again
+  };
+  const ROLES = [
+    'Python Developer',
+    'Backend Developer',
+    'Aspiring Platform Engineer',
+    'Linux & Docker Enthusiast',
+  ];
 
-    const pointLight = new THREE.PointLight(0x4488ff, 1);
-    pointLight.position.set(5, 5, 5);
-    scene.add(pointLight);
-
-    let mouseX = 0;
-    let mouseY = 0;
-
-    document.addEventListener('mousemove', (event) => {
-        mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-        mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-    });
-
-    const clock = new THREE.Clock();
-
-    function animate() {
-        const elapsedTime = clock.getElapsedTime();
-
-        particles.rotation.y = elapsedTime * 0.05;
-        particles.rotation.x = Math.sin(elapsedTime * 0.1) * 0.1;
-
-        shapes.forEach((shape, index) => {
-            shape.rotation.x = elapsedTime * (0.2 + index * 0.1);
-            shape.rotation.y = elapsedTime * (0.3 + index * 0.1);
-            shape.position.y = Math.sin(elapsedTime + index * 2) * 2;
-        });
-
-        camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05;
-        camera.position.y += (mouseY * 0.5 - camera.position.y) * 0.05;
-        camera.lookAt(scene.position);
-
-        renderer.render(scene, camera);
-        requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    window.addEventListener('resize', () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-}
-
-// ============================================
-// NAVBAR
-// ============================================
-const navbar = document.getElementById('navbar');
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.getElementById('nav-menu');
-const navLinks = document.querySelectorAll('.nav-link');
-
-// PERF: rAF-throttled + passive scroll listener (no layout reads, one class toggle per frame)
-let navbarScrollTicking = false;
-window.addEventListener('scroll', () => {
-    if (navbarScrollTicking) return;
-    navbarScrollTicking = true;
-    requestAnimationFrame(() => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-        navbarScrollTicking = false;
-    });
-}, { passive: true });
-
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('active');
-});
-
-navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetId = link.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-        
-        if (targetSection) {
-            targetSection.scrollIntoView({ behavior: 'smooth' });
-        }
-        
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
-    });
-});
-
-// ============================================
-// DOWNLOAD CV FUNCTION
-// ============================================
-function downloadCV() {
-    const link = document.createElement('a');
-    link.href = 'fazalrabbiabbasicv.pdf';
-    link.download = 'Fazal_Rabi_CV.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    showToast('📄 Downloading CV...');
-}
-
-// ============================================
-// API URL
-// ============================================
-const API_BASE_URL = "https://fazal-rabbi-abbasi-website-dcbx.vercel.app";
-console.log('🚀 API URL:', API_BASE_URL);
-
-// ============================================
-// CONTACT FORM HANDLER
-// ============================================
-const contactForm = document.getElementById("contact-form");
-
-if (contactForm) {
-    contactForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const submitButton = contactForm.querySelector("button[type='submit']");
-        const originalText = submitButton.innerHTML;
-
-        submitButton.disabled = true;
-        submitButton.innerHTML = `
-            <i data-lucide="loader" class="spin"></i>
-            Sending...
-        `;
-        lucide.createIcons();
-
-        const formData = {
-            name: document.getElementById("name").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            subject: document.getElementById("subject").value.trim(),
-            message: document.getElementById("message").value.trim()
-        };
-
-        console.log('📤 Sending:', formData);
-
-        if (!formData.name || !formData.email || !formData.subject || !formData.message) {
-            showToast("⚠️ Please fill in all fields");
-            submitButton.disabled = false;
-            submitButton.innerHTML = originalText;
-            return;
-        }
-
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-            showToast("⚠️ Please enter a valid email address");
-            submitButton.disabled = false;
-            submitButton.innerHTML = originalText;
-            return;
-        }
-
-        try {
-            const response = await fetch(`${API_BASE_URL}/contact`, {
-                method: "POST",
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify(formData),
-            });
-
-            const data = await response.json();
-            console.log('📥 Response:', data);
-
-            if (response.ok && data.success) {
-                showToast("✅ Message sent successfully!");
-                contactForm.reset();
-            } else {
-                showToast(data.message || data.detail || "❌ Failed to send message.");
-            }
-        } catch (error) {
-            console.error('❌ Error:', error);
-            showToast("❌ Cannot connect to backend. Please try again.");
-        }
-
-        submitButton.disabled = false;
-        submitButton.innerHTML = originalText;
-        lucide.createIcons();
-    });
-}
-
-// ============================================
-// SERVICE CARDS - "Learn More" Functionality
-// ============================================
-document.addEventListener('DOMContentLoaded', function() {
-    const serviceLinks = document.querySelectorAll('.service-learn-more');
-    const contactSection = document.getElementById('contact');
-    const subjectInput = document.getElementById('subject');
-    
-    serviceLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            const serviceCard = this.closest('.service-card');
-            const serviceName = serviceCard.querySelector('h3')?.textContent || 'Service';
-            
-            if (subjectInput) {
-                subjectInput.value = `Inquiry about: ${serviceName}`;
-                subjectInput.focus();
-                subjectInput.classList.add('subject-highlight');
-                setTimeout(() => {
-                    subjectInput.classList.remove('subject-highlight');
-                }, 2000);
-            }
-            
-            if (contactSection) {
-                contactSection.scrollIntoView({ 
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-            
-            console.log(`📝 Service clicked: ${serviceName}`);
-        });
-    });
-});
-
-// ============================================
-// TOAST NOTIFICATION
-// ============================================
-function showToast(message) {
-    let toast = document.getElementById('toast');
-    if (!toast) {
-        toast = document.createElement('div');
-        toast.id = 'toast';
-        toast.className = 'toast';
-        toast.style.position = 'fixed';
-        toast.style.bottom = '20px';
-        toast.style.right = '20px';
-        toast.style.padding = '15px 25px';
-        toast.style.borderRadius = '8px';
-        toast.style.color = 'white';
-        toast.style.fontWeight = '500';
-        toast.style.zIndex = '9999';
-        toast.style.transform = 'translateY(100px)';
-        toast.style.opacity = '0';
-        toast.style.transition = 'all 0.3s ease';
-        toast.style.maxWidth = '400px';
-        document.body.appendChild(toast);
-    }
-    
-    toast.textContent = message;
-    toast.style.backgroundColor = message.includes('✅') ? '#10b981' : '#ef4444';
-    toast.style.transform = 'translateY(0)';
-    toast.style.opacity = '1';
-    
-    setTimeout(() => {
-        toast.style.transform = 'translateY(100px)';
-        toast.style.opacity = '0';
-    }, 3000);
-}
-
-// ============================================
-// SCROLL TO TOP
-// ============================================
-const scrollTopBtn = document.getElementById('scroll-top');
-
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-        scrollTopBtn.classList.add('visible');
-    } else {
-        scrollTopBtn.classList.remove('visible');
-    }
-});
-
-scrollTopBtn.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-});
-
-// ============================================
-// INTERSECTION OBSERVER - Animations
-// ============================================
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, observerOptions);
-
-document.querySelectorAll('.skill-card, .project-card, .service-card, .stat-card').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'all 0.6s ease-out';
-    observer.observe(el);
-});
-
-// ============================================
-// SKILL BARS ANIMATION
-// ============================================
-const skillProgressBars = document.querySelectorAll('.skill-progress');
-const skillObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const bar = entry.target;
-            const width = bar.style.width;
-            bar.style.width = '0';
-            setTimeout(() => {
-                bar.style.width = width;
-            }, 100);
-            skillObserver.unobserve(bar);
-        }
-    });
-}, { threshold: 0.5 });
-
-skillProgressBars.forEach(bar => {
-    skillObserver.observe(bar);
-});
-
-// ============================================
-// SPIN ANIMATION STYLE
-// ============================================
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
-    .spin {
-        animation: spin 1s linear infinite;
-    }
-`;
-document.head.appendChild(style);
-
-// ============================================
-// PARALLAX EFFECT
-// ============================================
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const parallaxElements = document.querySelectorAll('.hero-right');
-    
-    parallaxElements.forEach(el => {
-        const speed = 0.5;
-        el.style.transform = `translateY(${scrolled * speed}px)`;
-    });
-});
-
-// ============================================
-// DOM CONTENT LOADED - Three.js Starts Here
-// ============================================
-document.addEventListener('DOMContentLoaded', () => {
-    // PERFORMANCE: initialize the 3D background lazily.
-    // It runs only after the browser is idle and the main content has painted,
-    // so it never delays First Contentful Paint / initial visible content.
-    const startThreeBackground = () => {
-        if (typeof THREE === 'undefined') return;
-        initThreeBackground();
+  function initTyper() {
+    const parts = {
+      greet: document.querySelector('[data-typer="greet"]'),
+      name: document.querySelector('[data-typer="name"]'),
+      prefix: document.querySelector('[data-typer="prefix"]'),
+      role: document.querySelector('[data-typer="role"]'),
     };
-    if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(startThreeBackground, { timeout: 2000 });
-    } else {
-        window.setTimeout(startThreeBackground, 300);
+    const cursor = document.querySelector('.typer__cursor');
+    if (!cursor || Object.values(parts).some((el) => !el)) return;
+
+    // Reduced motion: keep the static markup (full name + first role), no loop.
+    if (prefersReducedMotion) return;
+
+    const texts = {
+      greet: parts.greet.textContent,
+      name: parts.name.textContent,
+      prefix: parts.prefix.textContent,
+    };
+
+    const STOP = Symbol('typer-stopped');
+    let stopped = false;
+    let timer = 0;
+    let pending = null;     // { resolve, reject } of the current wait()
+    let deadline = 0;       // absolute time (ms) the current wait() should end
+    let hiddenAt = 0;
+
+    /** Wait `ms` after the previous deadline (not after "now"), so timer lag never accumulates. */
+    function wait(ms) {
+      return new Promise((resolve, reject) => {
+        if (stopped) { reject(STOP); return; }
+        pending = { resolve, reject };
+        deadline = Math.max(deadline + ms, performance.now());
+        schedule();
+      });
     }
 
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
+    function schedule() {
+      clearTimeout(timer);
+      if (!pending || document.hidden) return; // resumed by visibilitychange
+      timer = setTimeout(() => {
+        const p = pending;
+        pending = null;
+        p.resolve();
+      }, Math.max(0, deadline - performance.now()));
     }
-    
-    const sections = document.querySelectorAll('section');
-    sections.forEach((section, index) => {
-        section.style.opacity = '0';
-        section.style.transform = 'translateY(50px)';
-        section.style.transition = 'all 0.8s ease-out';
-        
-        setTimeout(() => {
-            const sectionObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                        sectionObserver.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            sectionObserver.observe(section);
-        }, index * 100);
+
+    // Pause while hidden; on return, shift the schedule so it resumes exactly where it stopped.
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        clearTimeout(timer);
+        hiddenAt = performance.now();
+      } else {
+        deadline += performance.now() - hiddenAt;
+        schedule();
+      }
     });
-});
 
-// ============================================
-// CURSOR TRAIL - WORKS ON ALL DEVICES
-// ============================================
-
-// Create trail dots
-const trailDots = [];
-const numDots = 15;
-
-for (let i = 0; i < numDots; i++) {
-    const dot = document.createElement('div');
-    dot.style.cssText = `
-        position: fixed;
-        width: ${8 - (i * 0.4)}px;
-        height: ${8 - (i * 0.4)}px;
-        background: ${i === 0 ? '#3b82f6' : `rgba(59, 130, 246, ${0.8 - (i / numDots)})`};
-        border-radius: 50%;
-        pointer-events: none;
-        z-index: 9999;
-        transform: translate(-50%, -50%);
-        transition: all 0.05s ease;
-        box-shadow: ${i === 0 ? '0 0 10px rgba(59, 130, 246, 0.5)' : 'none'};
-        opacity: 0;
-    `;
-    document.body.appendChild(dot);
-    trailDots.push({
-        element: dot,
-        x: 0,
-        y: 0
+    // Cancel timers on unload; restart cleanly if the page comes back from the back/forward cache.
+    window.addEventListener('pagehide', () => {
+      stopped = true;
+      clearTimeout(timer);
+      if (pending) { pending.reject(STOP); pending = null; }
     });
-}
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted && stopped) { stopped = false; run(); }
+    });
 
-let mouseX = 0;
-let mouseY = 0;
-let isActive = false;
-let hideTimeout;
+    /** Put the single cursor at the end of the given line. */
+    function moveCursor(key) {
+      parts[key].closest('.typer__line').appendChild(cursor);
+    }
 
-// Update dots position
-function updateDots() {
-    if (!isActive) {
-        requestAnimationFrame(updateDots);
+    async function type(el, text, speed) {
+      cursor.classList.add('is-typing');
+      for (const ch of text) {
+        el.textContent += ch;
+        await wait(speed);
+      }
+      cursor.classList.remove('is-typing');
+    }
+
+    async function erase(el, speed) {
+      cursor.classList.add('is-typing');
+      while (el.textContent.length) {
+        el.textContent = el.textContent.slice(0, -1);
+        await wait(speed);
+      }
+      cursor.classList.remove('is-typing');
+    }
+
+    async function loop() {
+      const T = TYPER_TIMING;
+      for (;;) {
+        // 1. "Hi, I'm"
+        moveCursor('greet');
+        await type(parts.greet, texts.greet, T.type);
+        await wait(T.afterGreet);
+
+        // 2. Name
+        moveCursor('name');
+        await type(parts.name, texts.name, T.type);
+        await wait(T.afterName);
+
+        // 3-4. "I'm a " + each role: type, hold, erase
+        moveCursor('role');
+        await type(parts.prefix, texts.prefix, T.type);
+        for (const role of ROLES) {
+          await type(parts.role, role, T.type);
+          await wait(T.roleHold);
+          await erase(parts.role, T.eraseRole);
+        }
+
+        // 5. Erase bottom-up: "I'm a ", name, greeting
+        await wait(T.beforeEraseAll);
+        await erase(parts.prefix, T.eraseAll);
+        moveCursor('name');
+        await erase(parts.name, T.eraseAll);
+        moveCursor('greet');
+        await erase(parts.greet, T.eraseAll);
+
+        // 6. Short pause, then start over
+        await wait(T.beforeRestart);
+      }
+    }
+
+    function run() {
+      Object.values(parts).forEach((el) => { el.textContent = ''; });
+      cursor.classList.remove('is-typing');
+      deadline = performance.now();
+      loop().catch((err) => { if (err !== STOP) throw err; });
+    }
+
+    run();
+  }
+
+  initTyper();
+
+  /* ==========================================================================
+     CSS 3D tilt (desktop / fine pointer only)
+     ========================================================================== */
+  function initTilt(el, maxDeg) {
+    let frame = 0;
+    let pending = null;
+
+    function apply() {
+      frame = 0;
+      if (!pending) return;
+      const { px, py } = pending;               // -0.5 .. 0.5
+      const ry = px * 2 * maxDeg;
+      const rx = -py * 2 * maxDeg;
+      el.style.setProperty('--rx', `${rx.toFixed(2)}deg`);
+      el.style.setProperty('--ry', `${ry.toFixed(2)}deg`);
+      // Shadow drifts opposite to the tilt so the light source feels fixed.
+      el.style.setProperty('--sx', `${(-ry * 1.4).toFixed(1)}px`);
+      el.style.setProperty('--sy', `${(14 + rx * 1.4).toFixed(1)}px`);
+    }
+
+    el.addEventListener('pointerenter', () => el.classList.add('is-tilting'));
+    el.addEventListener('pointermove', (e) => {
+      const r = el.getBoundingClientRect();
+      pending = { px: (e.clientX - r.left) / r.width - 0.5, py: (e.clientY - r.top) / r.height - 0.5 };
+      if (!frame) frame = requestAnimationFrame(apply);
+    });
+    el.addEventListener('pointerleave', () => {
+      if (frame) cancelAnimationFrame(frame);
+      frame = 0;
+      pending = null;
+      el.classList.remove('is-tilting');
+      ['--rx', '--ry', '--sx', '--sy'].forEach((p) => el.style.removeProperty(p));
+    });
+  }
+
+  if (hasFinePointer && !prefersReducedMotion) {
+    document.querySelectorAll('[data-tilt]').forEach((el) => {
+      initTilt(el, el.classList.contains('photo') ? 7 : 6);
+    });
+  }
+
+  /* ==========================================================================
+     Fade-up on scroll
+     ========================================================================== */
+  const revealEls = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window) || prefersReducedMotion) {
+    revealEls.forEach((el) => el.classList.add('is-visible'));
+  } else {
+    const revealObserver = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach((el) => revealObserver.observe(el));
+  }
+
+  /* ==========================================================================
+     Contact form (posts to the existing FastAPI backend)
+     ========================================================================== */
+  const API_BASE_URL = 'https://fazal-rabbi-abbasi-website-dcbx.vercel.app';
+  const form = document.getElementById('contact-form');
+  const statusEl = document.getElementById('form-status');
+
+  function setStatus(message, type) {
+    if (!statusEl) return;
+    statusEl.textContent = message;
+    statusEl.classList.toggle('is-success', type === 'success');
+    statusEl.classList.toggle('is-error', type === 'error');
+  }
+
+  function validate(fields) {
+    const errors = [];
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email.value.trim());
+    const checks = [
+      [fields.name, fields.name.value.trim().length >= 2, 'Please enter your name.'],
+      [fields.email, emailOk, 'Please enter a valid email address.'],
+      [fields.message, fields.message.value.trim().length >= 10, 'Please write a message of at least 10 characters.'],
+    ];
+    checks.forEach(([input, ok, msg]) => {
+      input.setAttribute('aria-invalid', String(!ok));
+      if (!ok) errors.push({ input, msg });
+    });
+    return errors;
+  }
+
+  if (form) {
+    const fields = { name: form.elements.name, email: form.elements.email, message: form.elements.message };
+    const submit = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errors = validate(fields);
+      if (errors.length) {
+        setStatus(errors[0].msg, 'error');
+        errors[0].input.focus();
         return;
-    }
-    
-    trailDots.forEach((dot, index) => {
-        if (index === 0) {
-            dot.x = mouseX;
-            dot.y = mouseY;
+      }
+
+      const name = fields.name.value.trim();
+      const payload = {
+        name,
+        email: fields.email.value.trim(),
+        subject: `Portfolio message from ${name}`, // backend schema requires a subject
+        message: fields.message.value.trim(),
+      };
+
+      submit.disabled = true;
+      const label = submit.textContent;
+      submit.textContent = 'Sending...';
+      setStatus('', null);
+
+      try {
+        const res = await fetch(`${API_BASE_URL}/contact`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.success !== false) {
+          setStatus('Thanks, your message was sent. I will get back to you soon.', 'success');
+          form.reset();
+          Object.values(fields).forEach((f) => f.removeAttribute('aria-invalid'));
         } else {
-            const dx = trailDots[index - 1].x - dot.x;
-            const dy = trailDots[index - 1].y - dot.y;
-            dot.x += dx * 0.3;
-            dot.y += dy * 0.3;
+          const detail = typeof data.detail === 'string' ? data.detail : data.message;
+          setStatus(detail || 'Something went wrong. Please email me directly instead.', 'error');
         }
-        
-        dot.element.style.left = dot.x + 'px';
-        dot.element.style.top = dot.y + 'px';
+      } catch (err) {
+        setStatus('Could not reach the server. Please email me at Rabif1820@gmail.com.', 'error');
+      } finally {
+        submit.disabled = false;
+        submit.textContent = label;
+      }
     });
-    
-    requestAnimationFrame(updateDots);
-}
-
-// Track mouse (for desktop)
-document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    isActive = true;
-    
-    trailDots.forEach((dot, index) => {
-        dot.element.style.opacity = 1 - (index / numDots * 0.5);
-    });
-    
-    clearTimeout(hideTimeout);
-    
-    hideTimeout = setTimeout(() => {
-        trailDots.forEach(dot => {
-            dot.element.style.opacity = '0';
-        });
-        isActive = false;
-    }, 3000);
-});
-
-// Track touch (for mobile/tablet)
-document.addEventListener('touchmove', (e) => {
-    const touch = e.touches[0];
-    if (touch) {
-        mouseX = touch.clientX;
-        mouseY = touch.clientY;
-        isActive = true;
-        
-        trailDots.forEach((dot, index) => {
-            dot.element.style.opacity = 1 - (index / numDots * 0.5);
-        });
-        
-        clearTimeout(hideTimeout);
-        
-        hideTimeout = setTimeout(() => {
-            trailDots.forEach(dot => {
-                dot.element.style.opacity = '0';
-            });
-            isActive = false;
-        }, 3000);
-    }
-}, { passive: true });
-
-// Track touch start
-document.addEventListener('touchstart', (e) => {
-    const touch = e.touches[0];
-    if (touch) {
-        mouseX = touch.clientX;
-        mouseY = touch.clientY;
-        isActive = true;
-        
-        trailDots.forEach((dot, index) => {
-            dot.element.style.opacity = 1 - (index / numDots * 0.5);
-        });
-        
-        clearTimeout(hideTimeout);
-    }
-}, { passive: true });
-
-// Show dots when mouse enters (desktop)
-document.addEventListener('mouseenter', () => {
-    isActive = true;
-    trailDots.forEach((dot, index) => {
-        dot.element.style.opacity = 1 - (index / numDots * 0.5);
-    });
-});
-
-// Start animation
-updateDots();
-
-console.log('🖱️ Cursor trail enabled for all devices');
-
-// ============================================
-// INTERACTIVE ELEMENTS
-// ============================================
-const interactiveElements = document.querySelectorAll('a, button, .project-card, .service-card, .skill-card');
-interactiveElements.forEach(el => {
-    el.addEventListener('mouseenter', () => {
-        document.body.style.cursor = 'pointer';
-    });
-    
-    el.addEventListener('mouseleave', () => {
-        document.body.style.cursor = 'default';
-    });
-});
-
-window.downloadCV = downloadCV;
-
-// ============================================
-// PAGE LOAD ANIMATION
-// ============================================
-window.addEventListener('load', () => {
-    document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.5s ease-in';
-    setTimeout(() => {
-        document.body.style.opacity = '1';
-    }, 100);
-});
-
-// ============================================
-// KONAMI CODE EASTER EGG
-// ============================================
-let konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-let konamiIndex = 0;
-
-document.addEventListener('keydown', (e) => {
-    if (e.key === konamiCode[konamiIndex]) {
-        konamiIndex++;
-        if (konamiIndex === konamiCode.length) {
-            showToast('🎮 Konami Code Activated! You found the easter egg!');
-            document.body.style.animation = 'rainbow 2s infinite';
-            konamiIndex = 0;
-        }
-    } else {
-        konamiIndex = 0;
-    }
-});
-
-const rainbowStyle = document.createElement('style');
-rainbowStyle.textContent = `
-    @keyframes rainbow {
-        0% { filter: hue-rotate(0deg); }
-        100% { filter: hue-rotate(360deg); }
-    }
-`;
-document.head.appendChild(rainbowStyle);
-
-// ============================================
-// LAZY LOAD IMAGES
-// ============================================
-const images = document.querySelectorAll('img[data-src]');
-const imageObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const img = entry.target;
-            img.src = img.dataset.src;
-            img.removeAttribute('data-src');
-            imageObserver.unobserve(img);
-        }
-    });
-});
-
-images.forEach(img => imageObserver.observe(img));
-
-// ============================================
-// CONSOLE LOGS
-// ============================================
-console.log('%c👋 Hey there, curious developer!', 'font-size: 20px; font-weight: bold; color: #3b82f6;');
-console.log('%cInterested in the code? Check out the GitHub repo!', 'font-size: 14px; color: #8b5cf6;');
-console.log('%c🚀 Built with HTML, CSS, JavaScript & Three.js', 'font-size: 12px; color: #94a3b8;');
-
-// ============================================
-// DARK/LIGHT MODE TOGGLE
-// ============================================
-if (!document.getElementById('theme-toggle')) {
-    const toggleBtn = document.createElement('button');
-    toggleBtn.id = 'theme-toggle';
-    toggleBtn.className = 'theme-toggle';
-    toggleBtn.setAttribute('aria-label', 'Toggle Dark/Light Mode');
-    toggleBtn.innerHTML = '<i data-lucide="moon"></i>';
-    document.body.appendChild(toggleBtn);
-    lucide.createIcons();
-}
-
-const themeToggle = document.getElementById('theme-toggle');
-
-const savedTheme = localStorage.getItem('theme') || 'light';
-document.documentElement.setAttribute('data-theme', savedTheme);
-
-function updateThemeIcon(theme) {
-    const icon = themeToggle?.querySelector('i');
-    if (icon) {
-        icon.setAttribute('data-lucide', theme === 'dark' ? 'sun' : 'moon');
-        lucide.createIcons();
-    }
-}
-
-updateThemeIcon(savedTheme);
-
-if (themeToggle) {
-    themeToggle.addEventListener('click', () => {
-        const currentTheme = document.documentElement.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        updateThemeIcon(newTheme);
-        showToast(`🌙 ${newTheme === 'dark' ? 'Dark' : 'Light'} mode activated`);
-    });
-}
-
-const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
-if (!localStorage.getItem('theme')) {
-    const systemTheme = prefersDark.matches ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', systemTheme);
-    updateThemeIcon(systemTheme);
-}
-
-prefersDark.addEventListener('change', (e) => {
-    if (!localStorage.getItem('theme')) {
-        const theme = e.matches ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', theme);
-        updateThemeIcon(theme);
-    }
-});
-
-// NOTE: Project cards are defined statically in index.html (5 projects).
-// A stale dynamic project loader (dead code, never called) was removed here:
-// its hardcoded project array no longer matched the live cards.
+  }
+})();
