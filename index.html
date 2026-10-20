@@ -29,7 +29,7 @@
   <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="images/fazal-480.webp" as="image" type="image/webp">
   <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" crossorigin>
-  <link rel="stylesheet" href="style.css?v=4">
+  <link rel="stylesheet" href="style.css?v=6">
 
   <!-- Mark JS as available before first paint so reveal animations never flash -->
   <script>document.documentElement.classList.add('js');</script>
@@ -167,7 +167,7 @@
             </li>
             <li class="fact">
               <span class="fact__label mono">Semester</span>
-              <span class="fact__value">7th Semester</span>
+              <span class="fact__value">7th Semester (Final Year)</span><!-- TODO: change to Graduate (2027) after July 2027 -->
               <span class="fact__meta">Based in Abbottabad, Pakistan</span>
             </li>
             <li class="fact">
@@ -198,6 +198,7 @@
               <div class="card__body">
                 <h3 class="card__title">DevOps Monitor Pro</h3>
                 <p class="card__desc">Infrastructure monitoring and alerting platform that tracks Windows machines in real time (CPU, RAM, disk) through a dedicated agent, with a WebSockets live feed.</p>
+                <!-- Measurable result line for this project: [add real metric here]. Use only a verified number from Fazal. -->
                 <ul class="tags" aria-label="Tech stack">
                   <li>Python</li><li>FastAPI</li><li>Streamlit</li><li>MongoDB</li><li>WebSockets</li><li>JWT</li><li>Docker</li><li>GitHub Actions</li>
                 </ul>
@@ -224,25 +225,6 @@
                 <div class="card__links">
                   <a href="https://agriscan-3d.vercel.app/" target="_blank" rel="noopener noreferrer">Live<span class="sr-only"> demo of AgriScan 3D</span></a>
                   <a href="https://github.com/Rabiabbasi66/Agriscan-3D-frontend" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> repository for AgriScan 3D</span></a>
-                </div>
-              </div>
-            </article>
-          </li>
-
-          <li class="reveal">
-            <article class="card tilt" data-tilt>
-              <div class="card__media">
-                <img src="images/task-manager.webp" width="960" height="721" loading="lazy" decoding="async" alt="Task Management App board view">
-              </div>
-              <div class="card__body">
-                <h3 class="card__title">Task Management App</h3>
-                <p class="card__desc">Task management application with a drag-and-drop interface, authentication, real-time updates and team collaboration.</p>
-                <ul class="tags" aria-label="Tech stack">
-                  <li>React.js</li><li>FastAPI</li><li>MongoDB</li><li>Tailwind</li>
-                </ul>
-                <div class="card__links">
-                  <a href="https://task-managnment-app.vercel.app/" target="_blank" rel="noopener noreferrer">Live<span class="sr-only"> demo of Task Management App</span></a>
-                  <a href="https://github.com/Rabiabbasi66/task-managnment-app" target="_blank" rel="noopener noreferrer">GitHub<span class="sr-only"> repository for Task Management App</span></a>
                 </div>
               </div>
             </article>
@@ -295,38 +277,31 @@
         <header class="section__head reveal">
           <p class="eyebrow mono">03 / skills</p>
           <h2 class="section__title" id="skills-title">Toolkit</h2>
-          <p class="section__lead">Backend, databases and infrastructure. Items marked <span class="chip__note mono">learning</span> are in progress.</p>
+          <p class="section__lead">Backend, databases and infrastructure, grouped by how I use them.</p>
+          <div class="skills-filter" role="group" aria-label="Filter skills by level">
+            <button class="skills-filter__btn" id="skills-btn-known" type="button" data-skill-filter="known" aria-pressed="true" aria-controls="skills-panel-known">
+              <span class="skills-filter__dot skills-filter__dot--known" aria-hidden="true"></span>
+              Comfortable with <span class="skills-filter__count" data-skill-count="known"></span>
+            </button>
+            <button class="skills-filter__btn" id="skills-btn-learning" type="button" data-skill-filter="learning" aria-pressed="false" aria-controls="skills-panel-learning">
+              <span class="skills-filter__dot skills-filter__dot--learning" aria-hidden="true"></span>
+              Learning <span class="skills-filter__count" data-skill-count="learning"></span>
+            </button>
+          </div>
         </header>
 
-        <div class="skills">
-          <div class="skill-group reveal">
-            <h3 class="skill-group__title mono">Languages</h3>
-            <ul class="chips">
-              <li class="chip">Python</li><li class="chip">JavaScript</li><li class="chip">TypeScript</li><li class="chip">SQL</li><li class="chip">HTML5</li><li class="chip">CSS3</li>
-            </ul>
+        <!-- Chips are rendered by main.js from the single SKILLS array at the top
+             of that file, so the toolkit only needs editing in one place. -->
+        <div class="skills-panels">
+          <div class="skills-panel is-active" id="skills-panel-known" role="region" aria-labelledby="skills-btn-known">
+            <div class="skills-panel__inner">
+              <div class="skills" data-skills-panel="known"></div>
+            </div>
           </div>
-          <div class="skill-group reveal">
-            <h3 class="skill-group__title mono">Backend</h3>
-            <ul class="chips">
-              <li class="chip">FastAPI</li><li class="chip">REST APIs</li><li class="chip">Node.js</li><li class="chip">Express.js</li><li class="chip">GraphQL</li><li class="chip">JWT / OAuth</li><li class="chip">WebSockets</li><li class="chip">MongoDB Atlas</li><li class="chip">PostgreSQL</li><li class="chip">MySQL</li><li class="chip">Redis</li><li class="chip">Firebase</li>
-            </ul>
-          </div>
-          <div class="skill-group reveal">
-            <h3 class="skill-group__title mono">DevOps and Linux</h3>
-            <ul class="chips">
-              <li class="chip">Linux / Unix</li><li class="chip">Git &amp; GitHub</li><li class="chip">GitHub Actions</li>
-              <li class="chip">Docker <span class="chip__note mono">learning</span></li>
-              <li class="chip">CI/CD Pipelines <span class="chip__note mono">learning</span></li>
-              <li class="chip">AWS (EC2, S3, RDS) <span class="chip__note mono">learning</span></li>
-              <li class="chip">Kubernetes <span class="chip__note mono">goal</span></li>
-              <li class="chip">Vercel</li><li class="chip">Render</li><li class="chip">Netlify</li>
-            </ul>
-          </div>
-          <div class="skill-group reveal">
-            <h3 class="skill-group__title mono">Tools</h3>
-            <ul class="chips">
-              <li class="chip">VS Code</li><li class="chip">Postman</li><li class="chip">Swagger / OpenAPI</li><li class="chip">React.js</li><li class="chip">Tailwind CSS</li><li class="chip">Three.js</li><li class="chip">Vite / Webpack</li><li class="chip">NPM / Yarn</li>
-            </ul>
+          <div class="skills-panel" id="skills-panel-learning" role="region" aria-labelledby="skills-btn-learning" aria-hidden="true" inert>
+            <div class="skills-panel__inner">
+              <div class="skills" data-skills-panel="learning"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -336,8 +311,8 @@
     <section class="section section--alt" id="contact" aria-labelledby="contact-title">
       <div class="container">
         <header class="section__head reveal">
-          <p class="eyebrow mono">04 / contact</p>
-          <h2 class="section__title" id="contact-title">Let's talk</h2>
+          <p class="eyebrow mono">04 / CONTACT</p>
+          <h2 class="section__title" id="contact-title">Let's build something</h2>
           <p class="section__lead">I'm always interested in hearing about internships, projects and opportunities. Whether you have a question or just want to say hi, feel free to reach out.</p>
         </header>
 
@@ -346,15 +321,16 @@
             <ul class="contact__list">
               <li>
                 <span class="contact__label mono">Email</span>
-                <a href="mailto:Rabif1820@gmail.com">Rabif1820@gmail.com</a>
-              </li>
-              <li>
-                <span class="contact__label mono">Phone</span>
-                <a href="tel:+923110853195">+92 311 085 31 95</a>
+                <!-- Address parts are assembled by main.js on click, so the HTML
+                     contains no plain address and no working mailto link. -->
+                <a class="contact__email" href="#" data-email-user="cmFiaWYxODIw" data-email-domain="Z21haWwuY29t">rabif1820 [at] gmail [dot] com</a>
               </li>
               <li>
                 <span class="contact__label mono">WhatsApp</span>
-                <a href="https://wa.me/923110853195?text=Hello%20Fazal%20I%20saw%20your%20portfolio%20and%20want%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a>
+                <a class="btn btn--outline contact__whatsapp" href="https://wa.me/923110853195?text=Hello%20Fazal%20I%20saw%20your%20portfolio%20and%20want%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer">
+                  <svg class="icon" viewBox="0 0 448 512" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+                  Chat on WhatsApp
+                </a>
               </li>
               <li>
                 <span class="contact__label mono">Freelance</span>
@@ -405,9 +381,10 @@
     <symbol id="i-github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.26 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></symbol>
     <symbol id="i-linkedin" viewBox="0 0 24 24"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/></symbol>
     <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></symbol>
+    <symbol id="i-whatsapp" viewBox="0 0 448 512"><path fill="currentColor" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zM223.9 438.7c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></symbol>
   </svg>
 
-  <script src="main.js?v=5" defer></script>
+  <script src="main.js?v=7" defer></script>
   <script type="module" src="three-scene.js"></script>
 </body>
 </html>

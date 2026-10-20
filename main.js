@@ -1,7 +1,71 @@
 /* ==========================================================================
-   main.js — navigation, typing headline, 3D tilt, scroll reveal, contact form
+   main.js — navigation, typing headline, skills, 3D tilt, scroll reveal, contact
    Vanilla JS, no dependencies.
    ========================================================================== */
+
+/* ==========================================================================
+   Skills / toolkit — edit this single list to change the chips on the page.
+   Groups without `learning: true` render as solid "known" chips; groups with
+   it render as dotted "learning" chips with a small tag.
+   ========================================================================== */
+const SKILLS = [
+  {
+    title: 'Languages',
+    items: ['HTML', 'CSS', 'JavaScript', 'Python'],
+  },
+  {
+    title: 'Backend and Databases',
+    items: ['FastAPI', 'MongoDB', 'SQL', 'MySQL', 'REST APIs', 'APIs'],
+  },
+  {
+    title: 'DevOps and Linux',
+    items: ['Linux', 'Docker', 'Git', 'GitHub'],
+  },
+  {
+    title: 'Tools and Deployment',
+    items: ['Vercel', 'Netlify', 'Render', 'Postman'],
+  },
+  {
+    title: 'AI and 3D',
+    items: ['YOLOv8 (AI)', 'Three.js (basic)'],
+  },
+  {
+    title: 'CI/CD and Automation',
+    learning: true,
+    items: ['CI/CD Pipelines', 'GitHub Actions', 'Jenkins', 'Bash Scripting'],
+  },
+  {
+    title: 'Containers and Orchestration',
+    learning: true,
+    items: ['Kubernetes', 'Helm', 'Docker Compose'],
+  },
+  {
+    title: 'Infrastructure as Code',
+    learning: true,
+    items: ['Terraform', 'Ansible'],
+  },
+  {
+    title: 'Monitoring and Observability',
+    learning: true,
+    items: ['Prometheus', 'Grafana'],
+  },
+  {
+    title: 'GitOps and Platform Engineering',
+    learning: true,
+    items: ['GitOps', 'ArgoCD', 'Internal Developer Platforms'],
+  },
+  {
+    title: 'Cloud and Networking',
+    learning: true,
+    items: ['AWS (basics)', 'Nginx'],
+  },
+  {
+    title: 'Data',
+    learning: true,
+    items: ['Redis', 'GraphQL'],
+  },
+];
+
 (() => {
   'use strict';
 
@@ -11,6 +75,81 @@
   /* ---------- Footer year ---------- */
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+  /* ---------- Skills / toolkit ---------- */
+  const skillPanelEls = document.querySelectorAll('[data-skills-panel]');
+  if (skillPanelEls.length) {
+    const knownGroups = SKILLS.filter((group) => !group.learning);
+    const learningGroups = SKILLS.filter((group) => group.learning);
+    const countSkills = (groups) => groups.reduce((total, group) => total + group.items.length, 0);
+
+    const renderGroups = (groups) => groups.map((group) => {
+      const chips = group.items.map((skill) => {
+        const note = group.learning ? '<span class="chip__note mono">learning</span>' : '';
+        return `<li class="chip${group.learning ? ' chip--learning' : ''}">${skill}${note}</li>`;
+      }).join('');
+
+      return `<div class="skill-group reveal">
+        <h3 class="skill-group__title mono">${group.title}</h3>
+        <ul class="chips" aria-label="${group.title} skills">${chips}</ul>
+      </div>`;
+    }).join('');
+
+    const knownMount = document.querySelector('[data-skills-panel="known"]');
+    const learningMount = document.querySelector('[data-skills-panel="learning"]');
+    if (knownMount) knownMount.innerHTML = renderGroups(knownGroups);
+    if (learningMount) learningMount.innerHTML = renderGroups(learningGroups);
+
+    // Counts are always derived from SKILLS, so they stay correct when edited.
+    const setCount = (key, count) => {
+      const el = document.querySelector(`[data-skill-count="${key}"]`);
+      if (el) el.textContent = `(${count})`;
+    };
+    setCount('known', countSkills(knownGroups));
+    setCount('learning', countSkills(learningGroups));
+
+    const filters = Array.from(document.querySelectorAll('[data-skill-filter]'));
+    const panels = {
+      known: document.getElementById('skills-panel-known'),
+      learning: document.getElementById('skills-panel-learning'),
+    };
+
+    function setSkillFilter(name) {
+      filters.forEach((button) => {
+        button.setAttribute('aria-pressed', String(button.dataset.skillFilter === name));
+      });
+
+      Object.entries(panels).forEach(([key, panel]) => {
+        if (!panel) return;
+        const active = key === name;
+        panel.classList.toggle('is-active', active);
+        panel.setAttribute('aria-hidden', String(!active));
+        if ('inert' in panel) panel.inert = !active;
+      });
+    }
+
+    filters.forEach((button, index) => {
+      button.addEventListener('click', () => setSkillFilter(button.dataset.skillFilter));
+
+      button.addEventListener('keydown', (event) => {
+        const keys = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'];
+        if (!keys.includes(event.key)) return;
+        event.preventDefault();
+
+        let nextIndex = index;
+        if (event.key === 'Home') nextIndex = 0;
+        else if (event.key === 'End') nextIndex = filters.length - 1;
+        else if (event.key === 'ArrowRight' || event.key === 'ArrowDown') nextIndex = (index + 1) % filters.length;
+        else nextIndex = (index - 1 + filters.length) % filters.length;
+
+        const nextButton = filters[nextIndex];
+        setSkillFilter(nextButton.dataset.skillFilter);
+        nextButton.focus();
+      });
+    });
+
+    setSkillFilter('known');
+  }
 
   /* ==========================================================================
      Mobile navigation
@@ -117,33 +256,31 @@
 
     async function runTypingLoop() {
       for (;;) {
-        // "Hi, I'm"
+        // 1. Greeting, then a short pause.
         moveCursorTo(parts.greeting);
         await typeText(parts.greeting, HERO.greeting);
         await sleep(HERO.afterGreetingMs);
 
-        // The name on its own line.
+        // 2. Name on its own line, then a longer pause.
         moveCursorTo(parts.name);
         await typeText(parts.name, HERO.name);
         await sleep(HERO.afterNameMs);
 
-        // "I'm a " + role, held for two seconds, then erased letter by letter.
+        // 3. "I'm a " stays in place while each role is typed, held and erased.
         moveCursorTo(parts.role);
+        await typeText(parts.prefix, HERO.prefix);
         for (const role of HERO.roles) {
-          await typeText(parts.prefix, HERO.prefix);
           await typeText(parts.role, role);
           await sleep(HERO.roleHoldMs);
           await eraseText(parts.role);
-          await eraseText(parts.prefix);
         }
 
-        // After the last role, erase the name and then the greeting.
+        // 4. Clear the prefix, name and greeting, then restart from empty.
+        await eraseText(parts.prefix);
         moveCursorTo(parts.name);
         await eraseText(parts.name);
         moveCursorTo(parts.greeting);
         await eraseText(parts.greeting);
-
-        // Pause on the empty hero (just the cursor), then loop.
         await sleep(HERO.emptyMs);
       }
     }
@@ -209,6 +346,21 @@
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     revealEls.forEach((el) => revealObserver.observe(el));
+  }
+
+  /* ==========================================================================
+     Contact email link
+     The address is stored as two base64 parts and assembled only on click, so
+     it never appears in the HTML as a plain address or a working mailto link.
+     ========================================================================== */
+  const emailLink = document.querySelector('[data-email-user]');
+  if (emailLink) {
+    emailLink.addEventListener('click', (event) => {
+      event.preventDefault();
+      const user = atob(emailLink.dataset.emailUser);
+      const domain = atob(emailLink.dataset.emailDomain);
+      window.location.href = `mailto:${user}@${domain}`;
+    });
   }
 
   /* ==========================================================================
@@ -279,10 +431,10 @@
           Object.values(fields).forEach((f) => f.removeAttribute('aria-invalid'));
         } else {
           const detail = typeof data.detail === 'string' ? data.detail : data.message;
-          setStatus(detail || 'Something went wrong. Please email me directly instead.', 'error');
+          setStatus(detail || 'Something went wrong. Please use the email link above or message me on WhatsApp.', 'error');
         }
-      } catch (err) {
-        setStatus('Could not reach the server. Please email me at Rabif1820@gmail.com.', 'error');
+      } catch {
+        setStatus('Could not reach the server. Please use the email link above or message me on WhatsApp.', 'error');
       } finally {
         submit.disabled = false;
         submit.textContent = label;

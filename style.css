@@ -36,6 +36,8 @@
   --on-accent: #FFFFFF;
   --success: #3F8F5A;
   --success-soft: rgba(63, 143, 90, 0.18);
+  --learning: #4F6B57;      /* muted sage for "learning" chips (AA on warm bg) */
+  --learning-soft: rgba(79, 107, 87, 0.12);
   --nav-bg: rgba(250, 247, 242, 0.86);
   --shadow-color: rgba(76, 56, 34, 0.10);
   --shadow-color-strong: rgba(76, 56, 34, 0.16);
@@ -385,8 +387,8 @@ h1, h2, h3, p, figure { margin: 0; }
 }
 
 /* Typing headline
-   Every line is a fixed-height block (height = line-height x lines), so the
-   terminal card and everything below it never move while text is typed. */
+   Every line reserves a fixed min-height (line-height x lines), so the terminal
+   card and everything below it never move while text is typed. */
 .typer { display: block; }
 .typer__line {
   display: block;
@@ -397,14 +399,14 @@ h1, h2, h3, p, figure { margin: 0; }
   font-size: clamp(1.1rem, 2vw, 1.35rem);
   font-weight: 500;
   line-height: 1.4;
-  height: 1.5em;               /* line-height + small buffer for rounding */
+  min-height: 1.5em;           /* line-height + small buffer for rounding */
 }
 .typer__name {
   margin-top: 4px;
   font-size: clamp(1.8rem, 4vw, 3.2rem);
   font-weight: 800;
   line-height: 1.15;
-  height: 1.25em;
+  min-height: 1.25em;
   letter-spacing: -0.025em;
 }
 .typer__role {
@@ -412,7 +414,7 @@ h1, h2, h3, p, figure { margin: 0; }
   font-size: clamp(0.98rem, 1.7vw, 1.2rem);  /* monospace: fixed-width glyphs, no jitter */
   font-weight: 500;
   line-height: 1.45;
-  height: 1.55em;
+  min-height: 1.55em;
 }
 .typer__role-text { color: var(--accent-ink); }
 
@@ -433,7 +435,7 @@ h1, h2, h3, p, figure { margin: 0; }
    line may wrap, so two lines are reserved for it. */
 @media (max-width: 479px) {
   .typer__name { font-size: clamp(1.3rem, 6.4vw, 1.8rem); }
-  .typer__role { white-space: normal; height: 3em; }
+  .typer__role { white-space: normal; min-height: 3em; }
 }
 
 .hero__intro {
@@ -512,10 +514,15 @@ h1, h2, h3, p, figure { margin: 0; }
 /* ---------- Projects ---------- */
 .projects {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 24px;
 }
 .projects > li { display: flex; }
+
+/* Four cards sit as a balanced 2 x 2 grid; phones get a single column. */
+@media (max-width: 700px) {
+  .projects { grid-template-columns: 1fr; }
+}
 
 .card {
   display: flex;
@@ -606,24 +613,132 @@ h1, h2, h3, p, figure { margin: 0; }
   letter-spacing: 0.08em;
 }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Known skill: solid terracotta chip with light text. */
 .chip {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 6px 14px;
-  background: var(--surface);
-  border: 1px solid var(--border);
+  background: var(--accent-ink);
+  border: 1px solid var(--accent-ink);
   border-radius: 999px;
+  color: var(--on-accent);
   font-size: 0.92rem;
-  transition: border-color 0.2s var(--ease);
+  font-weight: 500;
+  transition: box-shadow 0.2s var(--ease);
 }
-.chip:hover { border-color: var(--border-strong); }
+.chip:hover { box-shadow: 0 2px 8px var(--shadow-color); }
+
+/* Learning skill: transparent with a dotted sage outline and a small tag. */
+.chip--learning {
+  background: transparent;
+  border: 1.5px dotted var(--learning);
+  color: var(--learning);
+}
+.chip--learning:hover { background: var(--learning-soft); }
+
 .chip__note {
   font-size: 0.68rem;
   color: var(--accent-ink);
   padding: 1px 6px;
   border-radius: 6px;
   background: var(--accent-soft);
+}
+.chip--learning .chip__note {
+  color: var(--learning);
+  background: var(--learning-soft);
+}
+
+/* Filter pills: one skill view at a time. */
+.skills-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+.skills-filter__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+.skills-filter__btn[aria-pressed="false"]:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.skills-filter__btn[aria-pressed="true"] {
+  background: var(--accent-ink);
+  border-color: var(--accent-ink);
+  color: var(--on-accent);
+}
+.skills-filter__btn[data-skill-filter="learning"][aria-pressed="true"] {
+  background: var(--learning);
+  border-color: var(--learning);
+}
+.skills-filter__btn:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+.skills-filter__dot {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.skills-filter__dot--known { background: var(--accent-ink); }
+.skills-filter__dot--learning {
+  border: 1.5px dotted var(--learning);
+  background: transparent;
+}
+.skills-filter__btn[aria-pressed="true"] .skills-filter__dot--known { background: var(--on-accent); }
+.skills-filter__btn[aria-pressed="true"] .skills-filter__dot--learning { border-color: var(--on-accent); }
+.skills-filter__count {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  font-weight: 500;
+  color: var(--muted-ink);
+  transition: color 0.2s var(--ease);
+}
+.skills-filter__btn[aria-pressed="true"] .skills-filter__count {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+/* Both panels occupy the same block; the inactive one collapses to 0fr. */
+.skills-panels { display: grid; }
+.skills-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  transition: grid-template-rows 250ms var(--ease), opacity 200ms var(--ease), visibility 0s linear 250ms;
+}
+.skills-panel.is-active {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition: grid-template-rows 250ms var(--ease), opacity 200ms var(--ease), visibility 0s;
+}
+.skills-panel__inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+@media (max-width: 479px) {
+  .skills-filter__btn {
+    flex: 1 1 100%;
+    justify-content: space-between;
+  }
 }
 
 /* ---------- Contact ---------- */
@@ -648,6 +763,14 @@ h1, h2, h3, p, figure { margin: 0; }
   overflow-wrap: anywhere;
 }
 .contact__list a:hover { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 4px; }
+
+/* WhatsApp is the only phone-based contact shown, as a button. */
+.contact__whatsapp {
+  justify-self: start;
+  margin-top: 4px;
+  color: var(--text);
+}
+.contact__list a.contact__whatsapp:hover { color: var(--text); text-decoration: none; }
 
 .form {
   display: grid;
